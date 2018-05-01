@@ -2,7 +2,8 @@
   "name": "openlattes",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "lint": "eslint client/ server/ imports/"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.42",
@@ -17,5 +18,12 @@
     "react": "^16.3.2",
     "react-apollo": "^2.1.3",
     "react-dom": "^16.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0"
   }
 }
