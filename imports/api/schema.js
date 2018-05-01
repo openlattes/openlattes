@@ -10,9 +10,9 @@ const typeDefs = `
 const resolvers = {
   Query: {
     hello() {
-      return "Hello, World!"
-    }
-  }
+      return 'Hello, World!';
+    },
+  },
 };
 
 export default makeExecutableSchema({ typeDefs, resolvers });

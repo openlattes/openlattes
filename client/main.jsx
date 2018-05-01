@@ -4,13 +4,13 @@ import React from 'react';
 import { render } from 'react-dom';
 import { ApolloProvider } from 'react-apollo';
 
-import App from '../imports/ui/App.js';
+import App from '../imports/ui/App';
 
 Meteor.startup(() => {
   render(
     <ApolloProvider client={createApolloClient()}>
       <App />
     </ApolloProvider>,
-    document.getElementById('root')
-  )
+    document.getElementById('root'),
+  );
 });
