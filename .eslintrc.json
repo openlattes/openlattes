@@ -1,5 +1,9 @@
 {
-    "extends": ["airbnb", "plugin:meteor/recommended"],
+    "extends": [
+	"airbnb",
+	"plugin:meteor/recommended",
+	"@meteorjs/eslint-config-meteor"
+    ],
     "plugins": ["meteor"],
     "env": {
         "browser": true

@@ -5,9 +5,6 @@
     "start": "meteor run",
     "lint": "eslint client/ server/ imports/"
   },
-  "eslintConfig": {
-    "extends": "@meteorjs/eslint-config-meteor"
-  },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.42",
     "apollo-boost": "^0.1.4",
@@ -24,6 +21,7 @@
   },
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",
+    "babel-eslint": "^8.2.3",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-meteor": "^0.4.0",
