@@ -1,5 +1,4 @@
 import { makeExecutableSchema } from 'graphql-tools';
-import { Mongo } from 'meteor/mongo';
 
 const typeDefs = `
   type Query {
