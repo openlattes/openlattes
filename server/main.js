@@ -1,9 +1,15 @@
 import { ApolloServer, gql } from 'apollo-server-express'
 import { WebApp } from 'meteor/webapp'
 import { getUser } from 'meteor/apollo'
+import mongoose from 'mongoose';
 
 import typeDefs from '../imports/api/schema';
 import resolvers from '../imports/api/resolvers';
+
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
 
 const server = new ApolloServer({
   typeDefs,

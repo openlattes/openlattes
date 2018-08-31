@@ -1,3 +1,32 @@
 type Query {
   hello: String
+  member(_id: ID!): Member
+  members: [Member]
+  production(_id: ID!): Production
+  productions: [Production]
+  indicator: [Indicator]
+}
+
+type Indicator {
+  ano: Int
+  qtd: Int
+  type: String
+}
+
+type Member {
+  _id: ID
+  nome_completo: String
+  nomeEmCitacoesBibliograficas: String
+  id_lattes: String
+}
+
+type Production {
+  _id: ID
+  titulo: String
+  ano: Int
+  autores: String
+  revista: String
+  volume: String
+  type: String
+  members: [Member]
 }
