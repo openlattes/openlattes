@@ -4,9 +4,13 @@ const productionSchema = new Schema({
   titulo: String,
   ano: Number,
   autores: String,
+  categoria: String,
+  type: String,
+  doi: String,
+  issn: String,
+  paginas: String,
   revista: String,
   volume: String,
-  type: String,
   members: [Schema.Types.ObjectId],
 });
 
