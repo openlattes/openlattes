@@ -4,29 +4,38 @@ type Query {
   members: [Member]
   production(_id: ID!): Production
   productions: [Production]
+  coauthorships: [CoAuthorship]
   indicator: [Indicator]
 }
 
 type Indicator {
-  ano: Int
-  qtd: Int
+  year: Int
+  count: Int
   type: String
 }
 
 type Member {
   _id: ID
-  nome_completo: String
-  nomeEmCitacoesBibliograficas: String
-  id_lattes: String
+  fullName: String
+  citationName: String
+  lattesId: String
+  cvLastUpdate: String
 }
 
 type Production {
   _id: ID
-  titulo: String
-  ano: Int
-  autores: String
-  revista: String
+  title: String
+  year: Int
+  authors: String
+  magazine: String
   volume: String
   type: String
+  category: String
   members: [Member]
+}
+
+type CoAuthorship {
+  _id: ID
+  members: [ID]
+  productions: [ID]
 }

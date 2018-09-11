@@ -1,16 +1,24 @@
 import mongoose, { Schema } from 'mongoose';
 
 const productionSchema = new Schema({
-  titulo: String,
-  ano: Number,
-  autores: String,
-  categoria: String,
+  title: String,
+  year: Number,
+  authors: String,
+  category: String,
   type: String,
   doi: String,
   issn: String,
-  paginas: String,
-  revista: String,
+  pages: String,
+  magazine: String,
   volume: String,
+  edition: String,
+  editor: String,
+  institution: String,
+  name: String,
+  eventName: String,
+  newspaperName: String,
+  supervisionType: String,
+  category: String,
   members: [Schema.Types.ObjectId],
 });
 

@@ -1,19 +1,19 @@
 import mongoose, { Schema } from 'mongoose';
 
 const memberSchema = new Schema({
-  nome_completo: String,
-  nomeEmCitacoesBibliograficas: String,
-  unidade: String,
-  titulacao: String,
-  id_lattes: String,
-  atualizacao: Date,
-  gruposDePesquisa: [String],
-  colaboradores: [Schema.Types.ObjectId],
-  areasDeAtuacao: [{
-    grandeArea: String,
+  fullName: String,
+  citationName: String,
+  unity: String,
+  academicDegree: String,
+  lattesId: String,
+  cvLastUpdate: Date,
+  researchGroups: [String],
+  coauthors: [Schema.Types.ObjectId],
+  areas: [{
+    bigArea: String,
     area: String,
     subArea: String,
-    especializacao: String,
+    specialization: String,
   }],
 });
 

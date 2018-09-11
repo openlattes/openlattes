@@ -1,5 +1,6 @@
 import Member from './models/Member';
 import Production from './models/Production';
+import CoAuthorship from './models/CoAuthorship';
 
 const resolvers = {
   Query: {
@@ -13,20 +14,22 @@ const resolvers = {
 
     productions: () => Production.find(),
 
+    coauthorships: () => CoAuthorship.find(),
+
     indicator: () =>
       Production.aggregate([
         {
           $group: {
-            _id: { ano: "$ano", type: "$type" },
-            qtd: { $sum: 1 },
+            _id: { year: "$year", type: "$type" },
+            count: { $sum: 1 },
           }
         },
         {
           $project: {
             _id: 0,
-            ano: "$_id.ano",
+            year: "$_id.year",
             type: "$_id.type",
-            qtd: 1,
+            count: 1,
           },
         },
         {

@@ -5,4 +5,4 @@ const coAuthorshipSchema = new Schema({
   productions: [Schema.Types.ObjectId],
 });
 
-export default mongoose.model('coauthorship', coAuthorshipSchema);
+export default mongoose.model('coauthorships', coAuthorshipSchema);
