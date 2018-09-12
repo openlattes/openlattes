@@ -6,6 +6,7 @@ type Query {
   productions: [Production]
   coauthorships: [CoAuthorship]
   indicator: [Indicator]
+  edges: [Edge]
 }
 
 type Indicator {
@@ -37,5 +38,12 @@ type Production {
 type CoAuthorship {
   _id: ID
   members: [ID]
+  productions: [ID]
+}
+
+type Edge {
+  source: ID
+  target: ID
+  weight: Int
   productions: [ID]
 }

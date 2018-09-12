@@ -38,7 +38,20 @@ const resolvers = {
             ano: -1
           }
         },
-      ])
+      ]),
+
+    edges: () =>
+      CoAuthorship.aggregate([
+        {
+          $project: {
+            _id: 0,
+            source: { $arrayElemAt: [ "$members", 0 ] },
+            target: { $arrayElemAt: [ "$members", 1 ] },
+            weight: { $size: "$productions" },
+            productions: 1,
+          },
+        },
+      ]),
   },
 
   Production: {
