@@ -4,7 +4,7 @@ import CoAuthorship from './models/CoAuthorship';
 
 const resolvers = {
   Query: {
-    hello: () => "Hello, World!",
+    hello: () => 'Hello, World!',
 
     member: (root, { _id }) => Member.findById(_id),
 
@@ -20,23 +20,23 @@ const resolvers = {
       Production.aggregate([
         {
           $group: {
-            _id: { year: "$year", type: "$type" },
+            _id: { year: '$year', type: '$type' },
             count: { $sum: 1 },
-          }
+          },
         },
         {
           $project: {
             _id: 0,
-            year: "$_id.year",
-            type: "$_id.type",
+            year: '$_id.year',
+            type: '$_id.type',
             count: 1,
           },
         },
         {
           $sort: {
             type: 1,
-            ano: -1
-          }
+            ano: -1,
+          },
         },
       ]),
 
@@ -45,9 +45,9 @@ const resolvers = {
         {
           $project: {
             _id: 0,
-            source: { $arrayElemAt: [ "$members", 0 ] },
-            target: { $arrayElemAt: [ "$members", 1 ] },
-            weight: { $size: "$productions" },
+            source: { $arrayElemAt: ['$members', 0] },
+            target: { $arrayElemAt: ['$members', 1] },
+            weight: { $size: '$productions' },
             productions: 1,
           },
         },

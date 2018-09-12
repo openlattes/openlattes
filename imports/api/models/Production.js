@@ -18,7 +18,6 @@ const productionSchema = new Schema({
   eventName: String,
   newspaperName: String,
   supervisionType: String,
-  category: String,
   members: [Schema.Types.ObjectId],
 });
 

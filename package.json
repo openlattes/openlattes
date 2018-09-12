@@ -6,7 +6,17 @@
     "lint": "eslint client/ server/ imports/"
   },
   "eslintConfig": {
-    "extends": "@meteorjs/eslint-config-meteor"
+    "extends": "@meteorjs/eslint-config-meteor",
+    "rules": {
+        "no-underscore-dangle": [
+	    "error",
+	    { "allow": ["_storedLoginToken"] }
+	],
+        "no-console": [
+	    "error",
+	    { "allow": ["error"] }
+	]
+    }
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.55",
