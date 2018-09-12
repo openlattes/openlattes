@@ -18,7 +18,8 @@
     "mongoose": "^5.2.8",
     "react": "^16.4.2",
     "react-apollo": "^2.1.11",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "semiotic": "1.14.4"
   },
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",
