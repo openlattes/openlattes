@@ -4,8 +4,6 @@ import CoAuthorship from './models/CoAuthorship';
 
 const resolvers = {
   Query: {
-    hello: () => 'Hello, World!',
-
     member: (root, { _id }) => Member.findById(_id),
 
     members: () => Member.find(),

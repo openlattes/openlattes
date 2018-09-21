@@ -1,22 +1,7 @@
 import React from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 
-const GET_HELLO = gql`
-  {
-    hello
-  }
-`;
+import Graph from './Graph';
 
-const App = () => (
-  <Query query={GET_HELLO} >
-    {({ loading, error, data }) => {
-      if (loading) return <p>loading...</p>;
-      if (error) return <p>error</p>;
-
-      return <p>{data.hello}</p>;
-    }}
-  </Query>
-);
+const App = () => <Graph />;
 
 export default App;
