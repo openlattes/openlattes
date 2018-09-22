@@ -1,30 +1,37 @@
 {
   "name": "openlattes",
   "private": true,
+  "nodemonConfig": {
+    "ignore": [
+      "client/*",
+      "dist/*",
+      ".cache/*"
+    ]
+  },
   "scripts": {
-    "start": "meteor run",
-    "lint": "eslint client/ server/ imports/"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .js,.jsx client/ server/",
+    "buildserver": "babel server -d dist --config-file ./.babelrc-server.js",
+    "buildclient": "parcel build client/index.html -d dist/public",
+    "build": "npm run buildserver && npm run buildclient",
+    "serve": "NODE_ENV=production node dist",
+    "devserver": "nodemon server --exec babel-node --config-file ./.babelrc-server.js",
+    "devclient": "parcel watch client/index.html -d dist/public",
+    "start": "concurrently -k \"npm run devserver\" \"npm run devclient\""
   },
   "eslintConfig": {
-    "extends": "@meteorjs/eslint-config-meteor",
-    "rules": {
-        "no-underscore-dangle": [
-	    "error",
-	    { "allow": ["_storedLoginToken"] }
-	],
-        "no-console": [
-	    "error",
-	    { "allow": ["error"] }
-	]
+    "extends": "airbnb",
+    "env": {
+      "browser": true,
+      "node": true
     }
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.55",
     "apollo-boost": "^0.1.14",
     "apollo-server-express": "^2.0.4",
+    "express": "^4.16.3",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
-    "meteor-node-stubs": "^0.4.1",
     "mongoose": "^5.2.8",
     "react": "^16.4.2",
     "react-apollo": "^2.1.11",
@@ -32,14 +39,17 @@
     "semiotic": "1.14.4"
   },
   "devDependencies": {
-    "@meteorjs/eslint-config-meteor": "^1.0.5",
-    "babel-eslint": "^8.2.6",
+    "@babel/cli": "^7.1.0",
+    "@babel/core": "^7.1.0",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "concurrently": "^4.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
-    "eslint-import-resolver-meteor": "^0.4.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-meteor": "^4.2.2",
-    "eslint-plugin-react": "^7.11.1"
+    "eslint-plugin-react": "^7.11.1",
+    "nodemon": "^1.18.4",
+    "parcel-bundler": "^1.9.7"
   }
 }

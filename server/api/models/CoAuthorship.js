@@ -1,4 +1,6 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
+
+const { Schema } = mongoose;
 
 const coAuthorshipSchema = new Schema({
   members: [Schema.Types.ObjectId],
