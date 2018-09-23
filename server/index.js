@@ -3,6 +3,7 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import mongoose from 'mongoose';
 
+import './env'; // dotenv
 import resolvers from './api/resolvers';
 import typeDefs from './api/schema';
 
