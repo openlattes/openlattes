@@ -25,6 +25,10 @@ server.applyMiddleware({ app });
 // Parcel
 app.use(express.static(path.resolve(__dirname, '../dist/public')));
 
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../dist/public/index.html'));
+});
+
 /* eslint-disable no-console */
 app.listen(port, () =>
   console.log(`Server ready at http://localhost:${port}`));
