@@ -31,5 +31,5 @@ app.get('*', (req, res) => {
 
 /* eslint-disable no-console */
 app.listen(port, () =>
-  console.log(`Server ready at http://localhost:${port}`));
+  console.log(`Server ready at port ${port}`));
 /* eslint-enable no-console */
