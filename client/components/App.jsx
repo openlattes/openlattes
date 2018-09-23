@@ -11,9 +11,9 @@ const App = () => (
   <Router>
     <div>
       <ul>
-        <li><Link to="/graph">Graph</Link></li>
+        <li><Link to="/coautorias">Coautorias</Link></li>
       </ul>
-      <Route path="/graph" component={Graph} />
+      <Route path="/coautorias" component={Graph} />
     </div>
   </Router>
 );
