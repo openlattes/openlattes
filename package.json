@@ -12,7 +12,7 @@
     "name": "openlattes",
     "alias": "openlattes",
     "env": {
-       "MONGO_URL": "@mongo-url"
+      "MONGO_URL": "@mongo-url"
     }
   },
   "scripts": {
@@ -34,14 +34,27 @@
       "node": true
     },
     "rules": {
-      "jsx-a11y/anchor-is-valid": [ "error", {
-        "components": [ "Link" ],
-        "specialLink": [ "to" ],
-        "aspects": [ "noHref", "invalidHref", "preferButton" ]
-      }]
+      "jsx-a11y/anchor-is-valid": [
+        "error",
+        {
+          "components": [
+            "Link"
+          ],
+          "specialLink": [
+            "to"
+          ],
+          "aspects": [
+            "noHref",
+            "invalidHref",
+            "preferButton"
+          ]
+        }
+      ]
     }
   },
   "dependencies": {
+    "@material-ui/core": "^3.1.1",
+    "@material-ui/icons": "^3.0.1",
     "apollo-boost": "^0.1.14",
     "apollo-server-express": "^2.0.4",
     "dotenv": "^6.0.0",
