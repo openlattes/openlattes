@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { OrdinalFrame } from 'semiotic';
 
+import StackedBarChart from './StackedBarChart';
 import Checkboxes from './Checkboxes';
 
 const GET_INDICATOR = gql`
@@ -49,7 +49,7 @@ const items = {
 };
 
 
-class StackedBar extends Component {
+class ProductionIndicator extends Component {
   constructor(props) {
     super(props);
 
@@ -60,6 +60,7 @@ class StackedBar extends Component {
           .filter(({ checked }) => checked)
           .map(({ label }) => label)),
     };
+
 
     this.updateSelectedCheckboxes = this.updateSelectedCheckboxes.bind(this);
   }
@@ -82,6 +83,11 @@ class StackedBar extends Component {
   render() {
     const { selectedCheckboxes } = this.state;
 
+    const colorHash = Object
+      .values(items)
+      .reduce((colors, { label, color }) => Object
+        .assign(colors, { [label]: color }), {});
+
     return (
       <Query query={GET_INDICATOR}>
         {({ loading, error, data }) => {
@@ -90,29 +96,10 @@ class StackedBar extends Component {
 
           return (
             <div>
-              <OrdinalFrame
-                size={[900, 500]}
-                data={
-                  data.indicator.filter(({ type }) =>
-                    selectedCheckboxes.has(type))
-                }
-                oAccessor="year"
-                rAccessor="count"
-                style={d => ({ fill: items[d.type].color, stroke: 'white' })}
-                type="bar"
-                projection="vertical"
-                axis={{
-                  orient: 'left',
-                }}
-                margin={{
-                  top: 10, bottom: 50, right: 10, left: 100,
-                }}
-                oLabel={d => (
-                  <text transform="translate(-15,0)rotate(45)">{d}</text>
-                )}
-                sortO={(a, b) => a > b}
-                oPadding={2}
-                baseMarkProps={{ forceUpdate: true }}
+              <StackedBarChart
+                data={data.indicator
+                  .filter(({ type }) => selectedCheckboxes.has(type))}
+                colorHash={colorHash}
               />
               <Checkboxes
                 onChange={this.updateSelectedCheckboxes}
@@ -126,4 +113,4 @@ class StackedBar extends Component {
   }
 }
 
-export default StackedBar;
+export default ProductionIndicator;
