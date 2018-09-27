@@ -55,8 +55,7 @@ class ProductionIndicator extends Component {
 
     this.state = {
       selectedCheckboxes:
-        new Set(Object
-          .values(items)
+        new Set(items
           .filter(({ checked }) => checked)
           .map(({ label }) => label)),
     };
