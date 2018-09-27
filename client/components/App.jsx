@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 import Graph from './Graph';
-import StackBar from './StackedBar';
+import ProductionIndicator from './ProductionIndicator';
 
 const App = () => (
   <Router>
@@ -16,7 +16,7 @@ const App = () => (
         <li><Link to="/producoes">Produções</Link></li>
       </ul>
       <Route path="/coautorias" component={Graph} />
-      <Route path="/producoes" component={StackBar} />
+      <Route path="/producoes" component={ProductionIndicator} />
     </div>
   </Router>
 );
