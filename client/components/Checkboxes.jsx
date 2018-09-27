@@ -16,6 +16,14 @@ class Checkboxes extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidMount() {
+    const itemsArray = this.props.items
+      .filter(({ checked }) => checked)
+      .map(({ label }) => label);
+
+    this.props.onMount(itemsArray);
+  }
+
   handleChange(e) {
     this.setState({ [e.target.value]: e.target.checked });
     this.props.onChange(e);
@@ -25,10 +33,10 @@ class Checkboxes extends React.Component {
     return (
       <div>
         <FormGroup>
-          {this.props.items.map(({ key, label, color }) => (
+          {this.props.items.map(({ label, color }) => (
             <FormControlLabel
               label={label}
-              key={key}
+              key={label}
               control={
                 <Checkbox
                   checked={this.state[label]}
@@ -46,13 +54,13 @@ class Checkboxes extends React.Component {
 }
 
 Checkboxes.propTypes = {
-  onChange: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.shape({
-    key: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
     checked: PropTypes.bool.isRequired,
   })).isRequired,
+  onMount: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default Checkboxes;

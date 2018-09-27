@@ -15,53 +15,22 @@ const GET_INDICATOR = gql`
   }
 `;
 
-const items = [
-  {
-    key: 1, label: 'Apresentação de Trabalho', color: '#111111', checked: true,
-  },
-  {
-    key: 2, label: 'Artigo Aceito', color: '#282b30', checked: true,
-  },
-  {
-    key: 3, label: 'Artigo em Periódico', color: '#434f63', checked: true,
-  },
-  {
-    key: 4, label: 'Capítulo de Livro', color: '#fa648e', checked: true,
-  },
-  {
-    key: 5, label: 'Livro', color: '#406cb2', checked: true,
-  },
-  {
-    key: 6, label: 'Outra Produção Bibliográfica', color: '#256fe8', checked: true,
-  },
-  {
-    key: 7, label: 'Resumo Expandido em Congresso', color: '#0061ff', checked: true,
-  },
-  {
-    key: 8, label: 'Resumo em Congresso', color: '#9400ff', checked: true,
-  },
-  {
-    key: 9, label: 'Texto em Jornal de Notícia', color: '#653787', checked: true,
-  },
-  {
-    key: 10, label: 'Trabalho Completo em Congresso', color: '#4b3b56', checked: true,
-  },
-];
-
-
 class ProductionIndicator extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedCheckboxes:
-        new Set(items
-          .filter(({ checked }) => checked)
-          .map(({ label }) => label)),
+      selectedCheckboxes: new Set(),
     };
 
-
+    this.initSelectedCheckboxes = this.initSelectedCheckboxes.bind(this);
     this.updateSelectedCheckboxes = this.updateSelectedCheckboxes.bind(this);
+  }
+
+  initSelectedCheckboxes(itemsArray) {
+    this.setState({
+      selectedCheckboxes: new Set(itemsArray),
+    });
   }
 
   updateSelectedCheckboxes(e) {
@@ -82,25 +51,46 @@ class ProductionIndicator extends Component {
   render() {
     const { selectedCheckboxes } = this.state;
 
-    const colorHash = items.reduce((colors, { label, color }) =>
-      Object.assign(colors, { [label]: color }), {});
-
     return (
       <Query query={GET_INDICATOR}>
         {({ loading, error, data }) => {
           if (loading) return 'Carregando...';
           if (error) return 'Não foi possível carregar o gráfico.';
 
+          const typesSet = data.indicator
+            .reduce((set, { type }) => set.add(type), new Set());
+
+          const colors = [
+            '#111111', '#282b30', '#434f63', '#fa648e', '#406cb2',
+            '#256fe8', '#0061ff', '#9400ff', '#653787', '#4b3b56',
+          ];
+
+          const typesArray = Array.from(typesSet.values());
+
+          const items = typesArray
+            .reverse()
+            .map(type => ({
+              label: type,
+              checked: true,
+              color: colors.pop(),
+            }));
+
+          const colorHash = items.reduce((obj, { label, color }) =>
+            Object.assign(obj, { [label]: color }), {});
+
+          const indicator = data.indicator
+            .filter(({ type }) => selectedCheckboxes.has(type));
+
           return (
             <div>
               <StackedBarChart
-                data={data.indicator
-                  .filter(({ type }) => selectedCheckboxes.has(type))}
+                data={indicator}
                 colorHash={colorHash}
               />
               <Checkboxes
-                onChange={this.updateSelectedCheckboxes}
                 items={items}
+                onMount={this.initSelectedCheckboxes}
+                onChange={this.updateSelectedCheckboxes}
               />
             </div>
           );
