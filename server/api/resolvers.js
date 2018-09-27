@@ -32,7 +32,7 @@ const resolvers = {
         },
         {
           $sort: {
-            type: 1,
+            type: -1,
             ano: -1,
           },
         },
