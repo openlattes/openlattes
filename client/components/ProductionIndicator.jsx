@@ -15,38 +15,38 @@ const GET_INDICATOR = gql`
   }
 `;
 
-const items = {
-  'Apresentação de Trabalho': {
+const items = [
+  {
     key: 1, label: 'Apresentação de Trabalho', color: '#111111', checked: true,
   },
-  'Artigo Aceito': {
+  {
     key: 2, label: 'Artigo Aceito', color: '#282b30', checked: true,
   },
-  'Artigo em Periódico': {
+  {
     key: 3, label: 'Artigo em Periódico', color: '#434f63', checked: true,
   },
-  'Capítulo de Livro': {
+  {
     key: 4, label: 'Capítulo de Livro', color: '#fa648e', checked: true,
   },
-  Livro: {
+  {
     key: 5, label: 'Livro', color: '#406cb2', checked: true,
   },
-  'Outra Produção Bibliográfica': {
+  {
     key: 6, label: 'Outra Produção Bibliográfica', color: '#256fe8', checked: true,
   },
-  'Resumo Expandido em Congresso': {
+  {
     key: 7, label: 'Resumo Expandido em Congresso', color: '#0061ff', checked: true,
   },
-  'Resumo em Congresso': {
+  {
     key: 8, label: 'Resumo em Congresso', color: '#9400ff', checked: true,
   },
-  'Texto em Jornal de Notícia': {
+  {
     key: 9, label: 'Texto em Jornal de Notícia', color: '#653787', checked: true,
   },
-  'Trabalho Completo em Congresso': {
+  {
     key: 10, label: 'Trabalho Completo em Congresso', color: '#4b3b56', checked: true,
   },
-};
+];
 
 
 class ProductionIndicator extends Component {
@@ -83,10 +83,8 @@ class ProductionIndicator extends Component {
   render() {
     const { selectedCheckboxes } = this.state;
 
-    const colorHash = Object
-      .values(items)
-      .reduce((colors, { label, color }) => Object
-        .assign(colors, { [label]: color }), {});
+    const colorHash = items.reduce((colors, { label, color }) =>
+      Object.assign(colors, { [label]: color }), {});
 
     return (
       <Query query={GET_INDICATOR}>
@@ -103,7 +101,7 @@ class ProductionIndicator extends Component {
               />
               <Checkboxes
                 onChange={this.updateSelectedCheckboxes}
-                items={Object.values(items)}
+                items={items}
               />
             </div>
           );
