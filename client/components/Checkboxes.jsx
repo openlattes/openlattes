@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = () => ({
+  checkbox: {
+    paddingTop: '0px',
+    paddingBottom: '0px',
+  },
+});
 
 class Checkboxes extends React.Component {
   constructor(props) {
@@ -30,6 +38,8 @@ class Checkboxes extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
       <div>
         <FormGroup>
@@ -39,6 +49,7 @@ class Checkboxes extends React.Component {
               key={label}
               control={
                 <Checkbox
+                  className={classes.checkbox}
                   checked={this.state[label]}
                   onChange={this.handleChange}
                   value={label}
@@ -61,6 +72,9 @@ Checkboxes.propTypes = {
   })).isRequired,
   onMount: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
+  classes: PropTypes.shape({
+    checkbox: PropTypes.object,
+  }).isRequired,
 };
 
-export default Checkboxes;
+export default withStyles(styles)(Checkboxes);

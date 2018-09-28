@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 import StackedBarChart from './StackedBarChart';
 import Checkboxes from './Checkboxes';
+
+const styles = theme => ({
+  paper: {
+    padding: theme.spacing.unit * 2,
+  },
+});
 
 const GET_INDICATOR = gql`
   {
@@ -50,6 +60,7 @@ class ProductionIndicator extends Component {
 
   render() {
     const { selectedCheckboxes } = this.state;
+    const { classes } = this.props;
 
     return (
       <Query query={GET_INDICATOR}>
@@ -82,17 +93,25 @@ class ProductionIndicator extends Component {
             .filter(({ type }) => selectedCheckboxes.has(type));
 
           return (
-            <div>
-              <StackedBarChart
-                data={indicator}
-                colorHash={colorHash}
-              />
-              <Checkboxes
-                items={items}
-                onMount={this.initSelectedCheckboxes}
-                onChange={this.updateSelectedCheckboxes}
-              />
-            </div>
+            <Grid container spacing={32}>
+              <Grid item>
+                <Paper className={classes.paper}>
+                  <StackedBarChart
+                    data={indicator}
+                    colorHash={colorHash}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item>
+                <Paper className={classes.paper}>
+                  <Checkboxes
+                    items={items}
+                    onMount={this.initSelectedCheckboxes}
+                    onChange={this.updateSelectedCheckboxes}
+                  />
+                </Paper>
+              </Grid>
+            </Grid>
           );
         }}
       </Query>
@@ -100,4 +119,10 @@ class ProductionIndicator extends Component {
   }
 }
 
-export default ProductionIndicator;
+ProductionIndicator.propTypes = {
+  classes: PropTypes.shape({
+    paper: PropTypes.object,
+  }).isRequired,
+};
+
+export default withStyles(styles)(ProductionIndicator);

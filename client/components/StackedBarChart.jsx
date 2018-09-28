@@ -15,7 +15,7 @@ const StackedBarChart = ({ data, colorHash }) => (
       orient: 'left',
     }}
     margin={{
-      top: 10, bottom: 50, right: 10, left: 100,
+      top: 5, bottom: 50, right: 10, left: 50,
     }}
     oLabel={d => (
       <text transform="translate(-15,0)rotate(45)">{d}</text>
