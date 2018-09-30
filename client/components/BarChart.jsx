@@ -26,7 +26,7 @@ const BarChart = ({ data }) => {
         top: 5, bottom: 50, right: 20, left: 300,
       }}
       oLabel
-      sortO={(a, b) => indexedData[a] > indexedData[b]}
+      sortO={(a, b) => indexedData[a] - indexedData[b]}
       oPadding={2}
       baseMarkProps={{ forceUpdate: true }}
     />

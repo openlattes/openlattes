@@ -20,7 +20,7 @@ const StackedBarChart = ({ data, colorHash }) => (
     oLabel={d => (
       <text transform="translate(-15,0)rotate(45)">{d}</text>
     )}
-    sortO={(a, b) => a > b}
+    sortO={(a, b) => a - b}
     oPadding={2}
     baseMarkProps={{ forceUpdate: true }}
   />
