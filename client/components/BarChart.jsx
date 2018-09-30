@@ -18,7 +18,7 @@ const BarChart = ({ data }) => {
       type="bar"
       projection="horizontal"
       axis={{
-        rotate: '45',
+        rotate: 45,
       }}
       margin={{
         top: 5, bottom: 50, right: 20, left: 300,
