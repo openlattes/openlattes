@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { OrdinalFrame } from 'semiotic';
+import blue from '@material-ui/core/colors/blue';
 
 const BarChart = ({ data }) => {
   const indexedData = data
@@ -17,6 +18,7 @@ const BarChart = ({ data }) => {
       rAccessor="count"
       type="bar"
       projection="horizontal"
+      style={{ fill: blue[700] }}
       axis={{
         rotate: 45,
       }}
