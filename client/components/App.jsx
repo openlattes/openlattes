@@ -8,6 +8,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Graph from './Graph';
 import ProductionIndicator from './ProductionIndicator';
+import TypeIndicator from './TypeIndicator';
 
 const App = () => (
   <Fragment>
@@ -17,9 +18,11 @@ const App = () => (
         <ul>
           <li><Link to="/coautorias">Coautorias</Link></li>
           <li><Link to="/producoes">Produções por ano</Link></li>
+          <li><Link to="/producoes_tipo">Produções por tipo</Link></li>
         </ul>
         <Route path="/coautorias" component={Graph} />
         <Route path="/producoes" component={ProductionIndicator} />
+        <Route path="/producoes_tipo" component={TypeIndicator} />
       </div>
     </Router>
   </Fragment>

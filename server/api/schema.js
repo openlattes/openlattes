@@ -9,11 +9,17 @@ const typeDefs = gql`
     productions: [Production]
     coauthorships: [CoAuthorship]
     indicator: [Indicator]
+    typeIndicator: [TypeCount]
     edges: [Edge]
   }
 
   type Indicator {
     year: Int
+    count: Int
+    type: String
+  }
+
+  type TypeCount {
     count: Int
     type: String
   }

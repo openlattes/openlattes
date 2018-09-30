@@ -38,6 +38,23 @@ const resolvers = {
         },
       ]),
 
+    typeIndicator: () =>
+      Production.aggregate([
+        {
+          $group: {
+            _id: '$type',
+            count: { $sum: 1 },
+          },
+        },
+        {
+          $project: {
+            type: '$_id',
+            _id: 0,
+            count: 1,
+          },
+        },
+      ]),
+
     edges: () =>
       CoAuthorship.aggregate([
         {
