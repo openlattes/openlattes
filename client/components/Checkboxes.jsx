@@ -73,7 +73,7 @@ Checkboxes.propTypes = {
   onMount: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   classes: PropTypes.shape({
-    checkbox: PropTypes.object,
+    checkbox: PropTypes.string,
   }).isRequired,
 };
 

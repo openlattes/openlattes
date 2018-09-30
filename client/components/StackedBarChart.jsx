@@ -27,11 +27,11 @@ const StackedBarChart = ({ data, colorHash }) => (
 );
 
 StackedBarChart.propTypes = {
-  data: PropTypes.shape({
+  data: PropTypes.arrayOf(PropTypes.shape({
     year: PropTypes.number.isRequired,
     count: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
-  }).isRequired,
+  })).isRequired,
   /* eslint-disable react/forbid-prop-types */
   colorHash: PropTypes.object.isRequired,
   /* eslint-enable react/forbid-prop-types */

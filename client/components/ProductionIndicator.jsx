@@ -126,7 +126,7 @@ class ProductionIndicator extends Component {
 
 ProductionIndicator.propTypes = {
   classes: PropTypes.shape({
-    paper: PropTypes.object,
+    paper: PropTypes.string,
   }).isRequired,
 };
 

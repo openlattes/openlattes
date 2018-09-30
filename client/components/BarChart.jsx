@@ -32,10 +32,10 @@ const BarChart = ({ data }) => {
 };
 
 BarChart.propTypes = {
-  data: PropTypes.shape({
+  data: PropTypes.arrayOf(PropTypes.shape({
     type: PropTypes.string.isRequired,
     count: PropTypes.number.isRequired,
-  }).isRequired,
+  })).isRequired,
 };
 
 export default BarChart;
