@@ -12,7 +12,7 @@ const BarChart = ({ data }) => {
 
   return (
     <OrdinalFrame
-      size={[1000, 500]}
+      size={[1000, 350]}
       data={data}
       oAccessor="type"
       rAccessor="count"
