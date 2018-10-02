@@ -18,7 +18,7 @@ const resolvers = {
 
     coauthorships: () => CoAuthorship.find(),
 
-    indicator: (root, { member }) => {
+    indicator(root, { member }) {
       const pipeline = [{
         $group: {
           _id: { year: '$year', type: '$type' },
