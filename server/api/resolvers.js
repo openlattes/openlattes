@@ -55,6 +55,34 @@ const resolvers = {
         },
       ]),
 
+    memberIndicator: () =>
+      Production.aggregate([
+        {
+          $unwind: '$members',
+        },
+        {
+          $group: {
+            _id: '$members',
+            count: { $sum: 1 },
+          },
+        },
+        {
+          $lookup: {
+            from: 'members',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'members_data',
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            member: { $arrayElemAt: ['$members_data.fullName', 0] },
+            count: 1,
+          },
+        },
+      ]),
+
     edges: () =>
       CoAuthorship.aggregate([
         {

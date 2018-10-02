@@ -10,6 +10,7 @@ const typeDefs = gql`
     coauthorships: [CoAuthorship]
     indicator: [Indicator]
     typeIndicator: [TypeCount]
+    memberIndicator: [MemberCount]
     edges: [Edge]
   }
 
@@ -22,6 +23,11 @@ const typeDefs = gql`
   type TypeCount {
     count: Int
     type: String
+  }
+
+  type MemberCount {
+    count: Int
+    member: String
   }
 
   type Member {
