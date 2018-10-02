@@ -1,6 +1,10 @@
+import mongoose from 'mongoose';
+
 import Member from './models/Member';
 import Production from './models/Production';
 import CoAuthorship from './models/CoAuthorship';
+
+const { ObjectId } = mongoose.Types;
 
 const resolvers = {
   Query: {
@@ -14,29 +18,38 @@ const resolvers = {
 
     coauthorships: () => CoAuthorship.find(),
 
-    indicator: () =>
-      Production.aggregate([
-        {
-          $group: {
-            _id: { year: '$year', type: '$type' },
-            count: { $sum: 1 },
-          },
+    indicator: (root, { member }) => {
+      const pipeline = [{
+        $group: {
+          _id: { year: '$year', type: '$type' },
+          count: { $sum: 1 },
         },
-        {
-          $project: {
-            _id: 0,
-            year: '$_id.year',
-            type: '$_id.type',
-            count: 1,
-          },
+      },
+      {
+        $project: {
+          _id: 0,
+          year: '$_id.year',
+          type: '$_id.type',
+          count: 1,
         },
-        {
-          $sort: {
-            type: -1,
-            ano: -1,
-          },
+      },
+      {
+        $sort: {
+          type: -1,
+          ano: -1,
         },
-      ]),
+      }];
+
+      if (member) {
+        pipeline.unshift({
+          $match: {
+            members: ObjectId(member),
+          },
+        });
+      }
+
+      return Production.aggregate(pipeline);
+    },
 
     typeIndicator: () =>
       Production.aggregate([
