@@ -3,28 +3,39 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { NetworkFrame } from 'semiotic';
 
-const GET_EDGES = gql`
+const GET_GRAPH = gql`
   {
-    edges {
-      source
-      target
-      weight
+    graph {
+      nodes {
+        id
+        fullName
+      }
+      edges {
+        source
+        target
+        weight
+      }
     }
   }
 `;
 
 const Graph = () => (
-  <Query query={GET_EDGES}>
+  <Query query={GET_GRAPH}>
     {({
       loading, error, data,
     }) => {
       if (loading) return <p>loading...</p>;
       if (error) return <p>error</p>;
 
+      // Remove the automatically included field __typename
+      // to avoid semiotic error
+      const nodes = data.graph.nodes.map(({ id, fullName }) => ({ id, fullName }));
+
       return (
         <NetworkFrame
           size={[900, 600]}
-          edges={data.edges}
+          edges={data.graph.edges}
+          nodes={nodes}
           edgeStyle={() => ({
             stroke: '#32c4c4', fill: '#32c4c4', fillOpacity: 0.25, strokeWidth: '1px',
           })}

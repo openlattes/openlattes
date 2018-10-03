@@ -11,6 +11,11 @@ const typeDefs = gql`
     indicator(member: ID): [Indicator]
     typeIndicator: [TypeCount]
     memberIndicator: [MemberCount]
+    graph: Graph
+  }
+
+  type Graph {
+    nodes: [Member]
     edges: [Edge]
   }
 
@@ -32,6 +37,7 @@ const typeDefs = gql`
 
   type Member {
     _id: ID
+    id: ID
     fullName: String
     citationName: String
     lattesId: String

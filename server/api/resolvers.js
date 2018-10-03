@@ -96,6 +96,39 @@ const resolvers = {
         },
       ]),
 
+    graph: () => ({ edges: null, nodes: null }),
+  },
+
+  Graph: {
+    nodes: () =>
+      CoAuthorship.aggregate([
+        {
+          $unwind: '$members',
+        },
+        {
+          $group: {
+            _id: '$members',
+          },
+        },
+        {
+          $lookup: {
+            from: 'members',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'members_data',
+          },
+        },
+        {
+          $project: {
+            id: '$_id',
+            fullName: { $arrayElemAt: ['$members_data.fullName', 0] },
+            citationName: { $arrayElemAt: ['$members_data.citationName', 0] },
+            lattesId: { $arrayElemAt: ['$members_data.lattesId', 0] },
+            cvLastUpdate: { $arrayElemAt: ['$members_data.cvLastUpdate', 0] },
+          },
+        },
+      ]),
+
     edges: () =>
       CoAuthorship.aggregate([
         {
