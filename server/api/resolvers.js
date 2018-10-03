@@ -16,8 +16,6 @@ const resolvers = {
 
     productions: () => Production.find(),
 
-    coauthorships: () => CoAuthorship.find(),
-
     indicator(root, { member }) {
       const pipeline = [{
         $group: {

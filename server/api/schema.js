@@ -7,7 +7,6 @@ const typeDefs = gql`
     members: [Member]
     production(_id: ID!): Production
     productions: [Production]
-    coauthorships: [CoAuthorship]
     indicator(member: ID): [Indicator]
     typeIndicator: [TypeCount]
     memberIndicator: [MemberCount]
@@ -54,12 +53,6 @@ const typeDefs = gql`
     type: String
     category: String
     members: [Member]
-  }
-
-  type CoAuthorship {
-    _id: ID
-    members: [ID]
-    productions: [ID]
   }
 
   type Edge {
