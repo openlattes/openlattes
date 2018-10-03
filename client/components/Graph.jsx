@@ -2,6 +2,9 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { NetworkFrame } from 'semiotic';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 const GET_GRAPH = gql`
   {
@@ -18,6 +21,23 @@ const GET_GRAPH = gql`
     }
   }
 `;
+
+const customTooltipContent = d => (
+  <Card
+    style={{
+      position: 'relative',
+      left: '10px',
+      bottom: '-10px',
+      zIndex: 999999,
+    }}
+    raised
+  >
+    <CardContent>
+      <Typography variant="body2">{d.fullName}</Typography>
+      <Typography variant="body2">Coautorias: {d.degree}</Typography>
+    </CardContent>
+  </Card>
+);
 
 const Graph = () => (
   <Query query={GET_GRAPH}>
@@ -47,6 +67,7 @@ const Graph = () => (
           edgeWidthAccessor={d => Math.log(d.weight)}
           zoomToFit
           hoverAnnotation
+          tooltipContent={customTooltipContent}
         />
       );
     }}
