@@ -45,7 +45,7 @@ const StackedBarChart = ({ data, colorHash }) => (
     )}
     sortO={(a, b) => a - b}
     oPadding={2}
-    baseMarkProps={{ forceUpdate: true }}
+    // baseMarkProps={{ forceUpdate: true }}
     hoverAnnotation
     tooltipContent={customTooltipContent}
   />
