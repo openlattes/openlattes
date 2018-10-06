@@ -21,7 +21,7 @@ const App = () => (
           <li><Link to="/productions_type">Produções por tipo</Link></li>
         </ul>
         <Route path="/collaborations" component={Graph} />
-        <Route path="/productions" component={ProductionIndicator} />
+        <Route path="/productions_year" component={ProductionIndicator} />
         <Route path="/productions_type" component={TypeIndicator} />
       </div>
     </Router>
