@@ -16,13 +16,13 @@ const App = () => (
     <Router>
       <div>
         <ul>
-          <li><Link to="/coautorias">Coautorias</Link></li>
-          <li><Link to="/producoes">Produções por ano</Link></li>
-          <li><Link to="/producoes_tipo">Produções por tipo</Link></li>
+          <li><Link to="/collaborations">Colaboração</Link></li>
+          <li><Link to="/productions_year">Produções por ano</Link></li>
+          <li><Link to="/productions_type">Produções por tipo</Link></li>
         </ul>
-        <Route path="/coautorias" component={Graph} />
-        <Route path="/producoes" component={ProductionIndicator} />
-        <Route path="/producoes_tipo" component={TypeIndicator} />
+        <Route path="/collaborations" component={Graph} />
+        <Route path="/productions" component={ProductionIndicator} />
+        <Route path="/productions_type" component={TypeIndicator} />
       </div>
     </Router>
   </Fragment>
