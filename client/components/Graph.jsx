@@ -5,6 +5,7 @@ import { NetworkFrame } from 'semiotic';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import { scaleLinear } from 'd3-scale';
 
 const GET_GRAPH = gql`
   {
@@ -51,6 +52,20 @@ const Graph = () => (
       // to avoid semiotic error
       const nodes = data.graph.nodes.map(({ id, fullName }) => ({ id, fullName }));
 
+      const weightExtremes = data.graph.edges
+        .reduce(({ min, max }, { weight }) => ({
+          min: (weight < min) ? weight : min,
+          max: (weight > max) ? weight : max,
+        }), { min: 999999, max: 0 });
+
+      const edgeScale = scaleLinear()
+        .domain([weightExtremes.min, weightExtremes.max])
+        .range([1, 10]);
+
+      const nodeScale = scaleLinear()
+        .domain([1, weightExtremes.max * 2])
+        .range([2, 10]);
+
       return (
         <NetworkFrame
           size={[900, 600]}
@@ -63,8 +78,8 @@ const Graph = () => (
             fill: d.createdByFrame ? '#336ac4' : 'rgb(51, 106, 196)',
           })}
           edgeType="ribbon"
-          nodeSizeAccessor={d => Math.log(d.degree)}
-          edgeWidthAccessor={d => Math.log(d.weight)}
+          nodeSizeAccessor={d => nodeScale(d.degree)}
+          edgeWidthAccessor={d => edgeScale(d.weight)}
           zoomToFit
           hoverAnnotation
           tooltipContent={customTooltipContent}
