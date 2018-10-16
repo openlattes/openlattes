@@ -77,6 +77,7 @@ const Graph = () => (
           nodeStyle={d => ({
             fill: d.createdByFrame ? '#336ac4' : 'rgb(51, 106, 196)',
           })}
+          networkType={{ type: 'force', iterations: 500, edgeStrength: 0.1 }}
           edgeType="ribbon"
           nodeSizeAccessor={d => nodeScale(d.degree)}
           edgeWidthAccessor={d => edgeScale(d.weight)}
