@@ -51,7 +51,10 @@
         }
       ],
       "react/prefer-stateless-function": [
-        "error", { "ignorePureComponents": true }
+        "error",
+        {
+          "ignorePureComponents": true
+        }
       ]
     }
   },
