@@ -49,6 +49,9 @@
             "preferButton"
           ]
         }
+      ],
+      "react/prefer-stateless-function": [
+        "error", { "ignorePureComponents": true }
       ]
     }
   },

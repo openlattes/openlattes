@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { OrdinalFrame } from 'semiotic';
 import Card from '@material-ui/core/Card';
@@ -25,31 +25,37 @@ const customTooltipContent = (d) => {
   );
 };
 
-const StackedBarChart = ({ data, colorHash }) => (
-  <OrdinalFrame
-    size={[900, 500]}
-    data={data}
-    oAccessor="year"
-    rAccessor="count"
-    style={d => ({ fill: colorHash[d.type], stroke: 'white' })}
-    type="bar"
-    projection="vertical"
-    axis={{
-      orient: 'left',
-    }}
-    margin={{
-      top: 5, bottom: 50, right: 10, left: 50,
-    }}
-    oLabel={d => (
-      <text transform="translate(-15,0)rotate(45)">{d}</text>
-    )}
-    sortO={(a, b) => a - b}
-    oPadding={2}
-    // baseMarkProps={{ forceUpdate: true }}
-    hoverAnnotation
-    tooltipContent={customTooltipContent}
-  />
-);
+class StackedBarChart extends PureComponent {
+  render() {
+    const { data, colorHash } = this.props;
+
+    return (
+      <OrdinalFrame
+        size={[900, 500]}
+        data={data}
+        oAccessor="year"
+        rAccessor="count"
+        style={d => ({ fill: colorHash[d.type], stroke: 'white' })}
+        type="bar"
+        projection="vertical"
+        axis={{
+          orient: 'left',
+        }}
+        margin={{
+          top: 5, bottom: 50, right: 10, left: 50,
+        }}
+        oLabel={d => (
+          <text transform="translate(-15,0)rotate(45)">{d}</text>
+        )}
+        sortO={(a, b) => a - b}
+        oPadding={2}
+        // baseMarkProps={{ forceUpdate: true }}
+        hoverAnnotation
+        tooltipContent={customTooltipContent}
+      />
+    );
+  }
+}
 
 StackedBarChart.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
