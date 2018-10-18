@@ -21,7 +21,7 @@ import CollaborationIndicator from './CollaborationIndicator';
 import ProductionIndicator from './ProductionIndicator';
 import TypeIndicator from './TypeIndicator';
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const styles = theme => ({
   root: {
