@@ -21,8 +21,8 @@ const styles = theme => ({
 });
 
 const GET_INDICATOR = gql`
-  {
-    indicator {
+  query Indicator($selectedMembers: [ID]) {
+    indicator(members: $selectedMembers) {
       year
       count
       type
@@ -65,10 +65,10 @@ class ProductionIndicator extends Component {
 
   render() {
     const { selectedCheckboxes } = this.state;
-    const { classes } = this.props;
+    const { classes, selectedMembers } = this.props;
 
     return (
-      <Query query={GET_INDICATOR}>
+      <Query query={GET_INDICATOR} variables={{ selectedMembers }}>
         {({ loading, error, data }) => {
           if (loading) return 'Carregando...';
           if (error) return 'Não foi possível carregar o gráfico.';
@@ -128,6 +128,8 @@ ProductionIndicator.propTypes = {
   classes: PropTypes.shape({
     paper: PropTypes.string,
   }).isRequired,
+  selectedMembers: PropTypes
+    .arrayOf(PropTypes.string).isRequired,
 };
 
 export default withStyles(styles)(ProductionIndicator);

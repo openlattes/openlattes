@@ -16,7 +16,7 @@ const resolvers = {
 
     productions: () => Production.find(),
 
-    indicator(root, { member }) {
+    indicator(root, { members }) {
       const pipeline = [{
         $group: {
           _id: { year: '$year', type: '$type' },
@@ -38,10 +38,13 @@ const resolvers = {
         },
       }];
 
-      if (member) {
+      if (members && members.length > 0) {
+        const n = members.length;
+        const membersObjectId = members.map(_id => ObjectId(_id));
+
         pipeline.unshift({
           $match: {
-            members: ObjectId(member),
+            members: (n > 1) ? { $in: membersObjectId } : membersObjectId[0],
           },
         });
       }

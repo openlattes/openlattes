@@ -15,11 +15,20 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
+import MembersList from './MembersList';
 import MenuItems from './MenuItems';
 import CollaborationIndicator from './CollaborationIndicator';
 import ProductionIndicator from './ProductionIndicator';
 import TypeIndicator from './TypeIndicator';
+
+const GET_SELECTED_MEMBERS = gql`
+  {
+    selectedMembers @client
+  }
+`;
 
 const drawerWidth = 220;
 
@@ -148,16 +157,25 @@ class App extends React.Component {
               <Divider />
               <MenuItems />
             </Drawer>
-            <main
-              className={classNames(classes.content, {
-                [classes.contentShift]: open,
-              })}
-            >
-              <div className={classes.drawerHeader} />
-              <Route path="/collaborations" component={CollaborationIndicator} />
-              <Route path="/productions_year" component={ProductionIndicator} />
-              <Route path="/productions_type" component={TypeIndicator} />
-            </main>
+            <Query query={GET_SELECTED_MEMBERS}>
+              {({ data }) => {
+                const { selectedMembers } = data;
+
+                return (
+                  <main
+                    className={classNames(classes.content, {
+                      [classes.contentShift]: open,
+                    })}
+                  >
+                    <div className={classes.drawerHeader} />
+                    <Route exact path="/" component={MembersList} />
+                    <Route path="/collaborations" component={CollaborationIndicator} />
+                    <Route path="/productions_year" render={() => <ProductionIndicator selectedMembers={selectedMembers} />} />
+                    <Route path="/productions_type" component={TypeIndicator} />
+                  </main>
+                );
+              }}
+            </Query>
           </div>
         </Router>
       </div>

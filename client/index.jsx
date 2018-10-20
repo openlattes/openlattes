@@ -7,6 +7,9 @@ import App from './components/App';
 
 const client = new ApolloClient({
   uri: '/graphql',
+  clientState: {
+    defaults: { selectedMembers: [] },
+  },
 });
 
 render(

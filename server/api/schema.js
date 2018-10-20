@@ -7,7 +7,7 @@ const typeDefs = gql`
     members: [Member]
     production(_id: ID!): Production
     productions: [Production]
-    indicator(member: ID): [Indicator]
+    indicator(members: [ID]): [Indicator]
     typeIndicator: [TypeCount]
     memberIndicator: [MemberCount]
     graph: Graph
