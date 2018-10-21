@@ -104,11 +104,7 @@ const resolvers = {
         },
       ]),
 
-    graph: (root, { members }) => ({ edges: null, nodes: null, members }),
-  },
-
-  Graph: {
-    nodes: ({ members }) =>
+    nodes: (root, { members }) =>
       Collaboration.aggregate(matchMembers(members)
         .concat([
           {
@@ -138,7 +134,7 @@ const resolvers = {
           },
         ])),
 
-    edges: ({ members }) =>
+    edges: (root, { members }) =>
       Collaboration.aggregate(matchMembers(members)
         .concat([
           {

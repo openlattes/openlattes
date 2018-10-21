@@ -10,7 +10,8 @@ const typeDefs = gql`
     indicator(members: [ID]): [Indicator]
     typeIndicator(members: [ID]): [TypeCount]
     memberIndicator: [MemberCount]
-    graph(members: [ID]): Graph
+    nodes(members: [ID]): [Member]
+    edges(members: [ID]): [Edge]
   }
 
   type Graph {

@@ -6,16 +6,14 @@ import Graph from './Graph';
 
 const GET_GRAPH = gql`
   query CollaborationIndicator($selectedMembers: [ID]) {
-    graph(members: $selectedMembers) {
-      nodes {
-        id
-        fullName
-      }
-      edges {
-        source
-        target
-        weight
-      }
+    nodes(members: $selectedMembers) {
+      id
+      fullName
+    }
+    edges(members: $selectedMembers) {
+      source
+      target
+      weight
     }
   }
 `;
@@ -32,8 +30,8 @@ const CollaborationIndicator = ({ selectedMembers }) => (
       return (
         <Graph
           data={{
-            ...data.graph,
-            nodes: data.graph.nodes
+            ...data,
+            nodes: data.nodes
               .map((member) => {
                 if (selectedMembers.includes(member._id)) {
                   return { ...member, selected: true };
