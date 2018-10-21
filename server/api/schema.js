@@ -2,7 +2,6 @@ import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
   type Query {
-    hello: String
     member(_id: ID!): Member
     members: [Member]
     production(_id: ID!): Production
