@@ -172,6 +172,14 @@ class App extends React.Component {
                     <Route path="/collaborations" render={() => <CollaborationIndicator selectedMembers={selectedMembers} />} />
                     <Route path="/productions_year" render={() => <ProductionIndicator selectedMembers={selectedMembers} />} />
                     <Route path="/productions_type" render={() => <TypeIndicator selectedMembers={selectedMembers} />} />
+                    <Route
+                      path="/supervisions_year"
+                      render={() => <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} />}
+                    />
+                    <Route
+                      path="/supervisions_type"
+                      render={() => <TypeIndicator collection="SUPERVISION" selectedMembers={selectedMembers} />}
+                    />
                   </main>
                 );
               }}

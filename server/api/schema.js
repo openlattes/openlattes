@@ -8,8 +8,14 @@ const typeDefs = gql`
     productions: [Production]
     supervision(_id: ID!): Supervision
     supervisions: [Supervision]
-    indicator(members: [ID]): [Indicator]
-    typeIndicator(members: [ID]): [TypeCount]
+    indicator(
+      collection: Collection = BIBLIOGRAPHIC,
+      members: [ID]
+    ): [Indicator]
+    typeIndicator(
+      collection: Collection = BIBLIOGRAPHIC,
+      members: [ID]
+    ): [TypeCount]
     memberIndicator: [MemberCount]
     nodes(members: [ID]): [Member]
     edges(members: [ID]): [Edge]
@@ -48,7 +54,7 @@ const typeDefs = gql`
     magazine: String
     volume: String
     type: String
-    category: String
+    collection: String
     members: [Member]
   }
 
@@ -69,6 +75,11 @@ const typeDefs = gql`
     target: ID
     weight: Int
     productions: [ID]
+  }
+
+  enum Collection {
+    SUPERVISION
+    BIBLIOGRAPHIC
   }
 `;
 

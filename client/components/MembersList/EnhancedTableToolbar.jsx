@@ -62,10 +62,10 @@ const productionButtons = [
 
 const supervisionButtons = [
   {
-    key: 4, tooltip: 'Evolução', Icon: BarChartIcon, minSelected: 1, route: '',
+    key: 4, tooltip: 'Evolução', Icon: BarChartIcon, minSelected: 1, route: '/supervisions_year',
   },
   {
-    key: 5, tooltip: 'Tipos', Icon: RotatedBarChartIcon, minSelected: 1, route: '',
+    key: 5, tooltip: 'Tipos', Icon: RotatedBarChartIcon, minSelected: 1, route: '/supervisions_type',
   },
 ];
 

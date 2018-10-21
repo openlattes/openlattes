@@ -6,16 +6,16 @@ import gql from 'graphql-tag';
 import BarChart from './BarChart';
 
 const GET_INDICATOR = gql`
-  query TypeIndicator($selectedMembers: [ID]) {
-    typeIndicator(members: $selectedMembers) {
+  query TypeIndicator($collection: Collection, $selectedMembers: [ID]) {
+    typeIndicator(collection: $collection, members: $selectedMembers) {
       type
       count
     }
   }
 `;
 
-const TypeIndicator = ({ selectedMembers }) => (
-  <Query query={GET_INDICATOR} variables={{ selectedMembers }}>
+const TypeIndicator = ({ collection, selectedMembers }) => (
+  <Query query={GET_INDICATOR} variables={{ collection, selectedMembers }}>
     {({ loading, error, data }) => {
       if (loading) return 'Carregando...';
       if (error) return 'Não foi possível carregar o gráfico.';
@@ -26,6 +26,7 @@ const TypeIndicator = ({ selectedMembers }) => (
 );
 
 TypeIndicator.propTypes = {
+  collection: PropTypes.string.isRequired,
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string).isRequired,
 };

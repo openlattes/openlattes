@@ -7,6 +7,17 @@ import Collaboration from './models/Collaboration';
 
 const { ObjectId } = mongoose.Types;
 
+const collections = {
+  BIBLIOGRAPHIC: {
+    name: Production,
+    typeField: '$type',
+  },
+  SUPERVISION: {
+    name: Supervision,
+    typeField: '$degreeType',
+  },
+};
+
 function matchMembers(ids) {
   if (ids && ids.length > 0) {
     const objectIds = ids.map(_id => ObjectId(_id));
@@ -38,12 +49,14 @@ const resolvers = {
 
     supervisions: () => Supervision.find(),
 
-    indicator: (root, { members }) =>
-      Production.aggregate(matchMembers(members)
+    indicator: (root, { collection, members }) => {
+      const { name, typeField } = collections[collection];
+
+      return name.aggregate(matchMembers(members)
         .concat([
           {
             $group: {
-              _id: { year: '$year', type: '$type' },
+              _id: { year: '$year', type: typeField },
               count: { $sum: 1 },
             },
           },
@@ -61,14 +74,17 @@ const resolvers = {
               year: -1,
             },
           },
-        ])),
+        ]));
+    },
 
-    typeIndicator: (root, { members }) =>
-      Production.aggregate(matchMembers(members)
+    typeIndicator: (root, { collection, members }) => {
+      const { name, typeField } = collections[collection];
+
+      return name.aggregate(matchMembers(members)
         .concat([
           {
             $group: {
-              _id: '$type',
+              _id: typeField,
               count: { $sum: 1 },
             },
           },
@@ -79,7 +95,8 @@ const resolvers = {
               count: 1,
             },
           },
-        ])),
+        ]));
+    },
 
     memberIndicator: () =>
       Production.aggregate([

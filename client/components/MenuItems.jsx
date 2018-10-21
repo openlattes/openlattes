@@ -74,7 +74,7 @@ const MenuItems = () => (
         <ListItem
           onClick={() => client.writeData({ data: { selectedMembers: [] } })}
           component={Link}
-          to=""
+          to="/supervisions_year"
           button
         >
           <ListItemIcon>
@@ -85,7 +85,7 @@ const MenuItems = () => (
         <ListItem
           onClick={() => client.writeData({ data: { selectedMembers: [] } })}
           component={Link}
-          to=""
+          to="/supervisions_type"
           button
         >
           <ListItemIcon>
