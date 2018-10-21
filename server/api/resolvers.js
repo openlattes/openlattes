@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 import Member from './models/Member';
 import Production from './models/Production';
+import Supervision from './models/Supervision';
 import Collaboration from './models/Collaboration';
 
 const { ObjectId } = mongoose.Types;
@@ -32,6 +33,10 @@ const resolvers = {
     production: (root, { _id }) => Production.findById(_id),
 
     productions: () => Production.find(),
+
+    supervision: (root, { _id }) => Supervision.findById(_id),
+
+    supervisions: () => Supervision.find(),
 
     indicator: (root, { members }) =>
       Production.aggregate(matchMembers(members)
@@ -150,6 +155,10 @@ const resolvers = {
   },
 
   Production: {
+    members: ({ members }) => Member.find({ _id: { $in: members } }),
+  },
+
+  Supervision: {
     members: ({ members }) => Member.find({ _id: { $in: members } }),
   },
 };

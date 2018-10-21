@@ -7,6 +7,8 @@ const typeDefs = gql`
     members: [Member]
     production(_id: ID!): Production
     productions: [Production]
+    supervision(_id: ID!): Supervision
+    supervisions: [Supervision]
     indicator(members: [ID]): [Indicator]
     typeIndicator(members: [ID]): [TypeCount]
     memberIndicator: [MemberCount]
@@ -48,6 +50,18 @@ const typeDefs = gql`
     volume: String
     type: String
     category: String
+    members: [Member]
+  }
+
+  type Supervision {
+    _id: ID
+    supervisedStudent: String,
+    fundingAgency : String,
+    documentTitle : String,
+    completed: Boolean,
+    degreeType: String,
+    year: Int,
+    institution: String
     members: [Member]
   }
 
