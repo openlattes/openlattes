@@ -28,7 +28,7 @@ class Graph extends PureComponent {
     const { data } = this.props;
     // Remove the automatically included field __typename
     // to avoid semiotic error
-    const nodes = data.nodes.map(({ id, fullName }) => ({ id, fullName }));
+    const nodes = data.nodes.map(({ id, fullName, selected }) => ({ id, fullName, selected }));
 
     const weightExtremes = data.edges
       .reduce(({ min, max }, { weight }) => ({

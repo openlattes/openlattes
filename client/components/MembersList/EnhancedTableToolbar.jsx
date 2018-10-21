@@ -56,7 +56,7 @@ const productionButtons = [
     key: 2, tooltip: 'Tipos', Icon: RotatedBarChartIcon, minSelected: 1, route: '/productions_type',
   },
   {
-    key: 3, tooltip: 'Coautorias', Icon: ShareIcon, minSelected: 2, route: '/collaborations',
+    key: 3, tooltip: 'Coautorias', Icon: ShareIcon, minSelected: 1, route: '/collaborations',
   },
 ];
 

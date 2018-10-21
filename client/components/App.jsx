@@ -169,7 +169,7 @@ class App extends React.Component {
                   >
                     <div className={classes.drawerHeader} />
                     <Route exact path="/" component={MembersList} />
-                    <Route path="/collaborations" component={CollaborationIndicator} />
+                    <Route path="/collaborations" render={() => <CollaborationIndicator selectedMembers={selectedMembers} />} />
                     <Route path="/productions_year" render={() => <ProductionIndicator selectedMembers={selectedMembers} />} />
                     <Route path="/productions_type" render={() => <TypeIndicator selectedMembers={selectedMembers} />} />
                   </main>

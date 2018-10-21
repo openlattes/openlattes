@@ -104,51 +104,53 @@ const resolvers = {
         },
       ]),
 
-    graph: () => ({ edges: null, nodes: null }),
+    graph: (root, { members }) => ({ edges: null, nodes: null, members }),
   },
 
   Graph: {
-    nodes: () =>
-      Collaboration.aggregate([
-        {
-          $unwind: '$members',
-        },
-        {
-          $group: {
-            _id: '$members',
+    nodes: ({ members }) =>
+      Collaboration.aggregate(matchMembers(members)
+        .concat([
+          {
+            $unwind: '$members',
           },
-        },
-        {
-          $lookup: {
-            from: 'members',
-            localField: '_id',
-            foreignField: '_id',
-            as: 'members_data',
+          {
+            $group: {
+              _id: '$members',
+            },
           },
-        },
-        {
-          $project: {
-            id: '$_id',
-            fullName: { $arrayElemAt: ['$members_data.fullName', 0] },
-            citationName: { $arrayElemAt: ['$members_data.citationName', 0] },
-            lattesId: { $arrayElemAt: ['$members_data.lattesId', 0] },
-            cvLastUpdate: { $arrayElemAt: ['$members_data.cvLastUpdate', 0] },
+          {
+            $lookup: {
+              from: 'members',
+              localField: '_id',
+              foreignField: '_id',
+              as: 'members_data',
+            },
           },
-        },
-      ]),
+          {
+            $project: {
+              id: '$_id',
+              fullName: { $arrayElemAt: ['$members_data.fullName', 0] },
+              citationName: { $arrayElemAt: ['$members_data.citationName', 0] },
+              lattesId: { $arrayElemAt: ['$members_data.lattesId', 0] },
+              cvLastUpdate: { $arrayElemAt: ['$members_data.cvLastUpdate', 0] },
+            },
+          },
+        ])),
 
-    edges: () =>
-      Collaboration.aggregate([
-        {
-          $project: {
-            _id: 0,
-            source: { $arrayElemAt: ['$members', 0] },
-            target: { $arrayElemAt: ['$members', 1] },
-            weight: { $size: '$productions' },
-            productions: 1,
+    edges: ({ members }) =>
+      Collaboration.aggregate(matchMembers(members)
+        .concat([
+          {
+            $project: {
+              _id: 0,
+              source: { $arrayElemAt: ['$members', 0] },
+              target: { $arrayElemAt: ['$members', 1] },
+              weight: { $size: '$productions' },
+              productions: 1,
+            },
           },
-        },
-      ]),
+        ])),
   },
 
   Production: {
