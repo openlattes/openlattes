@@ -6,6 +6,23 @@ import Collaboration from './models/Collaboration';
 
 const { ObjectId } = mongoose.Types;
 
+function matchMembers(ids) {
+  if (ids && ids.length > 0) {
+    const objectIds = ids.map(_id => ObjectId(_id));
+
+    return [
+      {
+        $match: {
+          members: (ids.length > 1) ? { $in: objectIds } : objectIds[0],
+        },
+      },
+    ];
+  }
+
+  return [];
+}
+
+
 const resolvers = {
   Query: {
     member: (root, { _id }) => Member.findById(_id),
@@ -16,58 +33,48 @@ const resolvers = {
 
     productions: () => Production.find(),
 
-    indicator(root, { members }) {
-      const pipeline = [{
-        $group: {
-          _id: { year: '$year', type: '$type' },
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          year: '$_id.year',
-          type: '$_id.type',
-          count: 1,
-        },
-      },
-      {
-        $sort: {
-          type: -1,
-          year: -1,
-        },
-      }];
-
-      if (members && members.length > 0) {
-        const n = members.length;
-        const membersObjectId = members.map(_id => ObjectId(_id));
-
-        pipeline.unshift({
-          $match: {
-            members: (n > 1) ? { $in: membersObjectId } : membersObjectId[0],
+    indicator: (root, { members }) =>
+      Production.aggregate(matchMembers(members)
+        .concat([
+          {
+            $group: {
+              _id: { year: '$year', type: '$type' },
+              count: { $sum: 1 },
+            },
           },
-        });
-      }
-
-      return Production.aggregate(pipeline);
-    },
-
-    typeIndicator: () =>
-      Production.aggregate([
-        {
-          $group: {
-            _id: '$type',
-            count: { $sum: 1 },
+          {
+            $project: {
+              _id: 0,
+              year: '$_id.year',
+              type: '$_id.type',
+              count: 1,
+            },
           },
-        },
-        {
-          $project: {
-            type: '$_id',
-            _id: 0,
-            count: 1,
+          {
+            $sort: {
+              type: -1,
+              year: -1,
+            },
           },
-        },
-      ]),
+        ])),
+
+    typeIndicator: (root, { members }) =>
+      Production.aggregate(matchMembers(members)
+        .concat([
+          {
+            $group: {
+              _id: '$type',
+              count: { $sum: 1 },
+            },
+          },
+          {
+            $project: {
+              type: '$_id',
+              _id: 0,
+              count: 1,
+            },
+          },
+        ])),
 
     memberIndicator: () =>
       Production.aggregate([

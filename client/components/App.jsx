@@ -171,7 +171,7 @@ class App extends React.Component {
                     <Route exact path="/" component={MembersList} />
                     <Route path="/collaborations" component={CollaborationIndicator} />
                     <Route path="/productions_year" render={() => <ProductionIndicator selectedMembers={selectedMembers} />} />
-                    <Route path="/productions_type" component={TypeIndicator} />
+                    <Route path="/productions_type" render={() => <TypeIndicator selectedMembers={selectedMembers} />} />
                   </main>
                 );
               }}
