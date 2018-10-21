@@ -14,11 +14,6 @@ const typeDefs = gql`
     edges(members: [ID]): [Edge]
   }
 
-  type Graph {
-    nodes: [Member]
-    edges: [Edge]
-  }
-
   type Indicator {
     year: Int
     count: Int
