@@ -34,7 +34,7 @@ const resolvers = {
       {
         $sort: {
           type: -1,
-          ano: -1,
+          year: -1,
         },
       }];
 
