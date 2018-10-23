@@ -25,10 +25,14 @@ const customTooltipContent = d => (
 
 class Graph extends PureComponent {
   render() {
-    const { data } = this.props;
+    const { data, colorHash } = this.props;
     // Remove the automatically included field __typename
     // to avoid semiotic error
-    const nodes = data.nodes.map(({ id, fullName, selected }) => ({ id, fullName, selected }));
+    const nodes = data.nodes.map(({
+      id, fullName, campus, selected,
+    }) => ({
+      id, fullName, campus, selected,
+    }));
 
     const weightExtremes = data.edges
       .reduce(({ min, max }, { weight }) => ({
@@ -52,9 +56,7 @@ class Graph extends PureComponent {
         edgeStyle={() => ({
           stroke: '#32c4c4', fill: '#32c4c4', fillOpacity: 0.25, strokeWidth: '1px',
         })}
-        nodeStyle={d => ({
-          fill: d.createdByFrame ? '#336ac4' : 'rgb(51, 106, 196)',
-        })}
+        nodeStyle={d => ({ fill: colorHash.get(d.campus) })}
         networkType={{ type: 'force', iterations: 500, edgeStrength: 0.1 }}
         edgeType="ribbon"
         nodeSizeAccessor={d => nodeScale(d.degree)}
@@ -72,6 +74,7 @@ Graph.propTypes = {
     nodes: PropTypes.array,
     edges: PropTypes.array.isRequired,
   }).isRequired,
+  colorHash: PropTypes.instanceOf(Map).isRequired,
 };
 
 export default Graph;

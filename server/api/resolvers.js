@@ -152,6 +152,7 @@ const resolvers = {
               citationName: { $arrayElemAt: ['$members_data.citationName', 0] },
               lattesId: { $arrayElemAt: ['$members_data.lattesId', 0] },
               cvLastUpdate: { $arrayElemAt: ['$members_data.cvLastUpdate', 0] },
+              campus: { $arrayElemAt: ['$members_data.campus', 0] },
             },
           },
         ])),

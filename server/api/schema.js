@@ -44,6 +44,7 @@ const typeDefs = gql`
     citationName: String
     lattesId: String
     cvLastUpdate: String
+    campus: String
   }
 
   type Production {

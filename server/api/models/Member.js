@@ -6,6 +6,7 @@ const memberSchema = new Schema({
   fullName: String,
   citationName: String,
   unity: String,
+  campus: String,
   academicDegrees: [String],
   summary: String,
   lattesId: String,
