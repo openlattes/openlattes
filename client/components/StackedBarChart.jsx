@@ -35,7 +35,7 @@ class StackedBarChart extends PureComponent {
         data={data}
         oAccessor="year"
         rAccessor="count"
-        style={d => ({ fill: colorHash[d.type], stroke: 'white' })}
+        style={d => ({ fill: colorHash.get(d.type), stroke: 'white' })}
         type="bar"
         projection="vertical"
         axis={{
@@ -63,9 +63,7 @@ StackedBarChart.propTypes = {
     count: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
   })).isRequired,
-  /* eslint-disable react/forbid-prop-types */
-  colorHash: PropTypes.object.isRequired,
-  /* eslint-enable react/forbid-prop-types */
+  colorHash: PropTypes.instanceOf(Map).isRequired,
 };
 
 export default StackedBarChart;

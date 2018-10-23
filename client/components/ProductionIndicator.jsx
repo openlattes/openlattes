@@ -91,8 +91,8 @@ class ProductionIndicator extends Component {
               color: colors.pop(),
             }));
 
-          const colorHash = items.reduce((obj, { label, color }) =>
-            Object.assign(obj, { [label]: color }), {});
+          const colorHash = items
+            .reduce((map, { label, color }) => map.set(label, color), new Map());
 
           const indicator = data.indicator
             .filter(({ type }) => selectedCheckboxes.has(type));
