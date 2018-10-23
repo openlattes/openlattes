@@ -73,17 +73,15 @@ class ProductionIndicator extends Component {
           if (loading) return 'Carregando...';
           if (error) return 'Não foi possível carregar o gráfico.';
 
-          const typesSet = data.indicator
-            .reduce((set, { type }) => set.add(type), new Set());
-
           const colors = [
             red[200], red[500], red[800], blue[200], blue[500],
             blue[800], green[200], green[500], green[800], yellow[300],
           ];
 
-          const typesArray = Array.from(typesSet.values());
-
-          const items = typesArray
+          const checkboxes = [
+            ...data.indicator
+              .reduce((set, { type }) => set.add(type), new Set()),
+            ]
             .reverse()
             .map(type => ({
               label: type,
@@ -91,7 +89,7 @@ class ProductionIndicator extends Component {
               color: colors.pop(),
             }));
 
-          const colorHash = items
+          const colorHash = checkboxes
             .reduce((map, { label, color }) => map.set(label, color), new Map());
 
           const indicator = data.indicator
@@ -110,7 +108,7 @@ class ProductionIndicator extends Component {
               <Grid item>
                 <Paper className={classes.paper}>
                   <Checkboxes
-                    items={items}
+                    items={checkboxes}
                     onMount={this.initSelectedCheckboxes}
                     onChange={this.updateSelectedCheckboxes}
                   />
