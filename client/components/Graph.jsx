@@ -51,6 +51,12 @@ class Graph extends PureComponent {
     const nodeStyle = colorHash.size ?
       d => ({ fill: colorHash.get(d.campus) }) : { fill: 'darkblue' };
 
+    const iterationScale = scaleLinear()
+      .domain([1, 800])
+      .range([500, 40]);
+
+    const iterations = Math.round(iterationScale(nodes.length));
+
     return (
       <NetworkFrame
         size={[900, 600]}
@@ -60,7 +66,7 @@ class Graph extends PureComponent {
           stroke: '#32c4c4', fill: '#32c4c4', fillOpacity: 0.25, strokeWidth: '1px',
         })}
         nodeStyle={nodeStyle}
-        networkType={{ type: 'force', iterations: 300, edgeStrength: 0.1 }}
+        networkType={{ type: 'force', iterations, edgeStrength: 0.1 }}
         edgeType="ribbon"
         nodeSizeAccessor={d => nodeScale(d.degree)}
         edgeWidthAccessor={d => edgeScale(d.weight)}
