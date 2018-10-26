@@ -126,36 +126,18 @@ const resolvers = {
         },
       ]),
 
-    nodes: (root, { members }) =>
-      Collaboration.aggregate(matchMembers(members)
-        .concat([
-          {
-            $unwind: '$members',
-          },
-          {
-            $group: {
-              _id: '$members',
-            },
-          },
-          {
-            $lookup: {
-              from: 'members',
-              localField: '_id',
-              foreignField: '_id',
-              as: 'members_data',
-            },
-          },
-          {
-            $project: {
-              id: '$_id',
-              fullName: { $arrayElemAt: ['$members_data.fullName', 0] },
-              citationName: { $arrayElemAt: ['$members_data.citationName', 0] },
-              lattesId: { $arrayElemAt: ['$members_data.lattesId', 0] },
-              cvLastUpdate: { $arrayElemAt: ['$members_data.cvLastUpdate', 0] },
-              campus: { $arrayElemAt: ['$members_data.campus', 0] },
-            },
-          },
-        ])),
+    nodes: async (root, { members }) => {
+      try {
+        return await Member.aggregate(matchMembers(members));
+      } catch (e) {
+        if (e instanceof Error) {
+          // If aggregate pipeline is empty
+          return Member.find();
+        }
+
+        throw e;
+      }
+    },
 
     edges: (root, { members }) =>
       Collaboration.aggregate(matchMembers(members)

@@ -6,6 +6,8 @@ import red from '@material-ui/core/colors/red';
 import blue from '@material-ui/core/colors/blue';
 import green from '@material-ui/core/colors/green';
 import yellow from '@material-ui/core/colors/yellow';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import Graph from './Graph';
 import SelectField from './SelectField';
@@ -35,12 +37,15 @@ class CollaborationIndicator extends PureComponent {
     this.state = {
       selection: 'Todos',
       typeSelection: 'Todos',
+      emptyNodes: false,
     };
 
     this.setSelectedMembers = this.setSelectedMembers.bind(this);
     this.handleCampusChange = this.handleCampusChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
+    this.toggleEmptyNodes = this.toggleEmptyNodes.bind(this);
     this.filterCampus = this.filterCampus.bind(this);
+    this.filterEmptyNodes = this.filterEmptyNodes.bind(this);
     this.getColorHash = this.getColorHash.bind(this);
     this.filterProductionType = this.filterProductionType.bind(this);
   }
@@ -126,10 +131,25 @@ class CollaborationIndicator extends PureComponent {
     return edges;
   }
 
+  filterEmptyNodes({ edges, nodes }) {
+    const { emptyNodes } = this.state;
+
+    if (!emptyNodes) {
+      const edgesIds = edges
+        .reduce((set, { source, target }) =>
+          new Set([...set, source, target]), new Set());
+
+      return nodes.filter(({ id }) => edgesIds.has(id));
+    }
+
+    return nodes;
+  }
+
   handleCampusChange(e) {
     this.setState({
       selection: e.target.value,
       typeSelection: 'Todos',
+      emptyNodes: false,
     });
   }
 
@@ -139,8 +159,15 @@ class CollaborationIndicator extends PureComponent {
     });
   }
 
+  toggleEmptyNodes(e) {
+    this.setState({
+      emptyNodes: e.target.checked,
+    });
+  }
+
   render() {
     const { selectedMembers } = this.props;
+    const { emptyNodes } = this.state;
 
     return (
       <Query query={GET_GRAPH} variables={{ selectedMembers }}>
@@ -171,8 +198,9 @@ class CollaborationIndicator extends PureComponent {
             ]
             .map(type => ({ label: type, value: type }));
 
-          const { nodes } = filteredCampus;
           const edges = this.filterProductionType(filteredCampus.edges);
+
+          const nodes = this.filterEmptyNodes({ nodes: filteredCampus.nodes, edges });
 
           const colorHash = this.getColorHash(nodes);
 
@@ -189,6 +217,16 @@ class CollaborationIndicator extends PureComponent {
                 value={this.state.typeSelection}
                 options={[allOption, ...typesOptions]}
                 label="Tipo de Produção"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={emptyNodes}
+                    onChange={this.toggleEmptyNodes}
+                    value="emptyNodes"
+                  />
+                }
+                label="Membros sem coautorias"
               />
               <Graph
                 data={{ edges, nodes }}
