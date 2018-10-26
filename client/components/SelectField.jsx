@@ -11,7 +11,7 @@ const styles = theme => ({
     width: 200,
   },
   menu: {
-    width: 200,
+    // width: 200,
   },
 });
 

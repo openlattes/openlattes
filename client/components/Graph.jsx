@@ -45,7 +45,7 @@ class Graph extends PureComponent {
       .range([1, 10]);
 
     const nodeScale = scaleLinear()
-      .domain([1, weightExtremes.max * 2])
+      .domain([0, weightExtremes.max * 2])
       .range([2, 10]);
 
     const nodeStyle = colorHash.size ?

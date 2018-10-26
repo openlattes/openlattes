@@ -179,6 +179,10 @@ const resolvers = {
   Supervision: {
     members: ({ members }) => Member.find({ _id: { $in: members } }),
   },
+
+  Edge: {
+    productions: ({ productions }) => Production.find({ _id: { $in: productions } }),
+  },
 };
 
 export default resolvers;

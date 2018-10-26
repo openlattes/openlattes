@@ -21,6 +21,9 @@ const GET_GRAPH = gql`
       source
       target
       weight
+      productions {
+        type
+      }
     }
   }
 `;
@@ -31,12 +34,15 @@ class CollaborationIndicator extends PureComponent {
 
     this.state = {
       selection: 'Todos',
+      typeSelection: 'Todos',
     };
 
     this.setSelectedMembers = this.setSelectedMembers.bind(this);
-    this.handleSelectFieldChange = this.handleSelectFieldChange.bind(this);
+    this.handleCampusChange = this.handleCampusChange.bind(this);
+    this.handleTypeChange = this.handleTypeChange.bind(this);
     this.filterCampus = this.filterCampus.bind(this);
     this.getColorHash = this.getColorHash.bind(this);
+    this.filterProductionType = this.filterProductionType.bind(this);
   }
 
   setSelectedMembers(nodes) {
@@ -93,9 +99,43 @@ class CollaborationIndicator extends PureComponent {
     return { nodes, edges };
   }
 
-  handleSelectFieldChange(e) {
+  filterProductionType(edges) {
+    const { typeSelection } = this.state;
+
+    if (typeSelection !== 'Todos') {
+      return edges
+        .reduce((filteredEdges, edge) => {
+          const { productions } = edge;
+          const filteredProductions = productions.filter(({ type }) => type === typeSelection);
+
+          if (filteredProductions.length) {
+            return [
+              ...filteredEdges,
+              {
+                ...edge,
+                productions: filteredProductions,
+                weight: filteredProductions.length,
+              },
+            ];
+          }
+
+          return filteredEdges;
+        }, []);
+    }
+
+    return edges;
+  }
+
+  handleCampusChange(e) {
     this.setState({
       selection: e.target.value,
+      typeSelection: 'Todos',
+    });
+  }
+
+  handleTypeChange(e) {
+    this.setState({
+      typeSelection: e.target.value,
     });
   }
 
@@ -110,7 +150,8 @@ class CollaborationIndicator extends PureComponent {
           if (loading) return <p>loading...</p>;
           if (error) return <p>error</p>;
 
-          const allOption = [{ label: 'Todos', value: 'Todos' }];
+          const allOption = { label: 'Todos', value: 'Todos' };
+
           const campusOptions = [
             ...data.nodes
               .reduce((set, { campus }) => set.add(campus), new Set()),
@@ -118,17 +159,36 @@ class CollaborationIndicator extends PureComponent {
             .reverse()
             .map(campus => ({ label: campus, value: campus }));
 
+          const filteredCampus = this.filterCampus(data);
 
-          const { nodes, edges } = this.filterCampus(data);
+          const typesOptions = [
+            ...filteredCampus.edges
+              .reduce((set, { productions }) => {
+                const types = productions.map(({ type }) => type);
+
+                return new Set([...set, ...types]);
+              }, new Set()),
+            ]
+            .map(type => ({ label: type, value: type }));
+
+          const { nodes } = filteredCampus;
+          const edges = this.filterProductionType(filteredCampus.edges);
+
           const colorHash = this.getColorHash(nodes);
 
           return (
             <div>
               <SelectField
-                onChange={this.handleSelectFieldChange}
+                onChange={this.handleCampusChange}
                 value={this.state.selection}
-                options={[...allOption, ...campusOptions]}
+                options={[allOption, ...campusOptions]}
                 label="Campus"
+              />
+              <SelectField
+                onChange={this.handleTypeChange}
+                value={this.state.typeSelection}
+                options={[allOption, ...typesOptions]}
+                label="Tipo de Produção"
               />
               <Graph
                 data={{ edges, nodes }}

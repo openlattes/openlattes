@@ -75,7 +75,7 @@ const typeDefs = gql`
     source: ID
     target: ID
     weight: Int
-    productions: [ID]
+    productions: [Production]
   }
 
   enum Collection {
