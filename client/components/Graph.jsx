@@ -48,6 +48,9 @@ class Graph extends PureComponent {
       .domain([1, weightExtremes.max * 2])
       .range([2, 10]);
 
+    const nodeStyle = colorHash.size ?
+      d => ({ fill: colorHash.get(d.campus) }) : { fill: 'darkblue' };
+
     return (
       <NetworkFrame
         size={[900, 600]}
@@ -56,14 +59,24 @@ class Graph extends PureComponent {
         edgeStyle={() => ({
           stroke: '#32c4c4', fill: '#32c4c4', fillOpacity: 0.25, strokeWidth: '1px',
         })}
-        nodeStyle={d => ({ fill: colorHash.get(d.campus) })}
-        networkType={{ type: 'force', iterations: 500, edgeStrength: 0.1 }}
+        nodeStyle={nodeStyle}
+        networkType={{ type: 'force', iterations: 300, edgeStrength: 0.1 }}
         edgeType="ribbon"
         nodeSizeAccessor={d => nodeScale(d.degree)}
         edgeWidthAccessor={d => edgeScale(d.weight)}
-        zoomToFit
         hoverAnnotation
         tooltipContent={customTooltipContent}
+        legend={colorHash.size ? {
+          title: 'Campus',
+          legendGroups: [
+            {
+              styleFn: d => ({ fill: d.color, stroke: 'black' }),
+              items: [...colorHash]
+                .reverse()
+                .map(([label, color]) => ({ label, color })),
+            },
+          ],
+        } : undefined}
       />
     );
   }
@@ -74,7 +87,11 @@ Graph.propTypes = {
     nodes: PropTypes.array,
     edges: PropTypes.array.isRequired,
   }).isRequired,
-  colorHash: PropTypes.instanceOf(Map).isRequired,
+  colorHash: PropTypes.instanceOf(Map),
+};
+
+Graph.defaultProps = {
+  colorHash: new Map(),
 };
 
 export default Graph;

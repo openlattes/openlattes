@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -8,6 +8,7 @@ import green from '@material-ui/core/colors/green';
 import yellow from '@material-ui/core/colors/yellow';
 
 import Graph from './Graph';
+import SelectField from './SelectField';
 
 const GET_GRAPH = gql`
   query CollaborationIndicator($selectedMembers: [ID]) {
@@ -24,48 +25,122 @@ const GET_GRAPH = gql`
   }
 `;
 
-const CollaborationIndicator = ({ selectedMembers }) => (
-  <Query query={GET_GRAPH} variables={{ selectedMembers }}>
-    {({
-      loading, error, data,
-    }) => {
-      if (loading) return <p>loading...</p>;
-      if (error) return <p>error</p>;
+class CollaborationIndicator extends PureComponent {
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      selection: 'Todos',
+    };
+
+    this.setSelectedMembers = this.setSelectedMembers.bind(this);
+    this.handleSelectFieldChange = this.handleSelectFieldChange.bind(this);
+    this.filterCampus = this.filterCampus.bind(this);
+    this.getColorHash = this.getColorHash.bind(this);
+  }
+
+  setSelectedMembers(nodes) {
+    const { selectedMembers } = this.props;
+
+    /* eslint-disable no-underscore-dangle */
+    return nodes.map((node) => {
+      if (selectedMembers.includes(node._id)) {
+        return { ...node, selected: true };
+      }
+      return { ...node, selected: false };
+    });
+    /* eslint-enable no-underscore-dangle */
+  }
+
+  getColorHash(nodes) {
+    const { selection } = this.state;
+
+    if (selection === 'Todos') {
       const colors = [
         red[200], red[500], red[800], blue[200], blue[500],
         blue[800], green[200], green[500], green[800], yellow[300],
       ];
 
-      const colorHash = data.nodes
-        .reduce((map, { campus }) => {
-          if (!map.has(campus)) {
-            map.set(campus, colors.pop());
+      return nodes
+        .reduce((colorHash, { campus }) => {
+          if (!colorHash.has(campus)) {
+            colorHash.set(campus, colors.pop());
           }
 
-          return map;
+          return colorHash;
         }, new Map());
+    }
 
-      /* eslint-disable no-underscore-dangle */
-      return (
-        <Graph
-          data={{
-            ...data,
-            nodes: data.nodes
-              .map((member) => {
-                if (selectedMembers.includes(member._id)) {
-                  return { ...member, selected: true };
-                }
-                return { ...member, selected: false };
-              }),
-          }}
-          colorHash={colorHash}
-        />
-      );
-      /* eslint-enable no-underscore-dangle */
-    }}
-  </Query>
-);
+    return new Map();
+  }
+
+  filterCampus({ nodes, edges }) {
+    const { selection } = this.state;
+
+    if (selection !== 'Todos') {
+      const filteredNodes = nodes
+        .filter(({ campus }) => campus === selection);
+
+      const ids = filteredNodes.map(({ id }) => id);
+
+      return {
+        nodes: filteredNodes,
+        edges: edges.filter(({ source, target }) =>
+          ids.includes(source) && ids.includes(target)),
+      };
+    }
+
+    return { nodes, edges };
+  }
+
+  handleSelectFieldChange(e) {
+    this.setState({
+      selection: e.target.value,
+    });
+  }
+
+  render() {
+    const { selectedMembers } = this.props;
+
+    return (
+      <Query query={GET_GRAPH} variables={{ selectedMembers }}>
+        {({
+          loading, error, data,
+        }) => {
+          if (loading) return <p>loading...</p>;
+          if (error) return <p>error</p>;
+
+          const allOption = [{ label: 'Todos', value: 'Todos' }];
+          const campusOptions = [
+            ...data.nodes
+              .reduce((set, { campus }) => set.add(campus), new Set()),
+            ]
+            .reverse()
+            .map(campus => ({ label: campus, value: campus }));
+
+
+          const { nodes, edges } = this.filterCampus(data);
+          const colorHash = this.getColorHash(nodes);
+
+          return (
+            <div>
+              <SelectField
+                onChange={this.handleSelectFieldChange}
+                value={this.state.selection}
+                options={[...allOption, ...campusOptions]}
+                label="Campus"
+              />
+              <Graph
+                data={{ edges, nodes }}
+                colorHash={colorHash}
+              />
+            </div>
+          );
+        }}
+      </Query>
+    );
+  }
+}
 
 CollaborationIndicator.propTypes = {
   selectedMembers: PropTypes
