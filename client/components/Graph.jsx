@@ -48,7 +48,7 @@ class Graph extends PureComponent {
       .domain([0, weightExtremes.max * 2])
       .range([2, 10]);
 
-    const nodeStyle = colorHash.size ?
+    const nodeStyle = colorHash.size > 1 ?
       d => ({ fill: colorHash.get(d.campus) }) : { fill: 'darkblue' };
 
     const iterationScale = scaleLinear()
@@ -72,7 +72,7 @@ class Graph extends PureComponent {
         edgeWidthAccessor={d => edgeScale(d.weight)}
         hoverAnnotation
         tooltipContent={customTooltipContent}
-        legend={colorHash.size ? {
+        legend={colorHash.size > 1 ? {
           title: 'Campus',
           legendGroups: [
             {
