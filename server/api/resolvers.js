@@ -7,16 +7,16 @@ import Collaboration from './models/Collaboration';
 
 const { ObjectId } = mongoose.Types;
 
-const collections = {
-  BIBLIOGRAPHIC: {
-    coll: Production,
-    typeField: '$type',
-  },
-  SUPERVISION: {
-    coll: Supervision,
-    typeField: '$degreeType',
-  },
-};
+const collections = new Map([
+  [
+    'BIBLIOGRAPHIC',
+    { coll: Production, typeField: '$type' },
+  ],
+  [
+    'SUPERVISION',
+    { coll: Supervision, typeField: '$degreeType' },
+  ],
+]);
 
 const toObjectIds = arr => arr.map(ObjectId);
 
@@ -49,7 +49,7 @@ const resolvers = {
     supervisions: () => Supervision.find(),
 
     indicator: (root, { collection, members }) => {
-      const { coll, typeField } = collections[collection];
+      const { coll, typeField } = collections.get(collection);
 
       return coll.aggregate([
         {
@@ -81,7 +81,7 @@ const resolvers = {
     },
 
     typeIndicator: (root, { collection, members }) => {
-      const { coll, typeField } = collections[collection];
+      const { coll, typeField } = collections.get(collection);
 
       return coll.aggregate([
         {
