@@ -9,11 +9,11 @@ const { ObjectId } = mongoose.Types;
 
 const collections = {
   BIBLIOGRAPHIC: {
-    name: Production,
+    coll: Production,
     typeField: '$type',
   },
   SUPERVISION: {
-    name: Supervision,
+    coll: Supervision,
     typeField: '$degreeType',
   },
 };
@@ -50,9 +50,9 @@ const resolvers = {
     supervisions: () => Supervision.find(),
 
     indicator: (root, { collection, members }) => {
-      const { name, typeField } = collections[collection];
+      const { coll, typeField } = collections[collection];
 
-      return name.aggregate(matchMembers(members)
+      return coll.aggregate(matchMembers(members)
         .concat([
           {
             $group: {
@@ -78,9 +78,9 @@ const resolvers = {
     },
 
     typeIndicator: (root, { collection, members }) => {
-      const { name, typeField } = collections[collection];
+      const { coll, typeField } = collections[collection];
 
-      return name.aggregate(matchMembers(members)
+      return coll.aggregate(matchMembers(members)
         .concat([
           {
             $group: {
