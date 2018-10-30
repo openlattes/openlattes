@@ -84,7 +84,6 @@ class CollaborationIndicator extends PureComponent {
 
           const campusOptions = graph
             .extractCampus()
-            .reverse()
             .map(campus => ({ label: campus, value: campus }));
 
           const filteredCampus = graph.filterByCampus(selection);
