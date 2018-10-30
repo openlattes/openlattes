@@ -18,22 +18,21 @@ const collections = {
   },
 };
 
-function matchMembers(ids) {
-  if (ids && ids.length > 0) {
-    const objectIds = ids.map(_id => ObjectId(_id));
+const toObjectIds = arr => arr.map(ObjectId);
 
-    return [
-      {
-        $match: {
-          members: (ids.length > 1) ? { $in: objectIds } : objectIds[0],
-        },
-      },
-    ];
+function match(field, value) {
+  if (value) {
+    const arr = value instanceof Array ? value : [value];
+
+    if (arr.length > 0) {
+      return {
+        [field]: (arr.length > 1) ? { $in: arr } : arr[0],
+      };
+    }
   }
 
-  return [];
+  return {};
 }
-
 
 const resolvers = {
   Query: {
@@ -52,50 +51,58 @@ const resolvers = {
     indicator: (root, { collection, members }) => {
       const { coll, typeField } = collections[collection];
 
-      return coll.aggregate(matchMembers(members)
-        .concat([
-          {
-            $group: {
-              _id: { year: '$year', type: typeField },
-              count: { $sum: 1 },
-            },
+      return coll.aggregate([
+        {
+          $match: {
+            ...match('members', toObjectIds(members)),
           },
-          {
-            $project: {
-              _id: 0,
-              year: '$_id.year',
-              type: '$_id.type',
-              count: 1,
-            },
+        },
+        {
+          $group: {
+            _id: { year: '$year', type: typeField },
+            count: { $sum: 1 },
           },
-          {
-            $sort: {
-              type: -1,
-              year: -1,
-            },
+        },
+        {
+          $project: {
+            _id: 0,
+            year: '$_id.year',
+            type: '$_id.type',
+            count: 1,
           },
-        ]));
+        },
+        {
+          $sort: {
+            type: -1,
+            year: -1,
+          },
+        },
+      ]);
     },
 
     typeIndicator: (root, { collection, members }) => {
       const { coll, typeField } = collections[collection];
 
-      return coll.aggregate(matchMembers(members)
-        .concat([
-          {
-            $group: {
-              _id: typeField,
-              count: { $sum: 1 },
-            },
+      return coll.aggregate([
+        {
+          $match: {
+            ...match('members', toObjectIds(members)),
           },
-          {
-            $project: {
-              type: '$_id',
-              _id: 0,
-              count: 1,
-            },
+        },
+        {
+          $group: {
+            _id: typeField,
+            count: { $sum: 1 },
           },
-        ]));
+        },
+        {
+          $project: {
+            type: '$_id',
+            _id: 0,
+            count: 1,
+          },
+        },
+      ]);
     },
 
     memberIndicator: () =>
@@ -128,7 +135,13 @@ const resolvers = {
 
     nodes: async (root, { members }) => {
       try {
-        return await Member.aggregate(matchMembers(members));
+        return await Member.aggregate([
+          {
+            $match: {
+              ...match('members', toObjectIds(members)),
+            },
+          },
+        ]);
       } catch (e) {
         if (e instanceof Error) {
           // If aggregate pipeline is empty
@@ -140,18 +153,22 @@ const resolvers = {
     },
 
     edges: (root, { members }) =>
-      Collaboration.aggregate(matchMembers(members)
-        .concat([
-          {
-            $project: {
-              _id: 0,
-              source: { $arrayElemAt: ['$members', 0] },
-              target: { $arrayElemAt: ['$members', 1] },
-              weight: { $size: '$productions' },
-              productions: 1,
-            },
+      Collaboration.aggregate([
+        {
+          $match: {
+            ...match('members', toObjectIds(members)),
           },
-        ])),
+        },
+        {
+          $project: {
+            _id: 0,
+            source: { $arrayElemAt: ['$members', 0] },
+            target: { $arrayElemAt: ['$members', 1] },
+            weight: { $size: '$productions' },
+            productions: 1,
+          },
+        },
+      ]),
   },
 
   Production: {
