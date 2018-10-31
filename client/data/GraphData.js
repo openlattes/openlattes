@@ -77,17 +77,17 @@ class GraphData {
   }
 
   insertSelectField(ids) {
-    /* eslint-disable no-underscore-dangle */
     return new GraphData({
       nodes: this.nodes.map((node) => {
-        if (ids.includes(node._id)) {
+        const { _id } = node;
+
+        if (ids.includes(_id)) {
           return { ...node, select: true };
         }
         return { ...node, select: false };
       }),
       edges: this.edges,
     });
-    /* eslint-enable no-underscore-dangle */
   }
 }
 
