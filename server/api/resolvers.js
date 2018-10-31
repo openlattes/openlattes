@@ -137,7 +137,7 @@ const resolvers = {
       Member.aggregate([
         {
           $match: {
-            ...match('members', toObjectIds(members)),
+            ...match('_id', toObjectIds(members)),
           },
         },
       ]),
