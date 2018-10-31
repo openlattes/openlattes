@@ -133,24 +133,14 @@ const resolvers = {
         },
       ]),
 
-    nodes: async (root, { members }) => {
-      try {
-        return await Member.aggregate([
-          {
-            $match: {
-              ...match('members', toObjectIds(members)),
-            },
+    nodes: (root, { members }) =>
+      Member.aggregate([
+        {
+          $match: {
+            ...match('members', toObjectIds(members)),
           },
-        ]);
-      } catch (e) {
-        if (e instanceof Error) {
-          // If aggregate pipeline is empty
-          return Member.find();
-        }
-
-        throw e;
-      }
-    },
+        },
+      ]),
 
     edges: (root, { members }) =>
       Collaboration.aggregate([

@@ -16,7 +16,7 @@ import SelectField from './SelectField';
 const GET_GRAPH = gql`
   query CollaborationIndicator($selectedMembers: [ID]) {
     nodes(members: $selectedMembers) {
-      id
+      _id
       fullName
       campus
     }

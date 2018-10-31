@@ -29,9 +29,9 @@ class Graph extends PureComponent {
     // Remove the automatically included field __typename
     // to avoid semiotic error
     const nodes = data.nodes.map(({
-      id, fullName, campus, selected,
+      _id, fullName, campus, selected,
     }) => ({
-      id, fullName, campus, selected,
+      _id, fullName, campus, selected,
     }));
 
     const weightExtremes = data.edges
@@ -68,6 +68,7 @@ class Graph extends PureComponent {
         nodeStyle={nodeStyle}
         networkType={{ type: 'force', iterations, edgeStrength: 0.1 }}
         edgeType="ribbon"
+        nodeIDAccessor="_id"
         nodeSizeAccessor={d => nodeScale(d.degree)}
         edgeWidthAccessor={d => edgeScale(d.weight)}
         hoverAnnotation

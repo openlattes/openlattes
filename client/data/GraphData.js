@@ -23,7 +23,7 @@ class GraphData {
       const filteredNodes = this.nodes
         .filter(({ campus }) => campus === match);
 
-      const nodesIds = filteredNodes.map(({ id }) => id);
+      const nodesIds = filteredNodes.map(({ _id }) => _id);
 
       return new GraphData({
         nodes: filteredNodes,
@@ -71,7 +71,7 @@ class GraphData {
         new Set([...set, source, target]), new Set());
 
     return new GraphData({
-      nodes: this.nodes.filter(({ id }) => nodesIds.has(id)),
+      nodes: this.nodes.filter(({ _id }) => nodesIds.has(_id)),
       edges: this.edges,
     });
   }
