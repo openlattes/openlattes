@@ -18,7 +18,9 @@ const collections = new Map([
   ],
 ]);
 
-const toObjectIds = arr => arr.map(ObjectId);
+function toObjectIds(arr) {
+  return arr ? arr.map(ObjectId) : arr;
+}
 
 function match(field, value) {
   if (value) {
