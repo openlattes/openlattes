@@ -11,6 +11,7 @@ const typeDefs = gql`
     indicator(
       collection: Collection = BIBLIOGRAPHIC,
       members: [ID]
+      campus: [String]
     ): [Indicator]
     typeIndicator(
       collection: Collection = BIBLIOGRAPHIC,

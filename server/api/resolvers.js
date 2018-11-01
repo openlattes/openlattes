@@ -50,14 +50,17 @@ const resolvers = {
 
     supervisions: () => Supervision.find(),
 
-    indicator: (root, { collection, members }) => {
+    indicator: async (root, { collection, members, campus }) => {
       const { coll, typeField } = collections.get(collection);
+
+      const ids = campus
+        ? await Member
+          .distinct('_id', { ...match('_id', toObjectIds(members)), campus })
+        : toObjectIds(members);
 
       return coll.aggregate([
         {
-          $match: {
-            ...match('members', toObjectIds(members)),
-          },
+          $match: match('members', ids),
         },
         {
           $group: {
