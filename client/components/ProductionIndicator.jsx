@@ -126,9 +126,13 @@ ProductionIndicator.propTypes = {
   classes: PropTypes.shape({
     paper: PropTypes.string,
   }).isRequired,
-  collection: PropTypes.string.isRequired,
+  collection: PropTypes.string,
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string).isRequired,
+};
+
+ProductionIndicator.defaultProps = {
+  collection: undefined,
 };
 
 export default withStyles(styles)(ProductionIndicator);
