@@ -90,9 +90,7 @@ const resolvers = {
 
       return coll.aggregate([
         {
-          $match: {
-            ...match('members', toObjectIds(members)),
-          },
+          $match: match('members', toObjectIds(members)),
         },
         {
           $group: {
@@ -141,18 +139,14 @@ const resolvers = {
     nodes: (root, { members }) =>
       Member.aggregate([
         {
-          $match: {
-            ...match('_id', toObjectIds(members)),
-          },
+          $match: match('_id', toObjectIds(members)),
         },
       ]),
 
     edges: (root, { members }) =>
       Collaboration.aggregate([
         {
-          $match: {
-            ...match('members', toObjectIds(members)),
-          },
+          $match: match('members', toObjectIds(members)),
         },
         {
           $project: {
