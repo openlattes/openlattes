@@ -38,19 +38,19 @@ function match(field, value) {
 
 const resolvers = {
   Query: {
-    member: (root, { _id }) => Member.findById(_id),
+    member: (obj, { _id }) => Member.findById(_id),
 
     members: () => Member.find(),
 
-    production: (root, { _id }) => Production.findById(_id),
+    production: (obj, { _id }) => Production.findById(_id),
 
     productions: () => Production.find(),
 
-    supervision: (root, { _id }) => Supervision.findById(_id),
+    supervision: (obj, { _id }) => Supervision.findById(_id),
 
     supervisions: () => Supervision.find(),
 
-    indicator: async (root, { collection, members, campus }) => {
+    indicator: async (obj, { collection, members, campus }) => {
       const { coll, typeField } = collections.get(collection);
 
       const ids = campus
@@ -85,7 +85,7 @@ const resolvers = {
       ]);
     },
 
-    typeIndicator: (root, { collection, members }) => {
+    typeIndicator: (obj, { collection, members }) => {
       const { coll, typeField } = collections.get(collection);
 
       return coll.aggregate([
@@ -136,14 +136,14 @@ const resolvers = {
         },
       ]),
 
-    nodes: (root, { members }) =>
+    nodes: (obj, { members }) =>
       Member.aggregate([
         {
           $match: match('_id', toObjectIds(members)),
         },
       ]),
 
-    edges: (root, { members }) =>
+    edges: (obj, { members }) =>
       Collaboration.aggregate([
         {
           $match: match('members', toObjectIds(members)),
