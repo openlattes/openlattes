@@ -1,0 +1,7 @@
+{
+  "name": "openlattes",
+  "alias": "openlattes",
+  "env": {
+    "MONGO_URL": "@mongo-url"
+  }
+}
