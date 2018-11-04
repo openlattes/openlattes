@@ -35,6 +35,7 @@ const typeDefs = gql`
 
   type MemberCount {
     count: Int
+    type: String
     member: String
   }
 

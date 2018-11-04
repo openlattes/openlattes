@@ -115,14 +115,14 @@ const resolvers = {
         },
         {
           $group: {
-            _id: '$members',
+            _id: { member: '$members', type: '$type' },
             count: { $sum: 1 },
           },
         },
         {
           $lookup: {
             from: 'members',
-            localField: '_id',
+            localField: '_id.member',
             foreignField: '_id',
             as: 'members_data',
           },
@@ -131,6 +131,7 @@ const resolvers = {
           $project: {
             _id: 0,
             member: { $arrayElemAt: ['$members_data.fullName', 0] },
+            type: '$_id.type',
             count: 1,
           },
         },
