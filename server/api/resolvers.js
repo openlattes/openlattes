@@ -108,14 +108,16 @@ const resolvers = {
       ]);
     },
 
-    memberIndicator: () =>
-      Production.aggregate([
+    memberIndicator: (obj, { collection }) => {
+      const { coll, typeField } = collections.get(collection);
+
+      return coll.aggregate([
         {
           $unwind: '$members',
         },
         {
           $group: {
-            _id: { member: '$members', type: '$type' },
+            _id: { member: '$members', type: typeField },
             count: { $sum: 1 },
           },
         },
@@ -135,7 +137,8 @@ const resolvers = {
             count: 1,
           },
         },
-      ]),
+      ]);
+    },
 
     nodes: (obj, { members }) =>
       Member.aggregate([
