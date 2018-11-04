@@ -19,6 +19,8 @@ const typeDefs = gql`
     ): [TypeCount]
     memberIndicator(
       collection: Collection = BIBLIOGRAPHIC,
+      members: [ID]
+      campus: [String]
     ): [MemberCount]
     nodes(members: [ID]): [Member]
     edges(members: [ID]): [Edge]

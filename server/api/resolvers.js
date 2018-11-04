@@ -108,10 +108,18 @@ const resolvers = {
       ]);
     },
 
-    memberIndicator: (obj, { collection }) => {
+    memberIndicator: async (obj, { collection, members, campus }) => {
       const { coll, typeField } = collections.get(collection);
 
+      const ids = campus
+        ? await Member
+          .distinct('_id', { ...match('_id', toObjectIds(members)), campus })
+        : toObjectIds(members);
+
       return coll.aggregate([
+        {
+          $match: match('members', ids),
+        },
         {
           $unwind: '$members',
         },
