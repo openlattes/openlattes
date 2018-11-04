@@ -33,6 +33,7 @@
       "browser": true,
       "node": true
     },
+    "parser": "babel-eslint",
     "rules": {
       "jsx-a11y/anchor-is-valid": [
         "error",
@@ -55,7 +56,8 @@
         {
           "ignorePureComponents": true
         }
-      ]
+      ],
+      "strict": 0
     }
   },
   "dependencies": {
@@ -81,7 +83,9 @@
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/node": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
+    "babel-eslint": "^8.2.6",
     "concurrently": "^4.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
