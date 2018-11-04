@@ -18,12 +18,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js,.jsx client/ server/",
-    "buildserver": "babel server -d dist --config-file ./.babelrc-server.js",
+    "buildserver": "babel server -d dist --env-name server",
     "buildclient": "parcel build client/index.html -d dist/public",
     "build": "npm run buildserver && npm run buildclient",
     "deploy": "now --public && now alias && now rm openlattes --safe --yes",
     "now-start": "NODE_ENV=production node dist",
-    "devserver": "nodemon server --exec babel-node --config-file ./.babelrc-server.js",
+    "devserver": "nodemon server --exec babel-node --env-name server",
     "devclient": "parcel watch client/index.html -d dist/public",
     "start": "concurrently -k \"npm run devserver\" \"npm run devclient\""
   },
