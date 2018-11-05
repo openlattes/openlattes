@@ -35,7 +35,7 @@ const MenuItems = () => (
           <ListItemText primary="Home" />
         </ListItem>
         <Divider />
-        <ListSubheader>Proouções Bibliográficas</ListSubheader>
+        <ListSubheader>Produções Bibliográficas</ListSubheader>
         <ListItem
           onClick={() => client.writeData({ data: { selectedMembers: [] } })}
           component={Link}
