@@ -21,9 +21,10 @@ const styles = theme => ({
 });
 
 const GET_INDICATOR = gql`
-  query Indicator($collection: Collection, $selectedMembers: [ID]) {
-    indicator(collection: $collection, members: $selectedMembers) {
+  query Indicator($collection: Collection, $by: By $selectedMembers: [ID]) {
+    indicator(collection: $collection, by: $by, members: $selectedMembers) {
       year
+      member
       count
       type
     }
@@ -65,10 +66,12 @@ class ProductionIndicator extends Component {
 
   render() {
     const { selectedCheckboxes } = this.state;
-    const { classes, collection, selectedMembers } = this.props;
+    const {
+      classes, collection, by, selectedMembers,
+    } = this.props;
 
     return (
-      <Query query={GET_INDICATOR} variables={{ collection, selectedMembers }}>
+      <Query query={GET_INDICATOR} variables={{ collection, by, selectedMembers }}>
         {({ loading, error, data }) => {
           if (loading) return 'Carregando...';
           if (error) return 'Não foi possível carregar o gráfico.';
@@ -102,6 +105,7 @@ class ProductionIndicator extends Component {
                   <StackedBarChart
                     data={indicator}
                     colorHash={colorHash}
+                    by={by}
                   />
                 </Paper>
               </Grid>
@@ -127,12 +131,14 @@ ProductionIndicator.propTypes = {
     paper: PropTypes.string,
   }).isRequired,
   collection: PropTypes.string,
+  by: PropTypes.string,
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string).isRequired,
 };
 
 ProductionIndicator.defaultProps = {
   collection: undefined,
+  by: 'year',
 };
 
 export default withStyles(styles)(ProductionIndicator);

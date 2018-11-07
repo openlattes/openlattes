@@ -36,6 +36,133 @@ function match(field, value) {
   return {};
 }
 
+const productionIndicator = {
+  year({ coll, ids, typeField }) {
+    return coll.aggregate([
+      {
+        $match: match('members', ids),
+      },
+      {
+        $group: {
+          _id: { year: '$year', type: typeField },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          year: '$_id.year',
+          type: '$_id.type',
+          count: 1,
+        },
+      },
+      {
+        $sort: {
+          type: -1,
+          year: -1,
+        },
+      },
+    ]);
+  },
+  member({
+    coll, ids = [], typeField, limit = 30,
+  }) {
+    if (ids.length > 0 && ids.length <= limit) {
+      // For a small set of members
+      coll.aggregate([
+        {
+          $match: match('members', ids),
+        },
+        {
+          $unwind: '$members',
+        },
+        {
+          $group: {
+            _id: { member: '$members', type: typeField },
+            count: { $sum: 1 },
+          },
+        },
+        {
+          $sort: {
+            '_id.type': -1,
+          },
+        },
+        {
+          $lookup: {
+            from: 'members',
+            localField: '_id.member',
+            foreignField: '_id',
+            as: 'members_data',
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            member: { $arrayElemAt: ['$members_data.fullName', 0] },
+            type: '$_id.type',
+            count: 1,
+          },
+        },
+      ]);
+    }
+
+    // Too many members. Generate indicator for the top <limit> members.
+    return coll.aggregate([
+      {
+        $match: match('members', ids),
+      },
+      {
+        $unwind: '$members',
+      },
+      {
+        $group: {
+          _id: { member: '$members', type: typeField },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: {
+          '_id.type': -1,
+        },
+      },
+      {
+        $group: {
+          _id: '$_id.member',
+          individual: { $push: { type: '$_id.type', count: '$count' } },
+          total: { $sum: '$count' },
+        },
+      },
+      {
+        $sort: {
+          total: -1,
+        },
+      },
+      {
+        $limit: limit,
+      },
+      {
+        $unwind: '$individual',
+      },
+      {
+        $lookup: {
+          from: 'members',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'members_data',
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          member: { $arrayElemAt: ['$members_data.fullName', 0] },
+          type: '$individual.type',
+          count: '$individual.count',
+        },
+      },
+    ]);
+  },
+};
+
 const resolvers = {
   Query: {
     member: (obj, { _id }) => Member.findById(_id),
@@ -50,40 +177,15 @@ const resolvers = {
 
     supervisions: () => Supervision.find(),
 
-    indicator: async (obj, { collection, members, campus }) => {
-      const { coll, typeField } = collections.get(collection);
-
-      const ids = campus
-        ? await Member
-          .distinct('_id', { ...match('_id', toObjectIds(members)), campus })
-        : toObjectIds(members);
-
-      return coll.aggregate([
-        {
-          $match: match('members', ids),
-        },
-        {
-          $group: {
-            _id: { year: '$year', type: typeField },
-            count: { $sum: 1 },
-          },
-        },
-        {
-          $project: {
-            _id: 0,
-            year: '$_id.year',
-            type: '$_id.type',
-            count: 1,
-          },
-        },
-        {
-          $sort: {
-            type: -1,
-            year: -1,
-          },
-        },
-      ]);
-    },
+    indicator: async (obj, {
+      collection, by, members, campus,
+    }) =>
+      productionIndicator[by]({
+        ids: campus
+          ? await Member.distinct('_id', { ...match('_id', toObjectIds(members)), campus })
+          : toObjectIds(members),
+        ...collections.get(collection),
+      }),
 
     typeIndicator: (obj, { collection, members }) => {
       const { coll, typeField } = collections.get(collection);

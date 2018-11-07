@@ -10,6 +10,7 @@ const typeDefs = gql`
     supervisions: [Supervision]
     indicator(
       collection: Collection = BIBLIOGRAPHIC,
+      by: By = year, 
       members: [ID]
       campus: [String]
     ): [Indicator]
@@ -28,6 +29,7 @@ const typeDefs = gql`
 
   type Indicator {
     year: Int
+    member: String 
     count: Int
     type: String
   }
@@ -87,6 +89,11 @@ const typeDefs = gql`
   enum Collection {
     SUPERVISION
     BIBLIOGRAPHIC
+  }
+
+  enum By {
+    year
+    member
   }
 `;
 

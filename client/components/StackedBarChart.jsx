@@ -27,13 +27,13 @@ const customTooltipContent = (d) => {
 
 class StackedBarChart extends PureComponent {
   render() {
-    const { data, colorHash } = this.props;
+    const { data, colorHash, by } = this.props;
 
     return (
       <OrdinalFrame
         size={[900, 500]}
         data={data}
-        oAccessor="year"
+        oAccessor={by}
         rAccessor="count"
         style={d => ({ fill: colorHash.get(d.type), stroke: 'white' })}
         type="bar"
@@ -59,11 +59,13 @@ class StackedBarChart extends PureComponent {
 
 StackedBarChart.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
-    year: PropTypes.number.isRequired,
+    year: PropTypes.number,
+    member: PropTypes.string,
     count: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
   })).isRequired,
   colorHash: PropTypes.instanceOf(Map).isRequired,
+  by: PropTypes.string.isRequired,
 };
 
 export default StackedBarChart;
