@@ -71,10 +71,10 @@ const productionIndicator = {
       // For a small set of members
       coll.aggregate([
         {
-          $match: match('members', ids),
+          $unwind: '$members',
         },
         {
-          $unwind: '$members',
+          $match: match('members', ids),
         },
         {
           $group: {
@@ -109,10 +109,10 @@ const productionIndicator = {
     // Too many members. Generate indicator for the top <limit> members.
     return coll.aggregate([
       {
-        $match: match('members', ids),
+        $unwind: '$members',
       },
       {
-        $unwind: '$members',
+        $match: match('members', ids),
       },
       {
         $group: {
