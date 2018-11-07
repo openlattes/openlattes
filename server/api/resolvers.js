@@ -210,46 +210,6 @@ const resolvers = {
       ]);
     },
 
-    memberIndicator: async (obj, { collection, members, campus }) => {
-      const { coll, typeField } = collections.get(collection);
-
-      const ids = campus
-        ? await Member
-          .distinct('_id', { ...match('_id', toObjectIds(members)), campus })
-        : toObjectIds(members);
-
-      return coll.aggregate([
-        {
-          $match: match('members', ids),
-        },
-        {
-          $unwind: '$members',
-        },
-        {
-          $group: {
-            _id: { member: '$members', type: typeField },
-            count: { $sum: 1 },
-          },
-        },
-        {
-          $lookup: {
-            from: 'members',
-            localField: '_id.member',
-            foreignField: '_id',
-            as: 'members_data',
-          },
-        },
-        {
-          $project: {
-            _id: 0,
-            member: { $arrayElemAt: ['$members_data.fullName', 0] },
-            type: '$_id.type',
-            count: 1,
-          },
-        },
-      ]);
-    },
-
     nodes: (obj, { members }) =>
       Member.aggregate([
         {
