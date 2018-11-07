@@ -67,7 +67,7 @@ class ProductionIndicator extends Component {
   render() {
     const { selectedCheckboxes } = this.state;
     const {
-      classes, collection, by, selectedMembers,
+      classes, collection, by, selectedMembers, projection,
     } = this.props;
 
     return (
@@ -106,6 +106,7 @@ class ProductionIndicator extends Component {
                     data={indicator}
                     colorHash={colorHash}
                     by={by}
+                    projection={projection}
                   />
                 </Paper>
               </Grid>
@@ -134,11 +135,13 @@ ProductionIndicator.propTypes = {
   by: PropTypes.string,
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string).isRequired,
+  projection: PropTypes.string,
 };
 
 ProductionIndicator.defaultProps = {
   collection: undefined,
   by: 'year',
+  projection: 'vertical',
 };
 
 export default withStyles(styles)(ProductionIndicator);

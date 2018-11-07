@@ -25,9 +25,36 @@ const customTooltipContent = (d) => {
   );
 };
 
+const otherProps = new Map([
+  [
+    'vertical',
+    {
+      oLabel: d => <text transform="translate(-15,0)rotate(45)">{d}</text>,
+      axis: {
+        orient: 'left',
+      },
+      left: 50,
+    },
+  ],
+  [
+    'horizontal',
+    {
+      oLabel: { label: true },
+      axis: {
+        rotate: 45,
+      },
+      left: 300,
+    },
+  ],
+]);
+
 class StackedBarChart extends PureComponent {
   render() {
-    const { data, colorHash, by } = this.props;
+    const {
+      data, colorHash, by, projection,
+    } = this.props;
+
+    const { axis, oLabel, left } = otherProps.get(projection);
 
     return (
       <OrdinalFrame
@@ -37,16 +64,12 @@ class StackedBarChart extends PureComponent {
         rAccessor="count"
         style={d => ({ fill: colorHash.get(d.type), stroke: 'white' })}
         type="bar"
-        projection="vertical"
-        axis={{
-          orient: 'left',
-        }}
+        projection={projection}
+        axis={axis}
         margin={{
-          top: 5, bottom: 50, right: 10, left: 50,
+          top: 5, bottom: 50, right: 10, left,
         }}
-        oLabel={d => (
-          <text transform="translate(-15,0)rotate(45)">{d}</text>
-        )}
+        oLabel={oLabel}
         sortO={(a, b) => a - b}
         oPadding={2}
         baseMarkProps={{ forceUpdate: true }}
@@ -66,6 +89,11 @@ StackedBarChart.propTypes = {
   })).isRequired,
   colorHash: PropTypes.instanceOf(Map).isRequired,
   by: PropTypes.string.isRequired,
+  projection: PropTypes.string,
+};
+
+StackedBarChart.defaultProps = {
+  projection: 'vertical',
 };
 
 export default StackedBarChart;
