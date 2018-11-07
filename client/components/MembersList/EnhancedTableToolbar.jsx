@@ -56,16 +56,22 @@ const productionButtons = [
     key: 2, tooltip: 'Tipos', Icon: RotatedBarChartIcon, minSelected: 1, route: '/productions_type',
   },
   {
-    key: 3, tooltip: 'Coautorias', Icon: ShareIcon, minSelected: 1, route: '/collaborations',
+    key: 3, tooltip: 'Membros', Icon: RotatedBarChartIcon, minSelected: 1, route: '/productions_member',
+  },
+  {
+    key: 4, tooltip: 'Coautorias', Icon: ShareIcon, minSelected: 1, route: '/collaborations',
   },
 ];
 
 const supervisionButtons = [
   {
-    key: 4, tooltip: 'Evolução', Icon: BarChartIcon, minSelected: 1, route: '/supervisions_year',
+    key: 5, tooltip: 'Evolução', Icon: BarChartIcon, minSelected: 1, route: '/supervisions_year',
   },
   {
-    key: 5, tooltip: 'Tipos', Icon: RotatedBarChartIcon, minSelected: 1, route: '/supervisions_type',
+    key: 6, tooltip: 'Tipos', Icon: RotatedBarChartIcon, minSelected: 1, route: '/supervisions_type',
+  },
+  {
+    key: 7, tooltip: 'Membros', Icon: RotatedBarChartIcon, minSelected: 1, route: '/supervisions_member',
   },
 ];
 

@@ -61,6 +61,17 @@ const MenuItems = () => (
         <ListItem
           onClick={() => client.writeData({ data: { selectedMembers: [] } })}
           component={Link}
+          to="/productions_member"
+          button
+        >
+          <ListItemIcon>
+            <RotatedBarChartIcon />
+          </ListItemIcon>
+          <ListItemText primary="Membros" />
+        </ListItem>
+        <ListItem
+          onClick={() => client.writeData({ data: { selectedMembers: [] } })}
+          component={Link}
           to="/collaborations"
           button
         >
@@ -92,6 +103,17 @@ const MenuItems = () => (
             <RotatedBarChartIcon />
           </ListItemIcon>
           <ListItemText primary="Tipos" />
+        </ListItem>
+        <ListItem
+          onClick={() => client.writeData({ data: { selectedMembers: [] } })}
+          component={Link}
+          to="/supervisions_member"
+          button
+        >
+          <ListItemIcon>
+            <RotatedBarChartIcon />
+          </ListItemIcon>
+          <ListItemText primary="Membros" />
         </ListItem>
       </List>
     )}
