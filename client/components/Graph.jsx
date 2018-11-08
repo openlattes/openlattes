@@ -17,8 +17,8 @@ const customTooltipContent = d => (
     raised
   >
     <CardContent>
-      <Typography variant="body2">{d.fullName}</Typography>
-      <Typography variant="body2">Coautorias: {d.degree}</Typography>
+      <Typography variant="subtitle2">{d.fullName}</Typography>
+      <Typography variant="subtitle2">Coautorias: {d.degree}</Typography>
     </CardContent>
   </Card>
 );

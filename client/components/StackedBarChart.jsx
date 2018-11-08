@@ -19,7 +19,7 @@ const customTooltipContent = (d) => {
       raised
     >
       <CardContent>
-        <Typography variant="body2">{total}</Typography>
+        <Typography variant="subtitle2">{total}</Typography>
       </CardContent>
     </Card>
   );
