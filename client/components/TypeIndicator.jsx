@@ -26,9 +26,13 @@ const TypeIndicator = ({ collection, selectedMembers }) => (
 );
 
 TypeIndicator.propTypes = {
-  collection: PropTypes.string.isRequired,
+  collection: PropTypes.string,
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string).isRequired,
+};
+
+TypeIndicator.defaultProps = {
+  collection: undefined,
 };
 
 export default TypeIndicator;

@@ -164,10 +164,12 @@ App.propTypes = {
     content: PropTypes.string,
     contentShift: PropTypes.string,
   }).isRequired,
-  menuItems: PropTypes.node.isRequired,
+  /* eslint-disable react/forbid-prop-types */
+  menuItems: PropTypes.object.isRequired,
+  /* eslint-enable react/forbid-prop-types */
   children: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.arrayOf(PropTypes.func),
+    PropTypes.object,
+    PropTypes.arrayOf(PropTypes.object),
   ]).isRequired,
 };
 

@@ -13,16 +13,20 @@ const MenuItems = ({ data }) => (
   <ApolloConsumer>
     {client => (
       <List>
-        {data.reduce((list, { subheader, links }) => {
-          const dividerList = list.length ? [<Divider />] : [];
-          const subheaderList = subheader ? [<ListSubheader>{subheader}</ListSubheader>] : [];
+        {data.reduce((list, { divider, subheader, links }) => {
+          const subheaderList = subheader
+            ? [<ListSubheader key={subheader.key}>{subheader.title}</ListSubheader>]
+            : [];
 
-          const linksList = links.map(({ Icon, label, to }) => (
+          const linksList = links.map(({
+            key, Icon, label, to,
+          }) => (
             <ListItem
               onClick={() => client.writeData({ data: { selectedMembers: [] } })}
               component={Link}
               to={to}
               button
+              key={key}
             >
               <ListItemIcon>
                 <Icon />
@@ -31,7 +35,9 @@ const MenuItems = ({ data }) => (
             </ListItem>
           ));
 
-          return [...list, ...dividerList, ...subheaderList, ...linksList];
+          const dividerList = divider ? [<Divider key={divider.key} />] : [];
+
+          return [...list, ...subheaderList, ...linksList, ...dividerList];
         }, [])}
       </List>
     )}
@@ -40,12 +46,19 @@ const MenuItems = ({ data }) => (
 
 MenuItems.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
-    subheader: PropTypes.string,
+    subheader: PropTypes.shape({
+      key: PropTypes.number,
+      title: PropTypes.string,
+    }),
     links: PropTypes.arrayOf(PropTypes.shape({
       Icon: PropTypes.func.isRequired,
       label: PropTypes.string.isRequired,
       to: PropTypes.string.isRequired,
+      key: PropTypes.number.isRequired,
     }).isRequired).isRequired,
+    divider: PropTypes.shape({
+      key: PropTypes.number,
+    }),
   }).isRequired).isRequired,
 };
 

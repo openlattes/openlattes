@@ -27,24 +27,42 @@ const GET_SELECTED_MEMBERS = gql`
 const menuItems = [
   {
     links: [
-      { Icon: DashboardIcon, label: 'Home', to: '/' },
+      {
+        key: 1, Icon: DashboardIcon, label: 'Home', to: '/',
+      },
     ],
+    divider: { key: 2 },
   },
   {
-    subheader: 'Produções Bibliográficas',
+    subheader: { key: 3, title: 'Produções Bibliográficas' },
     links: [
-      { Icon: BarChartIcon, label: 'Evolução', to: '/productions_year' },
-      { Icon: RotatedBarChartIcon, label: 'Tipos', to: '/productions_type' },
-      { Icon: RotatedBarChartIcon, label: 'Membros', to: '/productions_member' },
-      { Icon: ShareIcon, label: 'Coautorias', to: '/collaborations' },
+      {
+        key: 4, Icon: BarChartIcon, label: 'Evolução', to: '/productions_year',
+      },
+      {
+        key: 5, Icon: RotatedBarChartIcon, label: 'Tipos', to: '/productions_type',
+      },
+      {
+        key: 6, Icon: RotatedBarChartIcon, label: 'Membros', to: '/productions_member',
+      },
+      {
+        key: 7, Icon: ShareIcon, label: 'Coautorias', to: '/collaborations',
+      },
     ],
+    divider: { key: 8 },
   },
   {
-    subheader: 'Orientações',
+    subheader: { key: 9, title: 'Orientações' },
     links: [
-      { Icon: BarChartIcon, label: 'Evolução', to: '/supervisions_year' },
-      { Icon: RotatedBarChartIcon, label: 'Tipos', to: '/supervisions_type' },
-      { Icon: RotatedBarChartIcon, label: 'Membros', to: '/supervisions_member' },
+      {
+        key: 10, Icon: BarChartIcon, label: 'Evolução', to: '/supervisions_year',
+      },
+      {
+        key: 11, Icon: RotatedBarChartIcon, label: 'Tipos', to: '/supervisions_type',
+      },
+      {
+        key: 12, Icon: RotatedBarChartIcon, label: 'Membros', to: '/supervisions_member',
+      },
     ],
   },
 ];
@@ -56,41 +74,49 @@ const App = () => (
 
       const routes = [
         {
+          key: 1,
           exact: true,
           path: '/',
           render: <MembersList />,
         },
         {
+          key: 2,
           exact: false,
           path: '/collaborations',
           render: <CollaborationIndicator selectedMembers={selectedMembers} />,
         },
         {
+          key: 3,
           exact: false,
           path: '/productions_year',
           render: <ProductionIndicator selectedMembers={selectedMembers} />,
         },
         {
+          key: 4,
           exact: false,
           path: '/productions_type',
           render: <TypeIndicator selectedMembers={selectedMembers} />,
         },
         {
+          key: 5,
           exact: false,
           path: '/productions_member',
           render: <ProductionIndicator selectedMembers={selectedMembers} by="member" projection="horizontal" />,
         },
         {
+          key: 6,
           exact: false,
           path: '/supervisions_year',
           render: <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} />,
         },
         {
+          key: 7,
           exact: false,
           path: '/supervisions_type',
           render: <TypeIndicator collection="SUPERVISION" selectedMembers={selectedMembers} />,
         },
         {
+          key: 8,
           exact: false,
           path: '/supervisions_member',
           render: <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} by="member" projection="horizontal" />,
@@ -102,8 +128,10 @@ const App = () => (
           <Layout
             menuItems={<MenuItems data={menuItems} />}
           >
-            {routes.map(({ exact, path, render }) => (
-              <Route exact={exact} path={path} render={() => render} />
+            {routes.map(({
+              key, exact, path, render,
+            }) => (
+              <Route key={key} exact={exact} path={path} render={() => render} />
             ))}
           </Layout>
         </Router>
