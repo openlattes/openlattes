@@ -12,69 +12,38 @@ const styles = () => ({
   },
 });
 
-class Checkboxes extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-    props.items.forEach(({ label, checked }) => {
-      this.state[label] = checked;
-    });
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  componentDidMount() {
-    const itemsArray = this.props.items
-      .filter(({ checked }) => checked)
-      .map(({ label }) => label);
-
-    this.props.onMount(itemsArray);
-  }
-
-  handleChange(e) {
-    this.setState({ [e.target.value]: e.target.checked });
-    this.props.onChange(e);
-  }
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <div>
-        <FormGroup>
-          {this.props.items.map(({ label, color }) => (
-            <FormControlLabel
-              label={label}
-              key={label}
-              control={
-                <Checkbox
-                  className={classes.checkbox}
-                  checked={this.state[label]}
-                  onChange={this.handleChange}
-                  value={label}
-                  style={{ color }}
-                />
-              }
+const Checkboxes = ({
+  classes, items, colorHash, selected, onChange,
+}) => (
+  <div>
+    <FormGroup>
+      {items.map(label => (
+        <FormControlLabel
+          label={label}
+          key={label}
+          control={
+            <Checkbox
+              className={classes.checkbox}
+              checked={selected.has(label)}
+              onChange={onChange}
+              value={label}
+              style={{ color: colorHash.get(label) }}
             />
-          ))}
-        </FormGroup>
-      </div>
-    );
-  }
-}
+          }
+        />
+      ))}
+    </FormGroup>
+  </div>
+);
 
 Checkboxes.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired,
-    checked: PropTypes.bool.isRequired,
-  })).isRequired,
-  onMount: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
   classes: PropTypes.shape({
     checkbox: PropTypes.string,
   }).isRequired,
+  items: PropTypes.arrayOf(PropTypes.string).isRequired,
+  colorHash: PropTypes.instanceOf(Map).isRequired,
+  selected: PropTypes.instanceOf(Set).isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Checkboxes);

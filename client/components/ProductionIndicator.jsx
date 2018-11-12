@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
@@ -20,33 +18,20 @@ const styles = theme => ({
   },
 });
 
-const GET_INDICATOR = gql`
-  query Indicator($collection: Collection, $by: By $selectedMembers: [ID]) {
-    indicator(collection: $collection, by: $by, members: $selectedMembers) {
-      year
-      member
-      count
-      type
-    }
-  }
-`;
+const projections = new Map([
+  ['year', 'vertical'],
+  ['member', 'horizontal'],
+]);
 
 class ProductionIndicator extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedCheckboxes: new Set(),
+      selectedCheckboxes: new Set(props.checkboxesValues),
     };
 
-    this.initSelectedCheckboxes = this.initSelectedCheckboxes.bind(this);
     this.updateSelectedCheckboxes = this.updateSelectedCheckboxes.bind(this);
-  }
-
-  initSelectedCheckboxes(itemsArray) {
-    this.setState({
-      selectedCheckboxes: new Set(itemsArray),
-    });
   }
 
   updateSelectedCheckboxes(e) {
@@ -65,64 +50,47 @@ class ProductionIndicator extends Component {
   }
 
   render() {
-    const { selectedCheckboxes } = this.state;
     const {
-      classes, collection, by, selectedMembers, projection,
+      classes, chartData, checkboxesValues, by,
     } = this.props;
+    const { selectedCheckboxes } = this.state;
+
+    const colors = [
+      red[200], red[500], red[800], blue[200], blue[500],
+      blue[800], green[200], green[500], green[800], yellow[300],
+    ];
+
+    const checkboxes = [...checkboxesValues].reverse();
+
+    const colorHash = checkboxes
+      .reduce((map, item) => map.set(item, colors.pop()), new Map());
+
+    const indicator = chartData
+      .filter(({ type }) => selectedCheckboxes.has(type));
 
     return (
-      <Query query={GET_INDICATOR} variables={{ collection, by, selectedMembers }}>
-        {({ loading, error, data }) => {
-          if (loading) return 'Carregando...';
-          if (error) return 'Não foi possível carregar o gráfico.';
-
-          const colors = [
-            red[200], red[500], red[800], blue[200], blue[500],
-            blue[800], green[200], green[500], green[800], yellow[300],
-          ];
-
-          const checkboxes = [
-            ...data.indicator
-              .reduce((set, { type }) => set.add(type), new Set()),
-            ]
-            .reverse()
-            .map(type => ({
-              label: type,
-              checked: true,
-              color: colors.pop(),
-            }));
-
-          const colorHash = checkboxes
-            .reduce((map, { label, color }) => map.set(label, color), new Map());
-
-          const indicator = data.indicator
-            .filter(({ type }) => selectedCheckboxes.has(type));
-
-          return (
-            <Grid container spacing={32}>
-              <Grid item>
-                <Paper className={classes.paper}>
-                  <StackedBarChart
-                    data={indicator}
-                    colorHash={colorHash}
-                    by={by}
-                    projection={projection}
-                  />
-                </Paper>
-              </Grid>
-              <Grid item>
-                <Paper className={classes.paper}>
-                  <Checkboxes
-                    items={checkboxes}
-                    onMount={this.initSelectedCheckboxes}
-                    onChange={this.updateSelectedCheckboxes}
-                  />
-                </Paper>
-              </Grid>
-            </Grid>
-          );
-        }}
-      </Query>
+      <Grid container spacing={32}>
+        <Grid item>
+          <Paper className={classes.paper}>
+            <StackedBarChart
+              data={indicator}
+              colorHash={colorHash}
+              by={by}
+              projection={projections.get(by)}
+            />
+          </Paper>
+        </Grid>
+        <Grid item>
+          <Paper className={classes.paper}>
+            <Checkboxes
+              items={checkboxes}
+              selected={selectedCheckboxes}
+              colorHash={colorHash}
+              onChange={this.updateSelectedCheckboxes}
+            />
+          </Paper>
+        </Grid>
+      </Grid>
     );
   }
 }
@@ -131,17 +99,14 @@ ProductionIndicator.propTypes = {
   classes: PropTypes.shape({
     paper: PropTypes.string,
   }).isRequired,
-  collection: PropTypes.string,
-  by: PropTypes.string,
-  selectedMembers: PropTypes
-    .arrayOf(PropTypes.string).isRequired,
-  projection: PropTypes.string,
-};
-
-ProductionIndicator.defaultProps = {
-  collection: undefined,
-  by: 'year',
-  projection: 'vertical',
+  chartData: PropTypes.arrayOf(PropTypes.shape({
+    year: PropTypes.number,
+    member: PropTypes.string,
+    count: PropTypes.number.isRequired,
+    type: PropTypes.string.isRequired,
+  })).isRequired,
+  checkboxesValues: PropTypes.instanceOf(Set).isRequired,
+  by: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(ProductionIndicator);
