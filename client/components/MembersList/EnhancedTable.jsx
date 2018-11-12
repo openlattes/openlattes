@@ -59,11 +59,7 @@ class EnhancedTable extends React.Component {
       order: 'asc',
       orderBy: 'calories',
       selected: [],
-      data: props.data.map(({
-        _id, fullName, citationName, lattesId, cvLastUpdate,
-      }) => ({
-        id: _id, fullName, citationName, lattesId, cvLastUpdate,
-      })),
+      data: props.data,
       page: 0,
       rowsPerPage: 25,
     };
@@ -224,13 +220,7 @@ EnhancedTable.propTypes = {
     table: PropTypes.string,
     tableWrapper: PropTypes.string,
   }).isRequired,
-  data: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    fullName: PropTypes.string.isRequired,
-    citationName: PropTypes.string.isRequired,
-    lattesId: PropTypes.string.isRequired,
-    cvLastUpdate: PropTypes.string.isRequired,
-  })).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default withStyles(styles)(EnhancedTable);

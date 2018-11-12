@@ -24,7 +24,15 @@ class MembersList extends PureComponent {
           if (loading) return 'Carregando...';
           if (error) return 'Erro';
 
-          return <EnhancedTable data={data.members} />;
+          return (
+            <EnhancedTable
+              data={data.members.map(({
+                _id, fullName, citationName, lattesId, cvLastUpdate,
+              }) => ({
+                id: _id, fullName, citationName, lattesId, cvLastUpdate,
+              }))}
+            />
+          );
         }}
       </Query>
     );
