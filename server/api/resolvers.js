@@ -167,7 +167,7 @@ const resolvers = {
   Query: {
     member: (obj, { _id }) => Member.findById(_id),
 
-    members: () => Member.find(),
+    members: (obj, { members }) => Member.find(match('_id', toObjectIds(members))),
 
     production: (obj, { _id }) => Production.findById(_id),
 
@@ -232,10 +232,6 @@ const resolvers = {
           },
         },
       ]),
-  },
-
-  Production: {
-    members: ({ members }) => Member.find({ _id: { $in: members } }),
   },
 
   Supervision: {
