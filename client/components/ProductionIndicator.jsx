@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 
 import red from '@material-ui/core/colors/red';
 import blue from '@material-ui/core/colors/blue';
@@ -11,6 +12,8 @@ import yellow from '@material-ui/core/colors/yellow';
 
 import StackedBarChart from './StackedBarChart';
 import Checkboxes from './Checkboxes';
+import ProductionsList from './ProductionsList';
+import SupervisionsList from './SupervisionsList';
 
 const styles = theme => ({
   paper: {
@@ -23,15 +26,24 @@ const projections = new Map([
   ['member', 'horizontal'],
 ]);
 
+const tables = new Map([
+  ['BIBLIOGRAPHIC', ProductionsList],
+  ['SUPERVISION', SupervisionsList],
+]);
+
 class ProductionIndicator extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       selectedCheckboxes: new Set(props.checkboxesValues),
+      selectedYear: null,
+      selectedMember: null,
+      selectedTypes: [],
     };
 
     this.updateSelectedCheckboxes = this.updateSelectedCheckboxes.bind(this);
+    this.handleChartClick = this.handleChartClick.bind(this);
   }
 
   updateSelectedCheckboxes(e) {
@@ -49,11 +61,24 @@ class ProductionIndicator extends Component {
     });
   }
 
+  handleChartClick({ column, pieces }) {
+    const { by } = this.props;
+    const columnTypes = pieces.map(({ data }) => data.type);
+    const selectedColumn = by === 'year' ? 'selectedYear' : 'selectedMember';
+
+    this.setState({
+      [selectedColumn]: column.name,
+      selectedTypes: columnTypes,
+    });
+  }
+
   render() {
     const {
-      classes, chartData, checkboxesValues, selectField, by,
+      classes, chartData, checkboxesValues, selectField, by, collection,
     } = this.props;
-    const { selectedCheckboxes } = this.state;
+    const {
+      selectedCheckboxes, selectedYear, selectedMember, selectedTypes,
+    } = this.state;
 
     const colors = [
       red[200], red[500], red[800], blue[200], blue[500],
@@ -68,6 +93,8 @@ class ProductionIndicator extends Component {
     const indicator = chartData
       .filter(({ type }) => selectedCheckboxes.has(type));
 
+    const DataList = tables.get(collection);
+
     return (
       <Grid container spacing={32}>
         <Grid item>
@@ -77,6 +104,7 @@ class ProductionIndicator extends Component {
               colorHash={colorHash}
               by={by}
               projection={projections.get(by)}
+              onClick={this.handleChartClick}
             />
           </Paper>
         </Grid>
@@ -91,6 +119,17 @@ class ProductionIndicator extends Component {
             />
           </Paper>
         </Grid>
+        {selectedYear || selectedMember ? (
+          <Grid>
+            <Typography variant="h5">{`Produções de ${selectedYear || selectedMember}:`}</Typography>
+            <DataList
+              year={Number(selectedYear)}
+              member={selectedMember}
+              types={selectedTypes}
+            />
+          </Grid>
+        )
+        : <Typography variant="h5">Clique nas colunas do gráfico para ver as publicações.</Typography>}
       </Grid>
     );
   }
@@ -111,10 +150,12 @@ ProductionIndicator.propTypes = {
   selectField: PropTypes.object,
   /* eslint-enable react/forbid-prop-types */
   by: PropTypes.string.isRequired,
+  collection: PropTypes.string,
 };
 
 ProductionIndicator.defaultProps = {
   selectField: undefined,
+  collection: 'BIBLIOGRAPHIC',
 };
 
 export default withStyles(styles)(ProductionIndicator);

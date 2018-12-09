@@ -5,12 +5,12 @@ const typeDefs = gql`
     member(_id: ID!): Member
     members(members: [ID]): [Member]
     production(_id: ID!): Production
-    productions: [Production]
+    productions(year: Int, member: ID, types: [String]): [Production]
     supervision(_id: ID!): Supervision
-    supervisions: [Supervision]
+    supervisions(year: Int, member: ID, types: [String]): [Supervision]
     indicator(
       collection: Collection = BIBLIOGRAPHIC,
-      by: By = year, 
+      by: By = year,
       members: [ID]
       campus: [String]
     ): [Indicator]

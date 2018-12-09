@@ -75,6 +75,7 @@ class ProductionIndicatorQuery extends Component {
                   label="Campus"
                 />
               ) : undefined}
+              collection={collection}
             />
           );
         }}

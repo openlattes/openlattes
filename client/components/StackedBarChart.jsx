@@ -51,7 +51,7 @@ const otherProps = new Map([
 class StackedBarChart extends PureComponent {
   render() {
     const {
-      data, colorHash, by, projection,
+      data, colorHash, by, projection, onClick,
     } = this.props;
 
     const { axis, oLabel, left } = otherProps.get(projection);
@@ -75,6 +75,7 @@ class StackedBarChart extends PureComponent {
         baseMarkProps={{ forceUpdate: true }}
         hoverAnnotation
         tooltipContent={customTooltipContent}
+        customClickBehavior={onClick}
       />
     );
   }
@@ -90,10 +91,12 @@ StackedBarChart.propTypes = {
   colorHash: PropTypes.instanceOf(Map).isRequired,
   by: PropTypes.string.isRequired,
   projection: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 StackedBarChart.defaultProps = {
   projection: 'vertical',
+  onClick: undefined,
 };
 
 export default StackedBarChart;

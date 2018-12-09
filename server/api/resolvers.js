@@ -36,6 +36,40 @@ function match(field, value) {
   return {};
 }
 
+function productionsResolver(collection) {
+  const { coll, typeField } = collections.get(collection);
+
+  return (obj, { year, member, types }) => {
+    const memberNameMatch = member ? {
+      members_data: {
+        $elemMatch: {
+          fullName: member,
+        },
+      },
+    } : {};
+
+    const lookup = member ? [{
+      $lookup: {
+        from: 'members',
+        localField: 'members',
+        foreignField: '_id',
+        as: 'members_data',
+      },
+    }] : [];
+
+    return coll.aggregate([
+      ...lookup,
+      {
+        $match: {
+          ...match('year', year),
+          ...match(typeField.substr(1), types),
+          ...memberNameMatch,
+        },
+      },
+    ]);
+  };
+}
+
 const productionIndicator = {
   year({ coll, ids, typeField }) {
     return coll.aggregate([
@@ -171,11 +205,11 @@ const resolvers = {
 
     production: (obj, { _id }) => Production.findById(_id),
 
-    productions: () => Production.find(),
+    productions: productionsResolver('BIBLIOGRAPHIC'),
 
     supervision: (obj, { _id }) => Supervision.findById(_id),
 
-    supervisions: () => Supervision.find(),
+    supervisions: productionsResolver('SUPERVISION'),
 
     indicator: async (obj, {
       collection, by, members, campus,
