@@ -2,7 +2,7 @@
   "name": "openlattes",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch",
     "lint": "eslint --ext .js,.jsx client/ server/",
     "buildserver": "babel server -d dist --env-name server",
     "buildclient": "parcel build client/index.html -d dist/public",
@@ -38,13 +38,16 @@
     "@babel/node": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.2.6",
+    "babel-jest": "^23.6.0",
     "concurrently": "^4.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
+    "jest": "^23.6.0",
     "nodemon": "^1.18.4",
     "parcel-bundler": "^1.10.3"
   }
