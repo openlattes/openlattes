@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -18,6 +19,8 @@ const GET_MEMBERS = gql`
 
 class MembersList extends PureComponent {
   render() {
+    const { selectedMembers } = this.props;
+
     return (
       <Query query={GET_MEMBERS}>
         {({ loading, error, data }) => {
@@ -31,6 +34,7 @@ class MembersList extends PureComponent {
               }) => ({
                 id: _id, fullName, citationName, lattesId, cvLastUpdate,
               }))}
+              selectedMembers={selectedMembers}
             />
           );
         }}
@@ -38,5 +42,14 @@ class MembersList extends PureComponent {
     );
   }
 }
+
+MembersList.propTypes = {
+  selectedMembers: PropTypes
+    .arrayOf(PropTypes.string),
+};
+
+MembersList.defaultProps = {
+  selectedMembers: [],
+};
 
 export default MembersList;

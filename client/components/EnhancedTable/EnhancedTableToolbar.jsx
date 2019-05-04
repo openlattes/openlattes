@@ -4,20 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import ShareIcon from '@material-ui/icons/Share';
-import BarChartIcon from '@material-ui/icons/BarChart';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import { Link } from 'react-router-dom';
-
-const RotatedBarChartIcon = () => (
-  <BarChartIcon
-    style={{
-      transform: 'rotate(90deg)',
-    }}
-  />
-);
 
 const toolbarStyles = theme => ({
   root: {
@@ -33,50 +20,13 @@ const toolbarStyles = theme => ({
         color: theme.palette.text.primary,
         backgroundColor: theme.palette.secondary.dark,
       },
-  spacer: {
-    flex: '1 1 20%',
-  },
-  actions: {
-    display: 'flex',
-    alignItems: 'center',
-    paddingLeft: 20,
-    paddingRight: 20,
-    color: theme.palette.text.secondary,
-  },
   title: {
     flex: '0 0 auto',
   },
 });
 
-const productionButtons = [
-  {
-    key: 1, tooltip: 'Evolução', Icon: BarChartIcon, minSelected: 1, route: '/productions_year',
-  },
-  {
-    key: 2, tooltip: 'Tipos', Icon: RotatedBarChartIcon, minSelected: 1, route: '/productions_type',
-  },
-  {
-    key: 3, tooltip: 'Membros', Icon: RotatedBarChartIcon, minSelected: 1, route: '/productions_member',
-  },
-  {
-    key: 4, tooltip: 'Coautorias', Icon: ShareIcon, minSelected: 1, route: '/collaborations',
-  },
-];
-
-const supervisionButtons = [
-  {
-    key: 5, tooltip: 'Evolução', Icon: BarChartIcon, minSelected: 1, route: '/supervisions_year',
-  },
-  {
-    key: 6, tooltip: 'Tipos', Icon: RotatedBarChartIcon, minSelected: 1, route: '/supervisions_type',
-  },
-  {
-    key: 7, tooltip: 'Membros', Icon: RotatedBarChartIcon, minSelected: 1, route: '/supervisions_member',
-  },
-];
-
 const EnhancedTableToolbar = (props) => {
-  const { numSelected, onToolbarButtonClick, classes } = props;
+  const { numSelected, classes } = props;
 
   return (
     <Toolbar
@@ -95,47 +45,6 @@ const EnhancedTableToolbar = (props) => {
           </Typography>
         )}
       </div>
-      <div className={classes.spacer} />
-      <div className={classes.actions}>
-        <Typography variant="subtitle2">
-          Produções Bibliográficas
-        </Typography>
-        {productionButtons.map(({
-          key, tooltip, Icon, minSelected, route,
-        }) => (
-          <Tooltip key={key} title={tooltip}>
-            <IconButton
-              onClick={onToolbarButtonClick}
-              component={Link}
-              to={route}
-              disabled={numSelected < minSelected}
-              aria-label={tooltip}
-            >
-              <Icon />
-            </IconButton>
-          </Tooltip>
-        ))}
-      </div>
-      <div className={classes.actions}>
-        <Typography variant="subtitle2">
-          Orientações
-        </Typography>
-        {supervisionButtons.map(({
-          key, tooltip, Icon, minSelected, route,
-        }) => (
-          <Tooltip key={key} title={tooltip}>
-            <IconButton
-              onClick={onToolbarButtonClick}
-              component={Link}
-              to={route}
-              disabled={numSelected < minSelected}
-              aria-label={tooltip}
-            >
-              <Icon />
-            </IconButton>
-          </Tooltip>
-        ))}
-      </div>
     </Toolbar>
   );
 };
@@ -149,7 +58,6 @@ EnhancedTableToolbar.propTypes = {
     title: PropTypes.string,
   }).isRequired,
   numSelected: PropTypes.number.isRequired,
-  onToolbarButtonClick: PropTypes.func.isRequired,
 };
 
 export default withStyles(toolbarStyles)(EnhancedTableToolbar);

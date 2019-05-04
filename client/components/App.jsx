@@ -77,7 +77,7 @@ const App = () => (
           key: 1,
           exact: true,
           path: '/',
-          render: <MembersList />,
+          render: <MembersList selectedMembers={selectedMembers} />,
         },
         {
           key: 2,

@@ -58,7 +58,7 @@ class EnhancedTable extends React.Component {
     this.state = {
       order: 'asc',
       orderBy: 'calories',
-      selected: [],
+      selected: props.selectedMembers,
       data: props.data,
       page: 0,
       rowsPerPage: 25,
@@ -70,7 +70,6 @@ class EnhancedTable extends React.Component {
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     this.isSelected = this.isSelected.bind(this);
-    this.handleToolbarButtonClick = this.handleToolbarButtonClick.bind(this);
   }
 
   handleRequestSort(event, property) {
@@ -84,15 +83,21 @@ class EnhancedTable extends React.Component {
     this.setState({ order, orderBy });
   }
 
-  handleSelectAllClick(event) {
+  handleSelectAllClick(event, client) {
     if (event.target.checked) {
-      this.setState(state => ({ selected: state.data.map(n => n.id) }));
+      const selected = this.state.data.map(n => n.id);
+
+      client.writeData({ data: { selectedMembers: selected } });
+      this.setState({ selected });
+
       return;
     }
+
+    client.writeData({ data: { selectedMembers: [] } });
     this.setState({ selected: [] });
   }
 
-  handleClick(event, id) {
+  handleClick(event, id, client) {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
@@ -110,6 +115,7 @@ class EnhancedTable extends React.Component {
       );
     }
 
+    client.writeData({ data: { selectedMembers: newSelected } });
     this.setState({ selected: newSelected });
   }
 
@@ -125,12 +131,6 @@ class EnhancedTable extends React.Component {
     return this.state.selected.indexOf(id) !== -1;
   }
 
-  handleToolbarButtonClick(client) {
-    return () => {
-      client.writeData({ data: { selectedMembers: this.state.selected } });
-    };
-  }
-
   render() {
     const { classes } = this.props;
     const {
@@ -140,60 +140,59 @@ class EnhancedTable extends React.Component {
 
     return (
       <Paper className={classes.root}>
-        <ApolloConsumer>
-          {client => (
-            <EnhancedTableToolbar
-              numSelected={selected.length}
-              onToolbarButtonClick={this.handleToolbarButtonClick(client)}
-            />
-          )}
-        </ApolloConsumer>
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+        />
         <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
-            />
-            <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
-                .map((n) => {
-                  const isSelected = this.isSelected(n.id);
-                  return (
-                    <TableRow
-                      hover
-                      onClick={event => this.handleClick(event, n.id)}
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n.id}
-                      selected={isSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        <a href={`http://lattes.cnpq.br/${n.lattesId}`} target="_blank" rel="noopener noreferrer">
-                          {n.fullName}
-                          <OpenInNewIcon style={{ fontSize: 12 }} />
-                        </a>
-                      </TableCell>
-                      <TableCell>{n.citationName}</TableCell>
-                      <TableCell>{n.cvLastUpdate}</TableCell>
+          <ApolloConsumer>
+            {client => (
+              <Table className={classes.table} aria-labelledby="tableTitle">
+                <EnhancedTableHead
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={event => this.handleSelectAllClick(event, client)}
+                  onRequestSort={this.handleRequestSort}
+                  rowCount={data.length}
+                />
+                <TableBody>
+                  {stableSort(data, getSorting(order, orderBy))
+                    .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
+                    .map((n) => {
+                      const isSelected = this.isSelected(n.id);
+                      return (
+                        <TableRow
+                          hover
+                          onClick={event => this.handleClick(event, n.id, client)}
+                          role="checkbox"
+                          aria-checked={isSelected}
+                          tabIndex={-1}
+                          key={n.id}
+                          selected={isSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox checked={isSelected} />
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <a href={`http://lattes.cnpq.br/${n.lattesId}`} target="_blank" rel="noopener noreferrer">
+                              {n.fullName}
+                              <OpenInNewIcon style={{ fontSize: 12 }} />
+                            </a>
+                          </TableCell>
+                          <TableCell>{n.citationName}</TableCell>
+                          <TableCell>{n.cvLastUpdate}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 49 * emptyRows }}>
+                      <TableCell colSpan={6} />
                     </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                  )}
+                </TableBody>
+              </Table>
+            )}
+          </ApolloConsumer>
         </div>
         <TablePagination
           component="div"
@@ -221,6 +220,12 @@ EnhancedTable.propTypes = {
     tableWrapper: PropTypes.string,
   }).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectedMembers: PropTypes
+    .arrayOf(PropTypes.string),
+};
+
+EnhancedTable.defaultProps = {
+  selectedMembers: [],
 };
 
 export default withStyles(styles)(EnhancedTable);

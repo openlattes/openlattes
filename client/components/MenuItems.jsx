@@ -7,41 +7,35 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { Link } from 'react-router-dom';
-import { ApolloConsumer } from 'react-apollo';
 
 const MenuItems = ({ data }) => (
-  <ApolloConsumer>
-    {client => (
-      <List>
-        {data.reduce((list, { divider, subheader, links }) => {
-          const subheaderList = subheader
-            ? [<ListSubheader key={subheader.key}>{subheader.title}</ListSubheader>]
-            : [];
+  <List>
+    {data.reduce((list, { divider, subheader, links }) => {
+      const subheaderList = subheader
+        ? [<ListSubheader key={subheader.key}>{subheader.title}</ListSubheader>]
+        : [];
 
-          const linksList = links.map(({
-            key, Icon, label, to,
-          }) => (
-            <ListItem
-              onClick={() => client.writeData({ data: { selectedMembers: [] } })}
-              component={Link}
-              to={to}
-              button
-              key={key}
-            >
-              <ListItemIcon>
-                <Icon />
-              </ListItemIcon>
-              <ListItemText primary={label} />
-            </ListItem>
-          ));
+      const linksList = links.map(({
+        key, Icon, label, to,
+      }) => (
+        <ListItem
+          component={Link}
+          to={to}
+          button
+          key={key}
+        >
+          <ListItemIcon>
+            <Icon />
+          </ListItemIcon>
+          <ListItemText primary={label} />
+        </ListItem>
+      ));
 
-          const dividerList = divider ? [<Divider key={divider.key} />] : [];
+      const dividerList = divider ? [<Divider key={divider.key} />] : [];
 
-          return [...list, ...subheaderList, ...linksList, ...dividerList];
-        }, [])}
-      </List>
-    )}
-  </ApolloConsumer>
+      return [...list, ...subheaderList, ...linksList, ...dividerList];
+    }, [])}
+  </List>
 );
 
 MenuItems.propTypes = {
