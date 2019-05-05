@@ -141,7 +141,7 @@ class EnhancedTable extends React.Component {
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar
-          numSelected={selected.length}
+          selected={selected}
         />
         <div className={classes.tableWrapper}>
           <ApolloConsumer>
