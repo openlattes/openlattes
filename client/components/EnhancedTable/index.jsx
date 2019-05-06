@@ -70,6 +70,7 @@ class EnhancedTable extends React.Component {
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     this.isSelected = this.isSelected.bind(this);
+    this.handleSelectionSave = this.handleSelectionSave.bind(this);
   }
 
   handleRequestSort(event, property) {
@@ -131,6 +132,11 @@ class EnhancedTable extends React.Component {
     return this.state.selected.indexOf(id) !== -1;
   }
 
+  handleSelectionSave(client) {
+    client.writeData({ data: { selectedMembers: [] } });
+    this.setState({ selected: [] });
+  }
+
   render() {
     const { classes } = this.props;
     const {
@@ -139,13 +145,14 @@ class EnhancedTable extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - (page * rowsPerPage));
 
     return (
-      <Paper className={classes.root}>
-        <EnhancedTableToolbar
-          selected={selected}
-        />
-        <div className={classes.tableWrapper}>
-          <ApolloConsumer>
-            {client => (
+      <ApolloConsumer>
+        {client => (
+          <Paper className={classes.root}>
+            <EnhancedTableToolbar
+              selected={selected}
+              onSelectionSave={() => this.handleSelectionSave(client)}
+            />
+            <div className={classes.tableWrapper}>
               <Table className={classes.table} aria-labelledby="tableTitle">
                 <EnhancedTableHead
                   numSelected={selected.length}
@@ -191,24 +198,24 @@ class EnhancedTable extends React.Component {
                   )}
                 </TableBody>
               </Table>
-            )}
-          </ApolloConsumer>
-        </div>
-        <TablePagination
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
-      </Paper>
+            </div>
+            <TablePagination
+              component="div"
+              count={data.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              backIconButtonProps={{
+                'aria-label': 'Previous Page',
+              }}
+              nextIconButtonProps={{
+                'aria-label': 'Next Page',
+              }}
+              onChangePage={this.handleChangePage}
+              onChangeRowsPerPage={this.handleChangeRowsPerPage}
+            />
+          </Paper>
+        )}
+      </ApolloConsumer>
     );
   }
 }

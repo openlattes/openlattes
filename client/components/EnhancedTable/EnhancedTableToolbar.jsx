@@ -8,6 +8,9 @@ import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
+import db from '../../db';
+import CustomDialog from '../CustomDialog';
+
 const toolbarStyles = theme => ({
   root: {
     paddingRight: theme.spacing.unit,
@@ -43,9 +46,23 @@ class EnhancedTableToolbar extends Component {
 
     this.state = {
       groupName: '',
+      dialogOpen: false,
+      dialogTitle: '',
+      dialogContent: '',
     };
 
+    this.openErrorDialog = this.openErrorDialog.bind(this);
     this.handleGroupNameChange = this.handleGroupNameChange.bind(this);
+    this.handleSaveButtonClick = this.handleSaveButtonClick.bind(this);
+    this.handleDialogClose = this.handleDialogClose.bind(this);
+  }
+
+  openErrorDialog(message) {
+    this.setState({
+      dialogTitle: 'Erro',
+      dialogContent: message,
+      dialogOpen: true,
+    });
   }
 
   handleGroupNameChange(e) {
@@ -54,43 +71,110 @@ class EnhancedTableToolbar extends Component {
     });
   }
 
+  handleSaveButtonClick() {
+    const { selected, onSelectionSave } = this.props;
+    const groupName = this.state.groupName.trim();
+
+    // Validate input
+    if (groupName === '') {
+      // No empty field
+      this.openErrorDialog('Escolha um nome para o grupo.');
+    } else if (groupName === 'Atual' || groupName === 'Nenhum') {
+      // No reserved words
+      this.openErrorDialog('Nome inválido. Tente outro.');
+    } else if (!selected.length) {
+      // No member selected
+      this.openErrorDialog('Nenhum membro selecionado.');
+    } else {
+      db.groups.toArray() // Query all groups
+        .then((groups) => {
+          // Compare new name with all stored names
+          const nameExists = groups
+            .map(({ name }) => name)
+            .includes(groupName);
+
+          if (nameExists) {
+            // No repeated names
+            throw Error(`Já existe um grupo chamado "${groupName}". Tente outro.`);
+          } else {
+            // Validated: store new group
+            return db.groups.add({
+              name: groupName,
+              members: selected,
+            });
+          }
+        })
+        .then(() => {
+          // Clear selection
+          onSelectionSave();
+
+          this.setState({
+            groupName: '',
+            dialogTitle: 'Sucesso',
+            dialogContent: 'Novo grupo criado.',
+            dialogOpen: true,
+          });
+        })
+        .catch((err) => {
+          this.openErrorDialog(err.message);
+        });
+    }
+  }
+
+  handleDialogClose() {
+    this.setState({ dialogOpen: false });
+  }
+
   render() {
+    const {
+      groupName, dialogOpen, dialogTitle, dialogContent,
+    } = this.state;
     const { selected, classes } = this.props;
-    const { groupName } = this.state;
     const numSelected = selected.length;
 
     return (
-      <Toolbar
-        className={classNames(classes.root, {
-          [classes.highlight]: numSelected > 0,
-        })}
-      >
-        <div className={classes.title}>
-          {numSelected > 0 ? (
-            <Typography color="inherit" variant="subtitle1">
-              {numSelected} selecionado(s)
-            </Typography>
-          ) : (
-            <Typography variant="h6" id="tableTitle">
-              Membros
-            </Typography>
-          )}
-        </div>
-        <div className={classes.spacer} />
-        {numSelected > 0 ? (
-          <div className={classes.actions}>
-            <TextField
-              id="groupName"
-              value={groupName}
-              onChange={this.handleGroupNameChange}
-              placeholder="Nome do grupo"
-            />
-            <Button disabled={groupName === ''}>
-              Salvar Seleção
-            </Button>
+      <div>
+        <Toolbar
+          className={classNames(classes.root, {
+            [classes.highlight]: numSelected > 0,
+          })}
+        >
+          <div className={classes.title}>
+            {numSelected > 0 ? (
+              <Typography color="inherit" variant="subtitle1">
+                {numSelected} selecionado(s)
+              </Typography>
+            ) : (
+              <Typography variant="h6" id="tableTitle">
+                Membros
+              </Typography>
+            )}
           </div>
-        ) : null}
-      </Toolbar>
+          <div className={classes.spacer} />
+          {numSelected > 0 ? (
+            <div className={classes.actions}>
+              <TextField
+                id="groupName"
+                value={groupName}
+                onChange={this.handleGroupNameChange}
+                placeholder="Nome do grupo"
+              />
+              <Button
+                onClick={this.handleSaveButtonClick}
+                disabled={groupName === ''}
+              >
+                Salvar Seleção
+              </Button>
+            </div>
+          ) : null}
+        </Toolbar>
+        <CustomDialog
+          open={dialogOpen}
+          title={dialogTitle}
+          content={dialogContent}
+          onClose={this.handleDialogClose}
+        />
+      </div>
     );
   }
 }
@@ -105,6 +189,7 @@ EnhancedTableToolbar.propTypes = {
   }).isRequired,
   selected: PropTypes
     .arrayOf(PropTypes.string).isRequired,
+  onSelectionSave: PropTypes.func.isRequired,
 };
 
 export default withStyles(toolbarStyles)(EnhancedTableToolbar);
