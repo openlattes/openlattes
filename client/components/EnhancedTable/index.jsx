@@ -71,6 +71,7 @@ class EnhancedTable extends React.Component {
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     this.isSelected = this.isSelected.bind(this);
     this.handleSelectionSave = this.handleSelectionSave.bind(this);
+    this.toLattesId = this.toLattesId.bind(this);
   }
 
   handleRequestSort(event, property) {
@@ -137,6 +138,12 @@ class EnhancedTable extends React.Component {
     this.setState({ selected: [] });
   }
 
+  // Get lattesId from ObjectId
+  toLattesId(objectId) {
+    const member = this.state.data.find(({ id }) => id === objectId);
+    return member ? member.lattesId : undefined;
+  }
+
   render() {
     const { classes } = this.props;
     const {
@@ -150,6 +157,7 @@ class EnhancedTable extends React.Component {
           <Paper className={classes.root}>
             <EnhancedTableToolbar
               selected={selected}
+              toLattesId={this.toLattesId}
               onSelectionSave={() => this.handleSelectionSave(client)}
             />
             <div className={classes.tableWrapper}>
@@ -226,13 +234,14 @@ EnhancedTable.propTypes = {
     table: PropTypes.string,
     tableWrapper: PropTypes.string,
   }).isRequired,
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object),
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string),
 };
 
 EnhancedTable.defaultProps = {
   selectedMembers: [],
+  data: [],
 };
 
 export default withStyles(styles)(EnhancedTable);

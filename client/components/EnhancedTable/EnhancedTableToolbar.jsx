@@ -72,7 +72,7 @@ class EnhancedTableToolbar extends Component {
   }
 
   handleSaveButtonClick() {
-    const { selected, onSelectionSave } = this.props;
+    const { selected, onSelectionSave, toLattesId } = this.props;
     const groupName = this.state.groupName.trim();
 
     // Validate input
@@ -100,7 +100,7 @@ class EnhancedTableToolbar extends Component {
             // Validated: store new group
             return db.groups.add({
               name: groupName,
-              members: selected,
+              members: selected.map(toLattesId),
             });
           }
         })
@@ -190,6 +190,7 @@ EnhancedTableToolbar.propTypes = {
   selected: PropTypes
     .arrayOf(PropTypes.string).isRequired,
   onSelectionSave: PropTypes.func.isRequired,
+  toLattesId: PropTypes.func.isRequired,
 };
 
 export default withStyles(toolbarStyles)(EnhancedTableToolbar);
