@@ -62,19 +62,26 @@ class ProductionIndicatorQuery extends Component {
               .reduce((set, member) => set.add(member.campus), new Set()),
           ].map(option => ({ value: option, label: option }));
 
+          const filters = [];
+
+          if (campusOptions.length > 2) {
+            filters.push((
+              <SelectField
+                key={1}
+                options={campusOptions}
+                onChange={this.handleCampusChange}
+                value={campusSelection}
+                label="Campus"
+              />
+            ));
+          }
+
           return (
             <ProductionIndicator
               chartData={data.indicator}
               by={by}
               checkboxesValues={types}
-              selectField={campusOptions.length > 2 ? (
-                <SelectField
-                  options={campusOptions}
-                  onChange={this.handleCampusChange}
-                  value={campusSelection}
-                  label="Campus"
-                />
-              ) : undefined}
+              filters={filters}
               collection={collection}
             />
           );

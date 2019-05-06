@@ -74,7 +74,7 @@ class ProductionIndicator extends Component {
 
   render() {
     const {
-      classes, chartData, checkboxesValues, selectField, by, collection,
+      classes, chartData, checkboxesValues, filters, by, collection,
     } = this.props;
     const {
       selectedCheckboxes, selectedYear, selectedMember, selectedTypes,
@@ -108,16 +108,14 @@ class ProductionIndicator extends Component {
             />
           </Paper>
         </Grid>
-        <Grid item>
-          <Paper className={classes.paper}>
-            {selectField}
-            <Checkboxes
-              items={checkboxes}
-              selected={selectedCheckboxes}
-              colorHash={colorHash}
-              onChange={this.updateSelectedCheckboxes}
-            />
-          </Paper>
+        <Grid item xs={3} container direction="column" spacing={16}>
+          {filters}
+          <Checkboxes
+            items={checkboxes}
+            selected={selectedCheckboxes}
+            colorHash={colorHash}
+            onChange={this.updateSelectedCheckboxes}
+          />
         </Grid>
         {selectedYear || selectedMember ? (
           <Grid>
@@ -147,14 +145,14 @@ ProductionIndicator.propTypes = {
   })).isRequired,
   checkboxesValues: PropTypes.instanceOf(Set).isRequired,
   /* eslint-disable react/forbid-prop-types */
-  selectField: PropTypes.object,
+  filters: PropTypes.arrayOf(PropTypes.object),
   /* eslint-enable react/forbid-prop-types */
   by: PropTypes.string.isRequired,
   collection: PropTypes.string,
 };
 
 ProductionIndicator.defaultProps = {
-  selectField: undefined,
+  filters: [],
   collection: 'BIBLIOGRAPHIC',
 };
 
