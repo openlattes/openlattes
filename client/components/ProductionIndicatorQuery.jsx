@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import ProductionIndicator from './ProductionIndicator';
 import SelectField from './SelectField';
+import db from '../db';
 
 const GET_INDICATOR = gql`
   query Indicator($collection: Collection, $by: By $selectedMembers: [ID], $campus: [String]) {
@@ -26,9 +27,27 @@ class ProductionIndicatorQuery extends Component {
 
     this.state = {
       campusSelection: 'Todos',
+      groupNames: [
+        'Nenhum',
+        ...(props.selectedMembers.length ? ['Atual'] : []),
+      ],
+      groupSelection: props.selectedMembers.length ? 'Atual' : 'Nenhum',
     };
 
     this.handleCampusChange = this.handleCampusChange.bind(this);
+    this.handleGroupChange = this.handleGroupChange.bind(this);
+  }
+
+  componentDidMount() {
+    db.groups.toArray()
+      .then((groups) => {
+        this.setState({
+          groupNames: [
+            ...this.state.groupNames,
+            ...groups.map(({ name }) => name),
+          ],
+        });
+      });
   }
 
   handleCampusChange(e) {
@@ -37,10 +56,33 @@ class ProductionIndicatorQuery extends Component {
     });
   }
 
+  handleGroupChange(e) {
+    this.setState({
+      groupSelection: e.target.value,
+    });
+  }
+
   render() {
     const { collection, by, selectedMembers } = this.props;
-    const { campusSelection } = this.state;
+    const { campusSelection, groupSelection, groupNames } = this.state;
     const campus = campusSelection === 'Todos' ? undefined : campusSelection;
+
+    const groupOptions = groupNames
+      .map(option => ({ value: option, label: option }));
+
+    const filters = [];
+
+    if (groupOptions.length > 1) {
+      filters.push((
+        <SelectField
+          key={2}
+          options={groupOptions}
+          onChange={this.handleGroupChange}
+          value={groupSelection}
+          label="Seleções"
+        />
+      ));
+    }
 
     return (
       <Query
@@ -61,8 +103,6 @@ class ProductionIndicatorQuery extends Component {
             ...data.members
               .reduce((set, member) => set.add(member.campus), new Set()),
           ].map(option => ({ value: option, label: option }));
-
-          const filters = [];
 
           if (campusOptions.length > 2) {
             filters.push((
