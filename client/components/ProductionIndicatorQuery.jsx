@@ -8,14 +8,14 @@ import SelectField from './SelectField';
 import db from '../db';
 
 const GET_INDICATOR = gql`
-  query Indicator($collection: Collection, $by: By $selectedMembers: [ID], $campus: [String]) {
-    indicator(collection: $collection, by: $by, members: $selectedMembers, campus: $campus) {
+  query Indicator($collection: Collection, $by: By $members: [ID], $campus: [String]) {
+    indicator(collection: $collection, by: $by, members: $members, campus: $campus) {
       year
       member
       count
       type
     }
-    members(members: $selectedMembers) {
+    members(members: $members) {
       campus
     }
   }
@@ -88,7 +88,7 @@ class ProductionIndicatorQuery extends Component {
       <Query
         query={GET_INDICATOR}
         variables={{
-          collection, by, selectedMembers, campus,
+          collection, by, members: selectedMembers, campus,
         }}
       >
         {({ loading, error, data }) => {
