@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Query } from 'react-apollo';
+import { Query, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 
@@ -21,6 +21,14 @@ const GET_INDICATOR = gql`
   }
 `;
 
+const GET_MEMBERS_IDS = gql`
+  query Members_IDs($lattesIds: [String]) {
+    members(lattesIds: $lattesIds) {
+      _id
+    }
+  }
+`;
+
 class ProductionIndicatorQuery extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +40,7 @@ class ProductionIndicatorQuery extends Component {
         ...(props.selectedMembers.length ? ['Atual'] : []),
       ],
       groupSelection: props.selectedMembers.length ? 'Atual' : 'Nenhum',
+      selectedGroupMembers: props.selectedMembers.length ? props.selectedMembers : [],
     };
 
     this.handleCampusChange = this.handleCampusChange.bind(this);
@@ -57,14 +66,49 @@ class ProductionIndicatorQuery extends Component {
   }
 
   handleGroupChange(e) {
-    this.setState({
-      groupSelection: e.target.value,
-    });
+    const groupSelection = e.target.value;
+    const { client } = this.props;
+
+    if (groupSelection === 'Nenhum') {
+      this.setState({
+        groupSelection,
+        selectedGroupMembers: [],
+      });
+    } else if (groupSelection === 'Atual') {
+      // Members currently selected in the table
+      this.setState({
+        groupSelection,
+        selectedGroupMembers: this.props.selectedMembers,
+      });
+    } else {
+      // Group created by the user
+
+      // Get list of Lattes IDs from local DB
+      db.groups.get({ name: groupSelection })
+        // Fetch API to convert to ObjectIds
+        .then(group => client.query({
+          query: GET_MEMBERS_IDS,
+          variables: {
+            lattesIds: group.members,
+          },
+        }))
+        .then(({ data }) => {
+          this.setState({
+            groupSelection,
+            selectedGroupMembers: data.members.map(({ _id }) => _id),
+          });
+        })
+        .catch(() => {
+          this.setState({ groupSelection });
+        });
+    }
   }
 
   render() {
-    const { collection, by, selectedMembers } = this.props;
-    const { campusSelection, groupSelection, groupNames } = this.state;
+    const { collection, by } = this.props;
+    const {
+      campusSelection, groupSelection, groupNames, selectedGroupMembers,
+    } = this.state;
     const campus = campusSelection === 'Todos' ? undefined : campusSelection;
 
     const groupOptions = groupNames
@@ -75,7 +119,7 @@ class ProductionIndicatorQuery extends Component {
     if (groupOptions.length > 1) {
       filters.push((
         <SelectField
-          key={2}
+          key={1}
           options={groupOptions}
           onChange={this.handleGroupChange}
           value={groupSelection}
@@ -88,7 +132,7 @@ class ProductionIndicatorQuery extends Component {
       <Query
         query={GET_INDICATOR}
         variables={{
-          collection, by, members: selectedMembers, campus,
+          collection, by, members: selectedGroupMembers, campus,
         }}
       >
         {({ loading, error, data }) => {
@@ -107,7 +151,7 @@ class ProductionIndicatorQuery extends Component {
           if (campusOptions.length > 2) {
             filters.push((
               <SelectField
-                key={1}
+                key={2}
                 options={campusOptions}
                 onChange={this.handleCampusChange}
                 value={campusSelection}
@@ -136,6 +180,9 @@ ProductionIndicatorQuery.propTypes = {
   by: PropTypes.string,
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string).isRequired,
+  /* eslint-disable react/forbid-prop-types */
+  client: PropTypes.object.isRequired,
+  /* eslint-enable react/forbid-prop-types */
 };
 
 ProductionIndicatorQuery.defaultProps = {
@@ -143,4 +190,4 @@ ProductionIndicatorQuery.defaultProps = {
   by: 'year',
 };
 
-export default ProductionIndicatorQuery;
+export default withApollo(ProductionIndicatorQuery);
