@@ -37,9 +37,9 @@ class ProductionIndicatorQuery extends Component {
       campusSelection: 'Todos',
       groupNames: [
         'Nenhum',
-        ...(props.selectedMembers.length ? ['Atual'] : []),
+        ...(props.selectedMembers.length ? ['Seleção Atual'] : []),
       ],
-      groupSelection: props.selectedMembers.length ? 'Atual' : 'Nenhum',
+      groupSelection: props.selectedMembers.length ? 'Seleção Atual' : 'Nenhum',
       selectedGroupMembers: props.selectedMembers.length ? props.selectedMembers : [],
     };
 
@@ -74,7 +74,7 @@ class ProductionIndicatorQuery extends Component {
         groupSelection,
         selectedGroupMembers: [],
       });
-    } else if (groupSelection === 'Atual') {
+    } else if (groupSelection === 'Seleção Atual') {
       // Members currently selected in the table
       this.setState({
         groupSelection,
@@ -123,7 +123,7 @@ class ProductionIndicatorQuery extends Component {
           options={groupOptions}
           onChange={this.handleGroupChange}
           value={groupSelection}
-          label="Seleções"
+          label="Grupos"
         />
       ));
     }

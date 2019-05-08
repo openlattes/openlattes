@@ -79,7 +79,7 @@ class EnhancedTableToolbar extends Component {
     if (groupName === '') {
       // No empty field
       this.openErrorDialog('Escolha um nome para o grupo.');
-    } else if (groupName === 'Atual' || groupName === 'Nenhum') {
+    } else if (groupName === 'Seleção Atual' || groupName === 'Nenhum') {
       // No reserved words
       this.openErrorDialog('Nome inválido. Tente outro.');
     } else if (!selected.length) {
@@ -163,7 +163,7 @@ class EnhancedTableToolbar extends Component {
                 onClick={this.handleSaveButtonClick}
                 disabled={groupName === ''}
               >
-                Salvar Seleção
+                Salvar Grupo
               </Button>
             </div>
           ) : null}
