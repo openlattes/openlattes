@@ -201,7 +201,15 @@ const resolvers = {
   Query: {
     member: (obj, { _id }) => Member.findById(_id),
 
-    members: (obj, { members }) => Member.find(match('_id', toObjectIds(members))),
+    members: (obj, { members, lattesIds }) => {
+      // Try to query with Lattes ID if there is at least one
+      if (lattesIds && lattesIds.length) {
+        return Member.find(match('lattesId', lattesIds));
+      }
+
+      // Otherwise, query with ObjectIds or retrieve all members
+      return Member.find(match('_id', toObjectIds(members)));
+    },
 
     production: (obj, { _id }) => Production.findById(_id),
 

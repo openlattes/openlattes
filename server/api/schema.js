@@ -3,7 +3,7 @@ import { gql } from 'apollo-server-express';
 const typeDefs = gql`
   type Query {
     member(_id: ID!): Member
-    members(members: [ID]): [Member]
+    members(members: [ID], lattesIds: [String]): [Member]
     production(_id: ID!): Production
     productions(year: Int, member: ID, types: [String]): [Production]
     supervision(_id: ID!): Supervision
