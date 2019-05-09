@@ -72,12 +72,14 @@ class ProductionIndicatorQuery extends Component {
     if (groupSelection === 'Nenhum') {
       this.setState({
         groupSelection,
+        campusSelection: 'Todos',
         selectedGroupMembers: [],
       });
     } else if (groupSelection === 'Seleção Atual') {
       // Members currently selected in the table
       this.setState({
         groupSelection,
+        campusSelection: 'Todos',
         selectedGroupMembers: this.props.selectedMembers,
       });
     } else {
@@ -95,6 +97,7 @@ class ProductionIndicatorQuery extends Component {
         .then(({ data }) => {
           this.setState({
             groupSelection,
+            campusSelection: 'Todos',
             selectedGroupMembers: data.members.map(({ _id }) => _id),
           });
         })
