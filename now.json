@@ -3,5 +3,6 @@
   "alias": "openlattes",
   "env": {
     "MONGO_URL": "@mongo-url"
-  }
+  },
+  "version": 1
 }
