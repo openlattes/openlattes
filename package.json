@@ -41,7 +41,7 @@
     "@babel/preset-env": "^7.4.4",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.2.6",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^24.8.0",
     "concurrently": "^4.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
