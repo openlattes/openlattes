@@ -7,7 +7,7 @@
     "buildserver": "babel server -d dist --env-name server",
     "buildclient": "parcel build client/index.html -d dist/public",
     "build": "npm run buildserver && npm run buildclient",
-    "deploy": "now --public && now --target production && now rm openlattes --safe --yes",
+    "deploy": "now --public && now alias && now rm openlattes --safe --yes",
     "now-start": "NODE_ENV=production node dist",
     "devserver": "nodemon server --exec babel-node --env-name server",
     "devclient": "parcel watch client/index.html -d dist/public",
