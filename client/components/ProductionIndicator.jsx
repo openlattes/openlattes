@@ -36,6 +36,9 @@ class ProductionIndicator extends Component {
     super(props);
 
     this.state = {
+      /* The value is already a Set but intentionally use an
+       * extra "new Set()" to make sure it's a new object
+       */
       selectedCheckboxes: new Set(props.checkboxesValues),
       selectedYear: null,
       selectedMember: null,
