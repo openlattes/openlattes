@@ -1,162 +1,135 @@
 import React, { Component } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import { withApollo } from 'react-apollo';
+import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
 
-import red from '@material-ui/core/colors/red';
-import blue from '@material-ui/core/colors/blue';
-import green from '@material-ui/core/colors/green';
-import yellow from '@material-ui/core/colors/yellow';
+import ProductionVisualization from './ProductionVisualization';
+import ProductionIndicatorQuery from './ProductionIndicatorQuery';
+import db from '../db';
 
-import StackedBarChart from './StackedBarChart';
-import Checkboxes from './Checkboxes';
-import ProductionsList from './ProductionsList';
-import SupervisionsList from './SupervisionsList';
-
-const styles = theme => ({
-  paper: {
-    padding: theme.spacing.unit * 2,
-  },
-});
-
-const projections = new Map([
-  ['year', 'vertical'],
-  ['member', 'horizontal'],
-]);
-
-const tables = new Map([
-  ['BIBLIOGRAPHIC', ProductionsList],
-  ['SUPERVISION', SupervisionsList],
-]);
+const GET_MEMBERS_IDS = gql`
+  query Members_IDs($lattesIds: [String]) {
+    members(lattesIds: $lattesIds) {
+      _id
+    }
+  }
+`;
 
 class ProductionIndicator extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      /* The value is already a Set but intentionally use an
-       * extra "new Set()" to make sure it's a new object
-       */
-      selectedCheckboxes: new Set(props.checkboxesValues),
-      selectedYear: null,
-      selectedMember: null,
-      selectedTypes: [],
+      campusSelection: 'Todos',
+      groupNames: [
+        'Nenhum',
+        ...(props.selectedMembers.length ? ['Seleção Atual'] : []),
+      ],
+      groupSelection: props.selectedMembers.length ? 'Seleção Atual' : 'Nenhum',
+      selectedGroupMembers: props.selectedMembers.length ? props.selectedMembers : [],
     };
 
-    this.updateSelectedCheckboxes = this.updateSelectedCheckboxes.bind(this);
-    this.handleChartClick = this.handleChartClick.bind(this);
+    this.handleCampusChange = this.handleCampusChange.bind(this);
+    this.handleGroupChange = this.handleGroupChange.bind(this);
   }
 
-  updateSelectedCheckboxes(e) {
-    const { selectedCheckboxes } = this.state;
-    const label = e.target.value;
+  componentDidMount() {
+    db.groups.toArray()
+      .then((groups) => {
+        this.setState({
+          groupNames: [
+            ...this.state.groupNames,
+            ...groups.map(({ name }) => name),
+          ],
+        });
+      });
+  }
 
-    if (selectedCheckboxes.has(label)) {
-      selectedCheckboxes.delete(label);
+  handleCampusChange(e) {
+    this.setState({
+      campusSelection: e.target.value,
+    });
+  }
+
+  handleGroupChange(e) {
+    const groupSelection = e.target.value;
+    const { client } = this.props;
+
+    if (groupSelection === 'Nenhum') {
+      this.setState({
+        groupSelection,
+        campusSelection: 'Todos',
+        selectedGroupMembers: [],
+      });
+    } else if (groupSelection === 'Seleção Atual') {
+      // Members currently selected in the table
+      this.setState({
+        groupSelection,
+        campusSelection: 'Todos',
+        selectedGroupMembers: this.props.selectedMembers,
+      });
     } else {
-      selectedCheckboxes.add(label);
+      // Group created by the user
+
+      // Get list of Lattes IDs from local DB
+      db.groups.get({ name: groupSelection })
+        // Fetch API to convert to ObjectIds
+        .then(group => client.query({
+          query: GET_MEMBERS_IDS,
+          variables: {
+            lattesIds: group.members,
+          },
+        }))
+        .then(({ data }) => {
+          this.setState({
+            groupSelection,
+            campusSelection: 'Todos',
+            selectedGroupMembers: data.members.map(({ _id }) => _id),
+          });
+        })
+        .catch(() => {
+          this.setState({ groupSelection });
+        });
     }
-
-    this.setState({
-      selectedCheckboxes: new Set(selectedCheckboxes),
-    });
-  }
-
-  handleChartClick({ column, pieces }) {
-    const { by } = this.props;
-    const columnTypes = pieces.map(({ data }) => data.type);
-    const selectedColumn = by === 'year' ? 'selectedYear' : 'selectedMember';
-
-    this.setState({
-      [selectedColumn]: column.name,
-      selectedTypes: columnTypes,
-    });
   }
 
   render() {
+    const { collection, by } = this.props;
     const {
-      classes, chartData, checkboxesValues, filters, by, collection,
-    } = this.props;
-    const {
-      selectedCheckboxes, selectedYear, selectedMember, selectedTypes,
+      selectedGroupMembers, groupNames, groupSelection, campusSelection,
     } = this.state;
 
-    const colors = [
-      red[200], red[500], red[800], blue[200], blue[500],
-      blue[800], green[200], green[500], green[800], yellow[300],
-    ];
-
-    const checkboxes = [...checkboxesValues].reverse();
-
-    const colorHash = checkboxes
-      .reduce((map, item) => map.set(item, colors.pop()), new Map());
-
-    const indicator = chartData
-      .filter(({ type }) => selectedCheckboxes.has(type));
-
-    const DataList = tables.get(collection);
-
     return (
-      <Grid container spacing={32}>
-        <Grid item>
-          <Paper className={classes.paper}>
-            <StackedBarChart
-              data={indicator}
-              colorHash={colorHash}
-              by={by}
-              projection={projections.get(by)}
-              onClick={this.handleChartClick}
-            />
-          </Paper>
-        </Grid>
-        <Grid item xs={3} container direction="column" spacing={16}>
-          {filters}
-          <Checkboxes
-            items={checkboxes}
-            selected={selectedCheckboxes}
-            colorHash={colorHash}
-            onChange={this.updateSelectedCheckboxes}
-          />
-        </Grid>
-        {selectedYear || selectedMember ? (
-          <Grid>
-            <Typography variant="h5">{`Produções de ${selectedYear || selectedMember}:`}</Typography>
-            <DataList
-              year={Number(selectedYear)}
-              member={selectedMember}
-              types={selectedTypes}
-            />
-          </Grid>
-        )
-        : <Typography variant="h5">Clique nas colunas do gráfico para ver as publicações.</Typography>}
-      </Grid>
+      <ProductionIndicatorQuery
+        collection={collection}
+        by={by}
+        selectedMembers={selectedGroupMembers}
+        campusSelection={campusSelection}
+      >
+        <ProductionVisualization
+          groupNames={groupNames}
+          groupSelection={groupSelection}
+          onGroupChange={this.handleGroupChange}
+          onCampusChange={this.handleCampusChange}
+        />
+      </ProductionIndicatorQuery>
     );
   }
 }
 
 ProductionIndicator.propTypes = {
-  classes: PropTypes.shape({
-    paper: PropTypes.string,
-  }).isRequired,
-  chartData: PropTypes.arrayOf(PropTypes.shape({
-    year: PropTypes.number,
-    member: PropTypes.string,
-    count: PropTypes.number.isRequired,
-    type: PropTypes.string.isRequired,
-  })).isRequired,
-  checkboxesValues: PropTypes.instanceOf(Set).isRequired,
-  /* eslint-disable react/forbid-prop-types */
-  filters: PropTypes.arrayOf(PropTypes.object),
-  /* eslint-enable react/forbid-prop-types */
-  by: PropTypes.string.isRequired,
   collection: PropTypes.string,
+  by: PropTypes.string,
+  selectedMembers: PropTypes
+    .arrayOf(PropTypes.string).isRequired,
+  /* eslint-disable react/forbid-prop-types */
+  client: PropTypes.object.isRequired,
+  /* eslint-enable react/forbid-prop-types */
 };
 
 ProductionIndicator.defaultProps = {
-  filters: [],
-  collection: 'BIBLIOGRAPHIC',
+  collection: undefined,
+  by: 'year',
 };
 
-export default withStyles(styles)(ProductionIndicator);
+export default withApollo(ProductionIndicator);

@@ -13,7 +13,7 @@ import Layout from './Layout';
 import MenuItems from './MenuItems';
 import MembersList from './MembersList';
 import CollaborationIndicator from './CollaborationIndicator';
-import ProductionIndicatorQuery from './ProductionIndicatorQuery';
+import ProductionIndicator from './ProductionIndicator';
 import TypeIndicator from './TypeIndicator';
 
 const RotatedBarChartIcon = () => <BarChartIcon style={{ transform: 'rotate(90deg)' }} />;
@@ -89,7 +89,7 @@ const App = () => (
           key: 3,
           exact: false,
           path: '/productions_year',
-          render: <ProductionIndicatorQuery selectedMembers={selectedMembers} />,
+          render: <ProductionIndicator selectedMembers={selectedMembers} />,
         },
         {
           key: 4,
@@ -101,13 +101,13 @@ const App = () => (
           key: 5,
           exact: false,
           path: '/productions_member',
-          render: <ProductionIndicatorQuery selectedMembers={selectedMembers} by="member" />,
+          render: <ProductionIndicator selectedMembers={selectedMembers} by="member" />,
         },
         {
           key: 6,
           exact: false,
           path: '/supervisions_year',
-          render: <ProductionIndicatorQuery collection="SUPERVISION" selectedMembers={selectedMembers} />,
+          render: <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} />,
         },
         {
           key: 7,
@@ -119,7 +119,7 @@ const App = () => (
           key: 8,
           exact: false,
           path: '/supervisions_member',
-          render: <ProductionIndicatorQuery collection="SUPERVISION" selectedMembers={selectedMembers} by="member" />,
+          render: <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} by="member" />,
         },
       ];
 
