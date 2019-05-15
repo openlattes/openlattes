@@ -1,36 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Query, withApollo } from 'react-apollo';
+import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
-import red from '@material-ui/core/colors/red';
-import blue from '@material-ui/core/colors/blue';
-import green from '@material-ui/core/colors/green';
-import yellow from '@material-ui/core/colors/yellow';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import Graph from './Graph';
-import GraphData from '../data/GraphData';
-import SelectField from './SelectField';
+import CollaborationVisualization from './CollaborationVisualization';
+import CollaborationIndicatorQuery from './CollaborationIndicatorQuery';
 import db from '../db';
-
-const GET_GRAPH = gql`
-  query CollaborationIndicator($selectedMembers: [ID]) {
-    nodes(members: $selectedMembers) {
-      _id
-      fullName
-      campus
-    }
-    edges(members: $selectedMembers) {
-      source
-      target
-      weight
-      productions {
-        type
-      }
-    }
-  }
-`;
 
 const GET_MEMBERS_IDS = gql`
   query Members_IDs($lattesIds: [String]) {
@@ -40,26 +15,24 @@ const GET_MEMBERS_IDS = gql`
   }
 `;
 
-class CollaborationIndicator extends PureComponent {
+class CollaborationIndicator extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selection: 'Todos',
-      typeSelection: 'Todos',
-      emptyNodes: false,
+      campusSelection: 'Todos',
       groupNames: [
         'Nenhum',
         ...(props.selectedMembers.length ? ['Seleção Atual'] : []),
       ],
       groupSelection: props.selectedMembers.length ? 'Seleção Atual' : 'Nenhum',
       selectedGroupMembers: props.selectedMembers.length ? props.selectedMembers : [],
+      typeSelection: 'Todos',
     };
 
+    this.handleGroupChange = this.handleGroupChange.bind(this);
     this.handleCampusChange = this.handleCampusChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
-    this.toggleEmptyNodes = this.toggleEmptyNodes.bind(this);
-    this.handleGroupChange = this.handleGroupChange.bind(this);
   }
 
   componentDidMount() {
@@ -74,22 +47,34 @@ class CollaborationIndicator extends PureComponent {
       });
   }
 
+  handleCampusChange(e) {
+    this.setState({
+      campusSelection: e.target.value,
+      typeSelection: 'Todos',
+    });
+  }
+
   handleGroupChange(e) {
     const groupSelection = e.target.value;
     const { client } = this.props;
+
+    const toDefault = {
+      campusSelection: 'Todos',
+      typeSelection: 'Todos',
+    };
 
     if (groupSelection === 'Nenhum') {
       this.setState({
         groupSelection,
         selectedGroupMembers: [],
-        selection: 'Todos',
+        ...toDefault,
       });
     } else if (groupSelection === 'Seleção Atual') {
       // Members currently selected in the table
       this.setState({
         groupSelection,
         selectedGroupMembers: this.props.selectedMembers,
-        selection: 'Todos',
+        ...toDefault,
       });
     } else {
       // Group created by the user
@@ -107,7 +92,7 @@ class CollaborationIndicator extends PureComponent {
           this.setState({
             groupSelection,
             selectedGroupMembers: data.members.map(({ _id }) => _id),
-            selection: 'Todos',
+            ...toDefault,
           });
         })
         .catch(() => {
@@ -116,117 +101,31 @@ class CollaborationIndicator extends PureComponent {
     }
   }
 
-  handleCampusChange(e) {
-    this.setState({
-      selection: e.target.value,
-      typeSelection: 'Todos',
-      emptyNodes: false,
-    });
-  }
-
   handleTypeChange(e) {
     this.setState({
       typeSelection: e.target.value,
     });
   }
 
-  toggleEmptyNodes(e) {
-    this.setState({
-      emptyNodes: e.target.checked,
-    });
-  }
-
   render() {
     const {
-      selection, typeSelection, emptyNodes, groupSelection, groupNames, selectedGroupMembers,
+      selectedGroupMembers, groupNames, groupSelection, campusSelection, typeSelection,
     } = this.state;
 
-    const groupOptions = groupNames
-      .map(option => ({ value: option, label: option }));
-
-    let groupFilter;
-
-    if (groupOptions.length > 1) {
-      groupFilter = (
-        <SelectField
-          key={1}
-          options={groupOptions}
-          onChange={this.handleGroupChange}
-          value={groupSelection}
-          label="Grupos"
-        />
-      );
-    }
-
     return (
-      <Query query={GET_GRAPH} variables={{ selectedMembers: selectedGroupMembers }}>
-        {({
-          loading, error, data,
-        }) => {
-          if (loading) return <p>loading...</p>;
-          if (error) return <p>error</p>;
-
-          const graph = new GraphData(data);
-
-          const allOption = { label: 'Todos', value: 'Todos' };
-
-          const campusOptions = graph
-            .extractCampus()
-            .map(campus => ({ label: campus, value: campus }));
-
-          const filteredCampus = graph.filterByCampus(selection);
-
-          const typesOptions = filteredCampus
-            .extractProductionTypes()
-            .map(type => ({ label: type, value: type }));
-
-          const filteredType = filteredCampus.filterByProductionType(typeSelection);
-
-          const colors = [
-            red[200], red[500], red[800], blue[200], blue[500],
-            blue[800], green[200], green[500], green[800], yellow[300],
-          ];
-
-          const colorHash = new Map(filteredType
-            .extractCampus()
-            .map(campus => [campus, colors.pop()]));
-
-          const { nodes, edges } = emptyNodes ?
-            filteredType : filteredType.removeNodesWithoutEdges();
-
-          return (
-            <div>
-              {groupFilter}
-              <SelectField
-                onChange={this.handleCampusChange}
-                value={this.state.selection}
-                options={[allOption, ...campusOptions]}
-                label="Campus"
-              />
-              <SelectField
-                onChange={this.handleTypeChange}
-                value={this.state.typeSelection}
-                options={[allOption, ...typesOptions]}
-                label="Tipo de Produção"
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={emptyNodes}
-                    onChange={this.toggleEmptyNodes}
-                    value="emptyNodes"
-                  />
-                }
-                label="Membros sem coautorias"
-              />
-              <Graph
-                data={{ edges, nodes }}
-                colorHash={colorHash}
-              />
-            </div>
-          );
-        }}
-      </Query>
+      <CollaborationIndicatorQuery
+        selectedMembers={selectedGroupMembers}
+        campusSelection={campusSelection}
+        typeSelection={typeSelection}
+      >
+        <CollaborationVisualization
+          groupNames={groupNames}
+          groupSelection={groupSelection}
+          onGroupChange={this.handleGroupChange}
+          onCampusChange={this.handleCampusChange}
+          onTypeChange={this.handleTypeChange}
+        />
+      </CollaborationIndicatorQuery>
     );
   }
 }
