@@ -76,6 +76,8 @@ class StackedBarChart extends PureComponent {
         hoverAnnotation
         tooltipContent={customTooltipContent}
         customClickBehavior={onClick}
+        download
+        downloadFields={['type']}
       />
     );
   }
