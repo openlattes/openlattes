@@ -7,7 +7,7 @@ import SimpleTable from './SimpleTable';
 
 const GET_PRODUCTIONS = gql`
   query Productions($year: Int, $memberName: String, $types: [String]) {
-    productions(year: $year, memberName: $memberName types: $types) {
+    productions(year: $year, memberName: $memberName, types: $types) {
       _id
       title
       authors
