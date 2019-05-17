@@ -40,22 +40,27 @@ function productionsResolver(collection) {
   const { coll, typeField } = collections.get(collection);
 
   return (obj, { year, member, types }) => {
-    const memberNameMatch = member ? {
-      members_data: {
-        $elemMatch: {
-          fullName: member,
-        },
-      },
-    } : {};
+    let memberNameMatch = {};
+    let lookup = [];
 
-    const lookup = member ? [{
-      $lookup: {
-        from: 'members',
-        localField: 'members',
-        foreignField: '_id',
-        as: 'members_data',
-      },
-    }] : [];
+    if (member) {
+      memberNameMatch = {
+        members_data: {
+          $elemMatch: {
+            fullName: member,
+          },
+        },
+      };
+
+      lookup = [{
+        $lookup: {
+          from: 'members',
+          localField: 'members',
+          foreignField: '_id',
+          as: 'members_data',
+        },
+      }];
+    }
 
     return coll.aggregate([
       ...lookup,
