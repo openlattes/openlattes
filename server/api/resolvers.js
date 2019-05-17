@@ -39,7 +39,9 @@ function match(field, value) {
 function productionsResolver(collection) {
   const { coll, typeField } = collections.get(collection);
 
-  return (obj, { year, member, types }) => {
+  return async (obj, {
+    year, member, types, members, campus,
+  }) => {
     let memberNameMatch = {};
     let lookup = [];
 
@@ -62,6 +64,10 @@ function productionsResolver(collection) {
       }];
     }
 
+    const ids = campus
+      ? await Member.distinct('_id', { ...match('_id', toObjectIds(members)), campus })
+      : toObjectIds(members);
+
     return coll.aggregate([
       ...lookup,
       {
@@ -69,6 +75,7 @@ function productionsResolver(collection) {
           ...match('year', year),
           ...match(typeField.substr(1), types),
           ...memberNameMatch,
+          ...match('members', ids),
         },
       },
     ]);
