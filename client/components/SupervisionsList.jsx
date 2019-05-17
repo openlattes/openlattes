@@ -6,8 +6,8 @@ import gql from 'graphql-tag';
 import SimpleTable from './SimpleTable';
 
 const GET_SUPERVISIONS = gql`
-  query Supervisions($year: Int, $member: ID, $types: [String]) {
-    supervisions(year: $year, member: $member, types: $types) {
+  query Supervisions($year: Int, $memberName: String, $types: [String]) {
+    supervisions(year: $year, memberName: $memberName, types: $types) {
       _id
       documentTitle
       supervisedStudent
@@ -17,7 +17,7 @@ const GET_SUPERVISIONS = gql`
 `;
 
 const SupervisionsList = ({ year, member, types }) => (
-  <Query query={GET_SUPERVISIONS} variables={{ year, member, types }}>
+  <Query query={GET_SUPERVISIONS} variables={{ year, memberName: member, types }}>
     {({ loading, error, data }) => {
       if (loading) return <p>Carregando</p>;
       if (error) return <p>Erro</p>;

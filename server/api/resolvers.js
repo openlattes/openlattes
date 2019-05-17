@@ -40,16 +40,16 @@ function productionsResolver(collection) {
   const { coll, typeField } = collections.get(collection);
 
   return async (obj, {
-    year, member, types, members, campus,
+    year, memberName, types, members, campus,
   }) => {
     let memberNameMatch = {};
     let lookup = [];
 
-    if (member) {
+    if (memberName) {
       memberNameMatch = {
         members_data: {
           $elemMatch: {
-            fullName: member,
+            fullName: memberName,
           },
         },
       };

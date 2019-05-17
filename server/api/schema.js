@@ -7,7 +7,7 @@ const typeDefs = gql`
     production(_id: ID!): Production
     productions(
       year: Int,
-      member: String,
+      memberName: String,
       types: [String]
       members: [ID],
       campus: [String]
@@ -15,7 +15,7 @@ const typeDefs = gql`
     supervision(_id: ID!): Supervision
     supervisions(
       year: Int,
-      member: String,
+      memberName: String,
       types: [String]
       members: [ID],
       campus: [String]

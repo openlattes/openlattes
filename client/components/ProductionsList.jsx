@@ -6,8 +6,8 @@ import gql from 'graphql-tag';
 import SimpleTable from './SimpleTable';
 
 const GET_PRODUCTIONS = gql`
-  query Productions($year: Int, $member: ID, $types: [String]) {
-    productions(year: $year, member: $member types: $types) {
+  query Productions($year: Int, $memberName: String, $types: [String]) {
+    productions(year: $year, memberName: $memberName types: $types) {
       _id
       title
       authors
@@ -17,7 +17,7 @@ const GET_PRODUCTIONS = gql`
 `;
 
 const ProductionsList = ({ year, member, types }) => (
-  <Query query={GET_PRODUCTIONS} variables={{ year, member, types }}>
+  <Query query={GET_PRODUCTIONS} variables={{ year, memberName: member, types }}>
     {({ loading, error, data }) => {
       if (loading) return <p>Carregando</p>;
       if (error) return <p>Erro</p>;
