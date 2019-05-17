@@ -6,8 +6,18 @@ import gql from 'graphql-tag';
 import SimpleTable from './SimpleTable';
 
 const GET_SUPERVISIONS = gql`
-  query Supervisions($year: Int, $memberName: String, $types: [String]) {
-    supervisions(year: $year, memberName: $memberName, types: $types) {
+  query Supervisions(
+    $year: Int,
+    $memberName: String,
+    $types: [String],
+    $campus: [String]
+  ) {
+    supervisions(
+      year: $year,
+      memberName: $memberName,
+      types: $types
+      campus: $campus
+    ) {
       _id
       documentTitle
       supervisedStudent
@@ -16,8 +26,15 @@ const GET_SUPERVISIONS = gql`
   }
 `;
 
-const SupervisionsList = ({ year, memberName, types }) => (
-  <Query query={GET_SUPERVISIONS} variables={{ year, memberName, types }}>
+const SupervisionsList = ({
+  year, memberName, types, campus,
+}) => (
+  <Query
+    query={GET_SUPERVISIONS}
+    variables={{
+      year, memberName, types, campus,
+    }}
+  >
     {({ loading, error, data }) => {
       if (loading) return <p>Carregando</p>;
       if (error) return <p>Erro</p>;
@@ -50,11 +67,13 @@ SupervisionsList.propTypes = {
   year: PropTypes.number,
   memberName: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.string).isRequired,
+  campus: PropTypes.string,
 };
 
 SupervisionsList.defaultProps = {
   year: undefined,
   memberName: undefined,
+  campus: undefined,
 };
 
 export default SupervisionsList;

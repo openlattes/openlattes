@@ -6,8 +6,18 @@ import gql from 'graphql-tag';
 import SimpleTable from './SimpleTable';
 
 const GET_PRODUCTIONS = gql`
-  query Productions($year: Int, $memberName: String, $types: [String]) {
-    productions(year: $year, memberName: $memberName, types: $types) {
+  query Productions(
+    $year: Int,
+    $memberName: String,
+    $types: [String],
+    $campus: [String]
+  ) {
+    productions(
+      year: $year,
+      memberName: $memberName,
+      types: $types,
+      campus: $campus
+    ) {
       _id
       title
       authors
@@ -16,8 +26,15 @@ const GET_PRODUCTIONS = gql`
   }
 `;
 
-const ProductionsList = ({ year, memberName, types }) => (
-  <Query query={GET_PRODUCTIONS} variables={{ year, memberName, types }}>
+const ProductionsList = ({
+  year, memberName, types, campus,
+}) => (
+  <Query
+    query={GET_PRODUCTIONS}
+    variables={{
+      year, memberName, types, campus,
+    }}
+  >
     {({ loading, error, data }) => {
       if (loading) return <p>Carregando</p>;
       if (error) return <p>Erro</p>;
@@ -50,11 +67,13 @@ ProductionsList.propTypes = {
   year: PropTypes.number,
   memberName: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.string).isRequired,
+  campus: PropTypes.string,
 };
 
 ProductionsList.defaultProps = {
   year: undefined,
   memberName: undefined,
+  campus: undefined,
 };
 
 export default ProductionsList;
