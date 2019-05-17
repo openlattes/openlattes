@@ -16,8 +16,8 @@ const GET_SUPERVISIONS = gql`
   }
 `;
 
-const SupervisionsList = ({ year, member, types }) => (
-  <Query query={GET_SUPERVISIONS} variables={{ year, memberName: member, types }}>
+const SupervisionsList = ({ year, memberName, types }) => (
+  <Query query={GET_SUPERVISIONS} variables={{ year, memberName, types }}>
     {({ loading, error, data }) => {
       if (loading) return <p>Carregando</p>;
       if (error) return <p>Erro</p>;
@@ -48,13 +48,13 @@ const SupervisionsList = ({ year, member, types }) => (
 
 SupervisionsList.propTypes = {
   year: PropTypes.number,
-  member: PropTypes.string,
+  memberName: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 SupervisionsList.defaultProps = {
   year: undefined,
-  member: undefined,
+  memberName: undefined,
 };
 
 export default SupervisionsList;

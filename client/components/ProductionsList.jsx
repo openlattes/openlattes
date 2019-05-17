@@ -16,8 +16,8 @@ const GET_PRODUCTIONS = gql`
   }
 `;
 
-const ProductionsList = ({ year, member, types }) => (
-  <Query query={GET_PRODUCTIONS} variables={{ year, memberName: member, types }}>
+const ProductionsList = ({ year, memberName, types }) => (
+  <Query query={GET_PRODUCTIONS} variables={{ year, memberName, types }}>
     {({ loading, error, data }) => {
       if (loading) return <p>Carregando</p>;
       if (error) return <p>Erro</p>;
@@ -48,13 +48,13 @@ const ProductionsList = ({ year, member, types }) => (
 
 ProductionsList.propTypes = {
   year: PropTypes.number,
-  member: PropTypes.string,
+  memberName: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 ProductionsList.defaultProps = {
   year: undefined,
-  member: undefined,
+  memberName: undefined,
 };
 
 export default ProductionsList;

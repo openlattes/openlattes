@@ -146,7 +146,7 @@ class ProductionVisualization extends Component {
             <Typography variant="h5">{`Produções de ${selectedYear || selectedMember}:`}</Typography>
             <DataList
               year={Number(selectedYear)}
-              member={selectedMember}
+              memberName={selectedMember}
               types={selectedTypes}
             />
           </Grid>
