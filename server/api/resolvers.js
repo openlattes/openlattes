@@ -281,6 +281,10 @@ const resolvers = {
       ]),
   },
 
+  Production: {
+    members: ({ members }) => Member.find({ _id: { $in: members } }),
+  },
+
   Supervision: {
     members: ({ members }) => Member.find({ _id: { $in: members } }),
   },
