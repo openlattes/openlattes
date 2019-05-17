@@ -24,7 +24,7 @@ const typeDefs = gql`
 
   type Indicator {
     year: Int
-    member: String 
+    member: String
     count: Int
     type: String
   }
