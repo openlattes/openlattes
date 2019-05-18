@@ -3,8 +3,6 @@ import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShareIcon from '@material-ui/icons/Share';
 import BarChartIcon from '@material-ui/icons/BarChart';
@@ -15,14 +13,9 @@ import MembersList from './MembersList';
 import CollaborationIndicator from './CollaborationIndicator';
 import ProductionIndicator from './ProductionIndicator';
 import TypeIndicator from './TypeIndicator';
+import QuerySelectedMembers from './QuerySelectedMembers';
 
 const RotatedBarChartIcon = () => <BarChartIcon style={{ transform: 'rotate(90deg)' }} />;
-
-const GET_SELECTED_MEMBERS = gql`
-  {
-    selectedMembers @client
-  }
-`;
 
 const menuItems = [
   {
@@ -68,10 +61,8 @@ const menuItems = [
 ];
 
 const App = () => (
-  <Query query={GET_SELECTED_MEMBERS}>
-    {({ data }) => {
-      const { selectedMembers } = data;
-
+  <QuerySelectedMembers>
+    {(selectedMembers) => {
       const routes = [
         {
           key: 1,
@@ -137,7 +128,7 @@ const App = () => (
         </Router>
       );
     }}
-  </Query>
+  </QuerySelectedMembers>
 );
 
 export default App;
