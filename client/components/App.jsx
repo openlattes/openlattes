@@ -33,28 +33,22 @@ const menuItems = [
         key: 4, Icon: BarChartIcon, label: 'Evolução', to: '/productions_year',
       },
       {
-        key: 5, Icon: RotatedBarChartIcon, label: 'Tipos', to: '/productions_type',
+        key: 5, Icon: RotatedBarChartIcon, label: 'Membros', to: '/productions_member',
       },
       {
-        key: 6, Icon: RotatedBarChartIcon, label: 'Membros', to: '/productions_member',
-      },
-      {
-        key: 7, Icon: ShareIcon, label: 'Coautorias', to: '/collaborations',
+        key: 6, Icon: ShareIcon, label: 'Coautorias', to: '/collaborations',
       },
     ],
-    divider: { key: 8 },
+    divider: { key: 7 },
   },
   {
-    subheader: { key: 9, title: 'Orientações' },
+    subheader: { key: 8, title: 'Orientações' },
     links: [
       {
-        key: 10, Icon: BarChartIcon, label: 'Evolução', to: '/supervisions_year',
+        key: 9, Icon: BarChartIcon, label: 'Evolução', to: '/supervisions_year',
       },
       {
-        key: 11, Icon: RotatedBarChartIcon, label: 'Tipos', to: '/supervisions_type',
-      },
-      {
-        key: 12, Icon: RotatedBarChartIcon, label: 'Membros', to: '/supervisions_member',
+        key: 11, Icon: RotatedBarChartIcon, label: 'Membros', to: '/supervisions_member',
       },
     ],
   },
@@ -85,29 +79,17 @@ const App = () => (
         {
           key: 4,
           exact: false,
-          path: '/productions_type',
-          render: <TypeIndicator selectedMembers={selectedMembers} />,
-        },
-        {
-          key: 5,
-          exact: false,
           path: '/productions_member',
           render: <ProductionIndicator selectedMembers={selectedMembers} by="member" />,
         },
         {
-          key: 6,
+          key: 5,
           exact: false,
           path: '/supervisions_year',
           render: <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} />,
         },
         {
-          key: 7,
-          exact: false,
-          path: '/supervisions_type',
-          render: <TypeIndicator collection="SUPERVISION" selectedMembers={selectedMembers} />,
-        },
-        {
-          key: 8,
+          key: 6,
           exact: false,
           path: '/supervisions_member',
           render: <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} by="member" />,
