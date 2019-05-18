@@ -148,7 +148,7 @@ class ProductionVisualization extends Component {
               year={Number(selectedYear)}
               memberName={selectedMember}
               types={selectedTypes}
-              campus={by === 'year' ? campusSelection : undefined}
+              campus={by === 'year' && campusSelection !== 'Todos' ? campusSelection : undefined}
             />
           </Grid>
         )
