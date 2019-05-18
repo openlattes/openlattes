@@ -52,6 +52,7 @@ class ProductionIndicatorQuery extends Component {
             by,
             collection,
             campusSelection,
+            selectedMembers,
           });
         }}
       </Query>

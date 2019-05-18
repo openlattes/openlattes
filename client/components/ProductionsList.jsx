@@ -10,12 +10,14 @@ const GET_PRODUCTIONS = gql`
     $year: Int,
     $memberName: String,
     $types: [String],
+    $members: [ID],
     $campus: [String]
   ) {
     productions(
       year: $year,
       memberName: $memberName,
       types: $types,
+      members: $members
       campus: $campus
     ) {
       _id
@@ -27,12 +29,12 @@ const GET_PRODUCTIONS = gql`
 `;
 
 const ProductionsList = ({
-  year, memberName, types, campus,
+  year, memberName, types, campus, members,
 }) => (
   <Query
     query={GET_PRODUCTIONS}
     variables={{
-      year, memberName, types, campus,
+      year, memberName, types, campus, members,
     }}
   >
     {({ loading, error, data }) => {
@@ -68,12 +70,15 @@ ProductionsList.propTypes = {
   memberName: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.string).isRequired,
   campus: PropTypes.string,
+  members: PropTypes
+    .arrayOf(PropTypes.string),
 };
 
 ProductionsList.defaultProps = {
   year: undefined,
   memberName: undefined,
   campus: undefined,
+  members: undefined,
 };
 
 export default ProductionsList;

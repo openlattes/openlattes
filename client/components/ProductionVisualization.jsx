@@ -84,6 +84,7 @@ class ProductionVisualization extends Component {
       classes, indicator, checkboxesValues, by, collection,
       groupNames, groupSelection, onGroupChange,
       campusNames, onCampusChange, campusSelection,
+      selectedMembers,
     } = this.props;
     const {
       selectedCheckboxes, selectedYear, selectedMember, selectedTypes,
@@ -149,6 +150,7 @@ class ProductionVisualization extends Component {
               memberName={selectedMember}
               types={selectedTypes}
               campus={by === 'year' && campusSelection !== 'Todos' ? campusSelection : undefined}
+              members={by === 'year' ? selectedMembers : undefined}
             />
           </Grid>
         )
@@ -177,6 +179,8 @@ ProductionVisualization.propTypes = {
   onCampusChange: PropTypes.func.isRequired,
   campusSelection: PropTypes.string.isRequired,
   campusNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedMembers: PropTypes
+    .arrayOf(PropTypes.string).isRequired,
 };
 
 ProductionVisualization.defaultProps = {
