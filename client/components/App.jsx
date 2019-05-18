@@ -12,7 +12,6 @@ import MenuItems from './MenuItems';
 import MembersList from './MembersList';
 import CollaborationIndicator from './CollaborationIndicator';
 import ProductionIndicator from './ProductionIndicator';
-import TypeIndicator from './TypeIndicator';
 import QuerySelectedMembers from './QuerySelectedMembers';
 
 const RotatedBarChartIcon = () => <BarChartIcon style={{ transform: 'rotate(90deg)' }} />;
