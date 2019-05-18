@@ -5,7 +5,7 @@ Stack: GraphQL, MongoDB, React, Material-UI and Semiotic.
 
 ### Environment setup
 ```
-$ npm i
+$ yarn
 $ cp .env-template .env
 ```
 Update `.env` with required information.
@@ -13,11 +13,11 @@ Update `.env` with required information.
 ### Running for development
 
 ```
-$ npm start
+$ yarn start
 ```
 
 ### Running for production
 ```
-$ npm run build
-$ npm run now-start
+$ yarn run build
+$ yarn run now-start
 ```
