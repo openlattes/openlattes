@@ -38,6 +38,10 @@ class CollaborationIndicator extends Component {
   componentDidMount() {
     db.groups.toArray()
       .then((groups) => {
+        /* Triggers a warning if the user goes to a different page
+         * before running setState(). It can't update the state of
+         * an unmounted component.
+         */
         this.setState({
           groupNames: [
             ...this.state.groupNames,
