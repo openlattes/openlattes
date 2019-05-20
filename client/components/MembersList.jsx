@@ -32,7 +32,11 @@ class MembersList extends PureComponent {
               data={data.members.map(({
                 _id, fullName, citationName, lattesId, cvLastUpdate,
               }) => ({
-                id: _id, fullName, citationName, lattesId, cvLastUpdate,
+                id: _id,
+                fullName,
+                citationName,
+                lattesId,
+                cvLastUpdate: new Date(cvLastUpdate),
               }))}
               selectedMembers={selectedMembers}
             />

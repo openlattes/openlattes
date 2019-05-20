@@ -175,6 +175,10 @@ class EnhancedTable extends React.Component {
                     .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
                     .map((n) => {
                       const isSelected = this.isSelected(n.id);
+                      const { cvLastUpdate } = n;
+                      const d = cvLastUpdate.getDate() + 1;
+                      const m = cvLastUpdate.getMonth() + 1;
+                      const y = cvLastUpdate.getFullYear();
                       return (
                         <TableRow
                           hover
@@ -195,7 +199,7 @@ class EnhancedTable extends React.Component {
                             </a>
                           </TableCell>
                           <TableCell>{n.citationName}</TableCell>
-                          <TableCell>{n.cvLastUpdate}</TableCell>
+                          <TableCell>{`${d}/${m}/${y}`}</TableCell>
                         </TableRow>
                       );
                     })}
