@@ -14,8 +14,8 @@
     "start": "concurrently -k \"yarn run devserver\" \"yarn run devclient\""
   },
   "dependencies": {
-    "@material-ui/core": "^3.2.0",
-    "@material-ui/icons": "^3.0.1",
+    "@material-ui/core": "3.9.3",
+    "@material-ui/icons": "3.0.2",
     "apollo-boost": "^0.1.16",
     "apollo-server-express": "^2.1.0",
     "classnames": "^2.2.6",
