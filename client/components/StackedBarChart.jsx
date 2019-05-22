@@ -58,7 +58,7 @@ class StackedBarChart extends PureComponent {
 
     return (
       <OrdinalFrame
-        size={[900, 500]}
+        size={[1000, 500]}
         data={data}
         oAccessor={by}
         rAccessor="count"

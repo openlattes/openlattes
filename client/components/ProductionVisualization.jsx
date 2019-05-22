@@ -18,7 +18,10 @@ import SelectField from './SelectField';
 
 const styles = theme => ({
   paper: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing.unit * 3,
+  },
+  filterPaper: {
+    padding: theme.spacing.unit * 1,
   },
 });
 
@@ -109,52 +112,84 @@ class ProductionVisualization extends Component {
     const DataList = tables.get(collection);
 
     return (
-      <Grid container spacing={32}>
-        <Grid item>
-          <Paper className={classes.paper}>
-            <StackedBarChart
-              data={filteredTypes}
-              colorHash={colorHash}
-              by={by}
-              projection={projections.get(by)}
-              onClick={this.handleChartClick}
-            />
-          </Paper>
-        </Grid>
-        <Grid item xs={3} container direction="column" spacing={16}>
-          <SelectField
-            key={1}
-            options={groupOptions}
-            onChange={onGroupChange}
-            value={groupSelection}
-            label="Grupos"
-          />
-          <SelectField
-            options={campusOptions}
-            onChange={onCampusChange}
-            value={campusSelection}
-            label="Campus"
-          />
-          <Checkboxes
-            items={checkboxes}
-            selected={selectedCheckboxes}
-            colorHash={colorHash}
-            onChange={this.updateSelectedCheckboxes}
-          />
-        </Grid>
-        {selectedYear || selectedMember ? (
-          <Grid>
-            <Typography variant="h5">{`Produções de ${selectedYear || selectedMember}:`}</Typography>
-            <DataList
-              year={Number(selectedYear)}
-              memberName={selectedMember}
-              types={selectedTypes}
-              campus={by === 'year' && campusSelection !== 'Todos' ? campusSelection : undefined}
-              members={by === 'year' ? selectedMembers : undefined}
-            />
+      <Grid container spacing={16}>
+        <Grid container justify="flex-start" item xs={12}>
+          <Grid item>
+            <Paper elevation={3} className={classes.paper}>
+              <StackedBarChart
+                data={filteredTypes}
+                colorHash={colorHash}
+                by={by}
+                projection={projections.get(by)}
+                onClick={this.handleChartClick}
+              />
+            </Paper>
           </Grid>
-        )
-        : <Typography variant="h5">Clique nas colunas do gráfico para ver as publicações.</Typography>}
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          container
+          justify="flex-start"
+          alignItems="flex-start"
+          spacing={8}
+        >
+          <Grid
+            item
+            xs={3}
+            container
+            direction="column"
+            alignItems="flex-start"
+          >
+            <Paper elevation={3} className={classes.filterPaper}>
+              <Grid item>
+                <Typography variant="subtitle2" align="center">Filtros</Typography>
+              </Grid>
+              <Grid item>
+                <SelectField
+                  key={1}
+                  options={groupOptions}
+                  onChange={onGroupChange}
+                  value={groupSelection}
+                  label="Grupos"
+                />
+              </Grid>
+              <Grid item>
+                <SelectField
+                  options={campusOptions}
+                  onChange={onCampusChange}
+                  value={campusSelection}
+                  label="Campus"
+                />
+              </Grid>
+            </Paper>
+          </Grid>
+          <Grid item xs={(checkboxes.length > 5) ? 7 : 4}>
+            <Paper elevation={3} className={classes.filterPaper}>
+              <Typography variant="subtitle2" align="center">Comparar</Typography>
+              <Checkboxes
+                items={checkboxes}
+                selected={selectedCheckboxes}
+                colorHash={colorHash}
+                onChange={this.updateSelectedCheckboxes}
+              />
+            </Paper>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          {selectedYear || selectedMember ? (
+            <div>
+              <Typography variant="h5">{`Produções de ${selectedYear || selectedMember}:`}</Typography>
+              <DataList
+                year={Number(selectedYear)}
+                memberName={selectedMember}
+                types={selectedTypes}
+                campus={by === 'year' && campusSelection !== 'Todos' ? campusSelection : undefined}
+                members={by === 'year' ? selectedMembers : undefined}
+              />
+            </div>
+          ) : <Typography variant="h5">Clique nas colunas do gráfico para ver as publicações.</Typography>}
+        </Grid>
       </Grid>
     );
   }
