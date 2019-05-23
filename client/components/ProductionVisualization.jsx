@@ -15,6 +15,7 @@ import Checkboxes from './Checkboxes';
 import ProductionsList from './ProductionsList';
 import SupervisionsList from './SupervisionsList';
 import SelectField from './SelectField';
+import IndicatorLayout from './IndicatorLayout';
 
 const styles = theme => ({
   paper: {
@@ -112,85 +113,87 @@ class ProductionVisualization extends Component {
     const DataList = tables.get(collection);
 
     return (
-      <Grid container spacing={16}>
-        <Grid container justify="flex-start" item xs={12}>
-          <Grid item>
-            <Paper elevation={3} className={classes.paper}>
-              <StackedBarChart
-                data={filteredTypes}
-                colorHash={colorHash}
-                by={by}
-                projection={projections.get(by)}
-                onClick={this.handleChartClick}
-              />
-            </Paper>
+      <IndicatorLayout
+        visualization={(
+          <Grid container justify="flex-start">
+            <Grid item>
+              <Paper elevation={3} className={classes.paper}>
+                <StackedBarChart
+                  data={filteredTypes}
+                  colorHash={colorHash}
+                  by={by}
+                  projection={projections.get(by)}
+                  onClick={this.handleChartClick}
+                />
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          container
-          justify="flex-start"
-          alignItems="flex-start"
-          spacing={8}
-        >
+        )}
+
+        control={(
           <Grid
-            item
-            xs={3}
             container
-            direction="column"
+            justify="flex-start"
             alignItems="flex-start"
+            spacing={8}
           >
-            <Paper elevation={3} className={classes.filterPaper}>
-              <Grid item>
-                <Typography variant="subtitle2" align="center">Filtros</Typography>
-              </Grid>
-              <Grid item>
-                <SelectField
-                  key={1}
-                  options={groupOptions}
-                  onChange={onGroupChange}
-                  value={groupSelection}
-                  label="Grupos"
+            <Grid
+              item
+              xs={3}
+              container
+              direction="column"
+              alignItems="flex-start"
+            >
+              <Paper elevation={3} className={classes.filterPaper}>
+                <Grid item>
+                  <Typography variant="subtitle2" align="center">Filtros</Typography>
+                </Grid>
+                <Grid item>
+                  <SelectField
+                    key={1}
+                    options={groupOptions}
+                    onChange={onGroupChange}
+                    value={groupSelection}
+                    label="Grupos"
+                  />
+                </Grid>
+                <Grid item>
+                  <SelectField
+                    options={campusOptions}
+                    onChange={onCampusChange}
+                    value={campusSelection}
+                    label="Campus"
+                  />
+                </Grid>
+              </Paper>
+            </Grid>
+            <Grid item xs={(checkboxes.length > 5) ? 7 : 4}>
+              <Paper elevation={3} className={classes.filterPaper}>
+                <Typography variant="subtitle2" align="center">Comparar</Typography>
+                <Checkboxes
+                  items={checkboxes}
+                  selected={selectedCheckboxes}
+                  colorHash={colorHash}
+                  onChange={this.updateSelectedCheckboxes}
                 />
-              </Grid>
-              <Grid item>
-                <SelectField
-                  options={campusOptions}
-                  onChange={onCampusChange}
-                  value={campusSelection}
-                  label="Campus"
-                />
-              </Grid>
-            </Paper>
+              </Paper>
+            </Grid>
           </Grid>
-          <Grid item xs={(checkboxes.length > 5) ? 7 : 4}>
-            <Paper elevation={3} className={classes.filterPaper}>
-              <Typography variant="subtitle2" align="center">Comparar</Typography>
-              <Checkboxes
-                items={checkboxes}
-                selected={selectedCheckboxes}
-                colorHash={colorHash}
-                onChange={this.updateSelectedCheckboxes}
-              />
-            </Paper>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          {selectedYear || selectedMember ? (
-            <div>
-              <Typography variant="h5">{`Produções de ${selectedYear || selectedMember}:`}</Typography>
-              <DataList
-                year={Number(selectedYear)}
-                memberName={selectedMember}
-                types={selectedTypes}
-                campus={by === 'year' && campusSelection !== 'Todos' ? campusSelection : undefined}
-                members={by === 'year' ? selectedMembers : undefined}
-              />
-            </div>
-          ) : <Typography variant="h5">Clique nas colunas do gráfico para ver as publicações.</Typography>}
-        </Grid>
-      </Grid>
+        )}
+
+        table={selectedYear || selectedMember ? (
+          <div>
+            <Typography variant="h5">{`Produções de ${selectedYear || selectedMember}:`}</Typography>
+            <DataList
+              year={Number(selectedYear)}
+              memberName={selectedMember}
+              types={selectedTypes}
+              campus={by === 'year' && campusSelection !== 'Todos' ? campusSelection : undefined}
+              members={by === 'year' ? selectedMembers : undefined}
+            />
+          </div>
+        ) : <Typography variant="h5">Clique nas colunas do gráfico para ver as publicações.</Typography>}
+      />
     );
   }
 }
