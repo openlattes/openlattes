@@ -6,10 +6,13 @@ import green from '@material-ui/core/colors/green';
 import yellow from '@material-ui/core/colors/yellow';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
 
 import Graph from './Graph';
 import GraphData from '../data/GraphData';
 import SelectField from './SelectField';
+import IndicatorLayout from './IndicatorLayout';
+import CustomCard from './CustomCard';
 
 const toOptions = labels =>
   labels.map(name => ({ value: name, label: name }));
@@ -58,42 +61,69 @@ class CollaborationVisualization extends Component {
     const { nodes, edges } = emptyNodes ?
       graph : graph.removeNodesWithoutEdges();
 
+    const filters = (
+      <Grid container spacing={8}>
+        <Grid item xs={3}>
+          <SelectField
+            key={1}
+            options={groupOptions}
+            onChange={onGroupChange}
+            value={groupSelection}
+            label="Grupos"
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <SelectField
+            onChange={onCampusChange}
+            value={campusSelection}
+            options={campusOptions}
+            label="Campus"
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <SelectField
+            onChange={onTypeChange}
+            value={typeSelection}
+            options={typesOptions}
+            label="Tipo de Produção"
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={emptyNodes}
+                onChange={this.toggleEmptyNodes}
+                value="emptyNodes"
+              />
+            }
+            label="Membros sem coautorias"
+          />
+        </Grid>
+      </Grid>
+    );
+
     return (
-      <div>
-        <SelectField
-          key={1}
-          options={groupOptions}
-          onChange={onGroupChange}
-          value={groupSelection}
-          label="Grupos"
-        />
-        <SelectField
-          onChange={onCampusChange}
-          value={campusSelection}
-          options={campusOptions}
-          label="Campus"
-        />
-        <SelectField
-          onChange={onTypeChange}
-          value={typeSelection}
-          options={typesOptions}
-          label="Tipo de Produção"
-        />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={emptyNodes}
-              onChange={this.toggleEmptyNodes}
-              value="emptyNodes"
-            />
-          }
-          label="Membros sem coautorias"
-        />
-        <Graph
-          data={{ edges, nodes }}
-          colorHash={colorHash}
-        />
-      </div>
+      <IndicatorLayout
+        visualization={(
+          <Grid container>
+            <Grid item>
+              <Graph
+                data={{ edges, nodes }}
+                colorHash={colorHash}
+              />
+            </Grid>
+          </Grid>
+        )}
+
+        control={(
+          <Grid container spacing={8}>
+            <Grid item xs={10}>
+              <CustomCard title="Filtros" content={filters} />
+            </Grid>
+          </Grid>
+        )}
+      />
     );
   }
 }
