@@ -16,6 +16,7 @@ import ProductionsList from './ProductionsList';
 import SupervisionsList from './SupervisionsList';
 import SelectField from './SelectField';
 import IndicatorLayout from './IndicatorLayout';
+import CustomCard from './CustomCard';
 
 const styles = theme => ({
   paper: {
@@ -23,6 +24,13 @@ const styles = theme => ({
   },
   filterPaper: {
     padding: theme.spacing.unit * 1,
+  },
+  cardHeader: {
+    backgroundColor: theme.palette.primary.light,
+    padding: 5,
+  },
+  cardContent: {
+    padding: 5,
   },
 });
 
@@ -137,46 +145,48 @@ class ProductionVisualization extends Component {
             alignItems="flex-start"
             spacing={8}
           >
-            <Grid
-              item
-              xs={3}
-              container
-              direction="column"
-              alignItems="flex-start"
-            >
-              <Paper elevation={3} className={classes.filterPaper}>
-                <Grid item>
-                  <Typography variant="subtitle2" align="center">Filtros</Typography>
-                </Grid>
-                <Grid item>
-                  <SelectField
-                    key={1}
-                    options={groupOptions}
-                    onChange={onGroupChange}
-                    value={groupSelection}
-                    label="Grupos"
-                  />
-                </Grid>
-                <Grid item>
-                  <SelectField
-                    options={campusOptions}
-                    onChange={onCampusChange}
-                    value={campusSelection}
-                    label="Campus"
-                  />
-                </Grid>
-              </Paper>
+            <Grid item xs={3}>
+              <CustomCard
+                title="Filtros"
+                content={(
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="flex-start"
+                  >
+                    <Grid item>
+                      <SelectField
+                        key={1}
+                        options={groupOptions}
+                        onChange={onGroupChange}
+                        value={groupSelection}
+                        label="Grupos"
+                      />
+                    </Grid>
+                    <Grid item>
+                      <SelectField
+                        options={campusOptions}
+                        onChange={onCampusChange}
+                        value={campusSelection}
+                        label="Campus"
+                      />
+                    </Grid>
+                  </Grid>
+                )}
+              />
             </Grid>
             <Grid item xs={(checkboxes.length > 5) ? 7 : 4}>
-              <Paper elevation={3} className={classes.filterPaper}>
-                <Typography variant="subtitle2" align="center">Comparar</Typography>
-                <Checkboxes
-                  items={checkboxes}
-                  selected={selectedCheckboxes}
-                  colorHash={colorHash}
-                  onChange={this.updateSelectedCheckboxes}
-                />
-              </Paper>
+              <CustomCard
+                title="Comparar"
+                content={(
+                  <Checkboxes
+                    items={checkboxes}
+                    selected={selectedCheckboxes}
+                    colorHash={colorHash}
+                    onChange={this.updateSelectedCheckboxes}
+                  />
+                )}
+              />
             </Grid>
           </Grid>
         )}
