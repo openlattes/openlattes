@@ -8415,10 +8415,10 @@ semiotic-mark@0.3.0:
     prop-types "^15.6.0"
     roughjs-es5 "0.1.0"
 
-semiotic@1.14.4:
-  version "1.14.4"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.14.4.tgz#5b8004bd5c8e7d0bfac0c022e06bf145e7869d47"
-  integrity sha512-WhZXCHQV+JZN11jgdA/hy4Jz0w1dvJ9LCy54ImX2hetaDmdtzZsoDSrascrKD9vDCcW9kgLHMWT3WYylZfk/wA==
+semiotic@1.14.5:
+  version "1.14.5"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.14.5.tgz#ae73de24b2ddc53f5c539bc8e347b51f953206f3"
+  integrity sha512-5aYsXYqvdjDlOBXe2xM/db5pePMDCz2XxHptYJl86+VXLBK5lvWz7c2dU880tYqph2Hk3yJUcv74KfXRqKUdqA==
   dependencies:
     "@mapbox/polylabel" "1"
     d3-array "^1.2.0"
