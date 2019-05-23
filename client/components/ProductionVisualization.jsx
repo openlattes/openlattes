@@ -202,7 +202,7 @@ class ProductionVisualization extends Component {
               members={by === 'year' ? selectedMembers : undefined}
             />
           </div>
-        ) : <Typography variant="h5">Clique nas colunas do gráfico para ver as publicações.</Typography>}
+        ) : undefined}
       />
     );
   }
