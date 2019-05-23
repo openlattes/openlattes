@@ -125,7 +125,7 @@ class ProductionVisualization extends Component {
         visualization={(
           <Grid container justify="flex-start">
             <Grid item>
-              <Paper elevation={3} className={classes.paper}>
+              <Paper elevation={1} className={classes.paper}>
                 <StackedBarChart
                   data={filteredTypes}
                   colorHash={colorHash}
