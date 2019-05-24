@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import red from '@material-ui/core/colors/red';
-import blue from '@material-ui/core/colors/blue';
-import green from '@material-ui/core/colors/green';
-import yellow from '@material-ui/core/colors/yellow';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
@@ -13,6 +9,7 @@ import GraphData from '../utils/GraphData';
 import SelectField from './SelectField';
 import IndicatorLayout from './IndicatorLayout';
 import CustomCard from './CustomCard';
+import colors from '../utils/colors';
 
 const toOptions = labels =>
   labels.map(name => ({ value: name, label: name }));
@@ -47,16 +44,13 @@ class CollaborationVisualization extends Component {
     const campusOptions = toOptions(['Todos', ...campusNames]);
     const typesOptions = toOptions(['Todos', ...typeNames]);
 
-    const colors = [
-      red[200], red[500], red[800], blue[200], blue[500],
-      blue[800], green[200], green[500], green[800], yellow[300],
-    ];
-
     const graph = new GraphData(this.props.graph);
+
+    const compare = colors.compare();
 
     const colorHash = new Map(graph
       .extractCampus()
-      .map(campus => [campus, colors.pop()]));
+      .map(campus => [campus, compare.pop()]));
 
     const { nodes, edges } = emptyNodes ?
       graph : graph.removeNodesWithoutEdges();

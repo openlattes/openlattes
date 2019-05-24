@@ -6,6 +6,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { scaleLinear } from 'd3-scale';
 
+import colors from '../utils/colors';
+
 const customTooltipContent = d => (
   <Card
     style={{
@@ -49,7 +51,7 @@ class Graph extends PureComponent {
       .range([2, 10]);
 
     const nodeStyle = colorHash.size > 1 ?
-      d => ({ fill: colorHash.get(d.campus) }) : { fill: 'darkblue' };
+      d => ({ fill: colorHash.get(d.campus) }) : { fill: colors.node.fill };
 
     const iterationScale = scaleLinear()
       .domain([1, 800])
@@ -63,7 +65,10 @@ class Graph extends PureComponent {
         edges={data.edges}
         nodes={nodes}
         edgeStyle={() => ({
-          stroke: '#32c4c4', fill: '#32c4c4', fillOpacity: 0.25, strokeWidth: '1px',
+          stroke: colors.edge.stroke,
+          fill: colors.edge.fill,
+          fillOpacity: 0.25,
+          strokeWidth: '1px',
         })}
         nodeStyle={nodeStyle}
         networkType={{ type: 'force', iterations, edgeStrength: 0.1 }}

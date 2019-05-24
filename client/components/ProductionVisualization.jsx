@@ -5,11 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 
-import red from '@material-ui/core/colors/red';
-import blue from '@material-ui/core/colors/blue';
-import green from '@material-ui/core/colors/green';
-import yellow from '@material-ui/core/colors/yellow';
-
 import StackedBarChart from './StackedBarChart';
 import Checkboxes from './Checkboxes';
 import ProductionsList from './ProductionsList';
@@ -17,6 +12,7 @@ import SupervisionsList from './SupervisionsList';
 import SelectField from './SelectField';
 import IndicatorLayout from './IndicatorLayout';
 import CustomCard from './CustomCard';
+import colors from '../utils/colors';
 
 const styles = theme => ({
   paper: {
@@ -105,15 +101,12 @@ class ProductionVisualization extends Component {
     const groupOptions = toOptions(groupNames);
     const campusOptions = toOptions(['Todos', ...campusNames]);
 
-    const colors = [
-      red[200], red[500], red[800], blue[200], blue[500],
-      blue[800], green[200], green[500], green[800], yellow[300],
-    ];
-
     const checkboxes = [...checkboxesValues].reverse();
 
+    const compare = colors.compare();
+
     const colorHash = checkboxes
-      .reduce((map, item) => map.set(item, colors.pop()), new Map());
+      .reduce((map, item) => map.set(item, compare.pop()), new Map());
 
     const filteredTypes = indicator
       .filter(({ type }) => selectedCheckboxes.has(type));
