@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import GraphData from '../data/GraphData';
+import GraphData from '../utils/GraphData';
 import Loading from './Loading';
 
 const GET_GRAPH = gql`

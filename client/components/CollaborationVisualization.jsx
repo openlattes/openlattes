@@ -9,7 +9,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 
 import Graph from './Graph';
-import GraphData from '../data/GraphData';
+import GraphData from '../utils/GraphData';
 import SelectField from './SelectField';
 import IndicatorLayout from './IndicatorLayout';
 import CustomCard from './CustomCard';
