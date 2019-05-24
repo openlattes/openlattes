@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import GraphData from '../data/GraphData';
+import Loading from './Loading';
 
 const GET_GRAPH = gql`
   query CollaborationIndicator($selectedMembers: [ID]) {
@@ -30,7 +31,7 @@ class CollaborationIndicatorQuery extends Component {
     return (
       <Query query={GET_GRAPH} variables={{ selectedMembers }}>
         {({ loading, error, data }) => {
-          if (loading) return <p>loading...</p>;
+          if (loading) return <Loading />;
           if (error) return <p>error</p>;
 
           const graph = new GraphData(data);

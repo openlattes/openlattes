@@ -3,6 +3,8 @@ import { Query, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 
+import Loading from './Loading';
+
 const GET_INDICATOR = gql`
   query Indicator($collection: Collection, $by: By $members: [ID], $campus: [String]) {
     indicator(collection: $collection, by: $by, members: $members, campus: $campus) {
@@ -34,7 +36,7 @@ class ProductionIndicatorQuery extends Component {
         }}
       >
         {({ loading, error, data }) => {
-          if (loading) return 'Carregando...';
+          if (loading) return <Loading />;
           if (error) return 'Não foi possível carregar o gráfico.';
 
           const { indicator, members } = data;

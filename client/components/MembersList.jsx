@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import EnhancedTable from './EnhancedTable';
+import Loading from './Loading';
 
 const GET_MEMBERS = gql`
   {
@@ -24,7 +25,7 @@ class MembersList extends PureComponent {
     return (
       <Query query={GET_MEMBERS}>
         {({ loading, error, data }) => {
-          if (loading) return 'Carregando...';
+          if (loading) return <Loading />;
           if (error) return 'Erro';
 
           return (

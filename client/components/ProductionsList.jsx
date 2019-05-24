@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import SimpleTable from './SimpleTable';
+import Loading from './Loading';
 
 const GET_PRODUCTIONS = gql`
   query Productions(
@@ -38,7 +39,7 @@ const ProductionsList = ({
     }}
   >
     {({ loading, error, data }) => {
-      if (loading) return <p>Carregando</p>;
+      if (loading) return <Loading />;
       if (error) return <p>Erro</p>;
 
       return (
