@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Paper from '@material-ui/core/Paper';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 220;
 
@@ -80,6 +81,13 @@ const styles = theme => ({
     paddingRight: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
   },
+  link: {
+    textDecoration: 'none',
+    /* Manually setting the color. Might have to change it if the color
+     * of AppBar changes.
+     */
+    color: 'white',
+  },
 });
 
 class App extends React.Component {
@@ -124,9 +132,11 @@ class App extends React.Component {
               <MenuIcon />
             </IconButton>
             <Paper elevation={12} className={classes.logo}>
-              <Typography variant="h6" color="inherit" noWrap>
-                Openlattes
-              </Typography>
+              <Link to="/" className={classes.link}>
+                <Typography variant="h6" color="inherit" noWrap>
+                  Openlattes
+                </Typography>
+              </Link>
             </Paper>
           </Toolbar>
         </AppBar>
