@@ -11,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Paper from '@material-ui/core/Paper';
 
 const drawerWidth = 220;
 
@@ -73,6 +74,12 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  logo: {
+    backgroundColor: theme.palette.primary.light,
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+  },
 });
 
 class App extends React.Component {
@@ -116,9 +123,11 @@ class App extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
-              Openlattes
-            </Typography>
+            <Paper elevation={12} className={classes.logo}>
+              <Typography variant="h6" color="inherit" noWrap>
+                Openlattes
+              </Typography>
+            </Paper>
           </Toolbar>
         </AppBar>
         <div>
