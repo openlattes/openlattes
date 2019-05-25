@@ -24,6 +24,7 @@ const styles = theme => ({
     width: '100%',
   },
   appBar: {
+    // position: 'absolute',
     position: 'fixed',
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
