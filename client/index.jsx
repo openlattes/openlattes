@@ -2,26 +2,15 @@ import React from 'react';
 import { render } from 'react-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import brown from '@material-ui/core/colors/brown';
-import deepOrange from '@material-ui/core/colors/deepOrange';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import App from './components/App';
+import theme from './utils/theme';
 
 const client = new ApolloClient({
   uri: '/graphql',
   clientState: {
     defaults: { selectedMembers: [] },
-  },
-});
-
-const theme = createMuiTheme({
-  typography: {
-    useNextVariants: true,
-  },
-  palette: {
-    primary: brown,
-    secondary: deepOrange,
   },
 });
 
