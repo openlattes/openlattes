@@ -36,6 +36,7 @@ const rawTheme = createMuiTheme({
     fontWeightRegular: 400, // Work Sans
     fontWeightMedium: 700, // Roboto Condensed
     fontFamilySecondary: "'Roboto Condensed', sans-serif",
+    useNextVariants: true,
   },
 });
 
