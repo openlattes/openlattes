@@ -51,13 +51,13 @@ const SupervisionsList = ({
           }))}
           headers={[
             {
-              id: 'documentTitle', numeric: false, disablePadding: false, label: 'Título',
+              id: 'documentTitle', align: 'left', disablePadding: false, label: 'Título',
             },
             {
-              id: 'supervisedStudent', numeric: false, disablePadding: false, label: 'Autor',
+              id: 'supervisedStudent', align: 'left', disablePadding: false, label: 'Autor',
             },
             {
-              id: 'degreeType', numeric: false, disablePadding: false, label: 'Tipo',
+              id: 'degreeType', align: 'left', disablePadding: false, label: 'Tipo',
             },
           ]}
         />

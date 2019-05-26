@@ -9,13 +9,13 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 const rows = [
   {
-    id: 'fullName', numeric: false, disablePadding: true, label: 'Nome',
+    id: 'fullName', align: 'left', disablePadding: true, label: 'Nome',
   },
   {
-    id: 'citationName', numeric: false, disablePadding: false, label: 'Nome em citações',
+    id: 'citationName', align: 'left', disablePadding: false, label: 'Nome em citações',
   },
   {
-    id: 'cvLastUpdate', numeric: false, disablePadding: false, label: 'Última atualização',
+    id: 'cvLastUpdate', align: 'left', disablePadding: false, label: 'Última atualização',
   },
 ];
 
@@ -48,13 +48,13 @@ class EnhancedTableHead extends Component {
           {rows.map(row => (
             <TableCell
               key={row.id}
-              numeric={row.numeric}
+              align={row.align}
               padding={row.disablePadding ? 'none' : 'default'}
               sortDirection={orderBy === row.id ? order : false}
             >
               <Tooltip
                 title="Ordenar"
-                placement={row.numeric ? 'bottom-end' : 'bottom-start'}
+                placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
                 enterDelay={300}
               >
                 <TableSortLabel

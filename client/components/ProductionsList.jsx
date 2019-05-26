@@ -51,13 +51,13 @@ const ProductionsList = ({
           }))}
           headers={[
             {
-              id: 'title', numeric: false, disablePadding: false, label: 'Título',
+              id: 'title', align: 'left', disablePadding: false, label: 'Título',
             },
             {
-              id: 'authors', numeric: false, disablePadding: false, label: 'Autores',
+              id: 'authors', align: 'left', disablePadding: false, label: 'Autores',
             },
             {
-              id: 'type', numeric: false, disablePadding: false, label: 'Tipo',
+              id: 'type', align: 'left', disablePadding: false, label: 'Tipo',
             },
           ]}
         />

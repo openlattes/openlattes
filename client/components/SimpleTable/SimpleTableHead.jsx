@@ -26,13 +26,13 @@ class EnhancedTableHead extends Component {
           {headers.map(row => (
             <TableCell
               key={row.id}
-              numeric={row.numeric}
+              align={row.align}
               padding={row.disablePadding ? 'none' : 'default'}
               sortDirection={orderBy === row.id ? order : false}
             >
               <Tooltip
                 title="Ordenar"
-                placement={row.numeric ? 'bottom-end' : 'bottom-start'}
+                placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
                 enterDelay={300}
               >
                 <TableSortLabel
