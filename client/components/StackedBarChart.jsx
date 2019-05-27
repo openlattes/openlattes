@@ -11,8 +11,8 @@ const customTooltipContent = (d) => {
     <Paper
       style={{
         position: 'relative',
-        left: '-58px',
-        bottom: '78px',
+        left: -58,
+        bottom: 78,
         zIndex: 999999,
         padding: 5,
         minWidth: 120,
