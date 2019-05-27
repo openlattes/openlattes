@@ -1,31 +1,19 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { OrdinalFrame } from 'semiotic';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+
+import CustomTooltip from './CustomTooltip';
 
 const customTooltipContent = (d) => {
   const total = d.pieces.reduce((sum, { count }) => sum + count, 0);
 
   return (
-    <Paper
-      style={{
-        position: 'relative',
-        left: -58,
-        bottom: 78,
-        zIndex: 999999,
-        padding: 5,
-        minWidth: 120,
-      }}
-      elevation={12}
-    >
-      <Typography variant="subtitle2" align="center">
-        {`Total: ${total}`}
-      </Typography>
-      <Typography variant="body2">
-        Clique para listar
-      </Typography>
-    </Paper>
+    <CustomTooltip
+      left={-58}
+      bottom={78}
+      title1={`Total: ${total}`}
+      clickHint
+    />
   );
 };
 
