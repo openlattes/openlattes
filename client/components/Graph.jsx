@@ -6,16 +6,6 @@ import { scaleLinear } from 'd3-scale';
 import colors from '../utils/colors';
 import CustomTooltip from './CustomTooltip';
 
-const customTooltipContent = d => (
-  <CustomTooltip
-    left={10}
-    bottom={-10}
-    minWidth={150}
-    title1={d.fullName}
-    title2={`Coautorias: ${d.degree}`}
-  />
-);
-
 class Graph extends PureComponent {
   render() {
     const { data, colorHash } = this.props;
@@ -68,7 +58,15 @@ class Graph extends PureComponent {
         nodeSizeAccessor={d => nodeScale(d.degree)}
         edgeWidthAccessor={d => edgeScale(d.weight)}
         hoverAnnotation
-        tooltipContent={customTooltipContent}
+        tooltipContent={d => (
+          <CustomTooltip
+            left={10}
+            bottom={-10}
+            minWidth={150}
+            title1={d.fullName}
+            title2={`Coautorias: ${d.degree}`}
+          />
+        )}
         legend={colorHash.size > 1 ? {
           title: 'Campus',
           legendGroups: [
