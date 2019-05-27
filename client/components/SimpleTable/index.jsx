@@ -64,6 +64,10 @@ class SimpleTable extends React.Component {
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
   }
 
+  componentDidMount() {
+    this.productionList.scrollIntoView({ behavior: 'smooth' });
+  }
+
   handleRequestSort(event, property) {
     const orderBy = property;
     let order = 'desc';
@@ -94,7 +98,7 @@ class SimpleTable extends React.Component {
 
     return (
       <Paper className={classes.root}>
-        <div className={classes.tableWrapper}>
+        <div ref={(c) => { this.productionList = c; }} className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <SimpleTableHead
               order={order}
