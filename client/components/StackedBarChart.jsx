@@ -4,19 +4,6 @@ import { OrdinalFrame } from 'semiotic';
 
 import CustomTooltip from './CustomTooltip';
 
-const customTooltipContent = (d) => {
-  const total = d.pieces.reduce((sum, { count }) => sum + count, 0);
-
-  return (
-    <CustomTooltip
-      left={-58}
-      bottom={78}
-      title1={`Total: ${total}`}
-      clickHint
-    />
-  );
-};
-
 const otherProps = new Map([
   [
     'vertical',
@@ -26,6 +13,10 @@ const otherProps = new Map([
         orient: 'left',
       },
       left: 50,
+      toolTip: {
+        left: -58,
+        bottom: 78,
+      },
     },
   ],
   [
@@ -36,6 +27,10 @@ const otherProps = new Map([
         rotate: 45,
       },
       left: 300,
+      toolTip: {
+        left: 15,
+        bottom: 28,
+      },
     },
   ],
 ]);
@@ -54,7 +49,9 @@ class StackedBarChart extends PureComponent {
       data, colorHash, by, projection, onClick,
     } = this.props;
 
-    const { axis, oLabel, left } = otherProps.get(projection);
+    const {
+      axis, oLabel, left, toolTip,
+    } = otherProps.get(projection);
 
     // Get number of bars.
     const bars = data
@@ -79,7 +76,18 @@ class StackedBarChart extends PureComponent {
         oPadding={oPadding(bars)}
         baseMarkProps={{ forceUpdate: true }}
         hoverAnnotation
-        tooltipContent={customTooltipContent}
+        tooltipContent={(d) => {
+          const total = d.pieces.reduce((sum, { count }) => sum + count, 0);
+
+          return (
+            <CustomTooltip
+              left={toolTip.left}
+              bottom={toolTip.bottom}
+              title1={`Total: ${total}`}
+              clickHint
+            />
+          );
+        }}
         customClickBehavior={onClick}
         download
         downloadFields={['type']}
