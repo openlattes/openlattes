@@ -1,28 +1,19 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { NetworkFrame } from 'semiotic';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import { scaleLinear } from 'd3-scale';
 
 import colors from '../utils/colors';
+import CustomTooltip from './CustomTooltip';
 
 const customTooltipContent = d => (
-  <Card
-    style={{
-      position: 'relative',
-      left: '10px',
-      bottom: '-10px',
-      zIndex: 999999,
-    }}
-    raised
-  >
-    <CardContent>
-      <Typography variant="subtitle2">{d.fullName}</Typography>
-      <Typography variant="subtitle2">Coautorias: {d.degree}</Typography>
-    </CardContent>
-  </Card>
+  <CustomTooltip
+    left={10}
+    bottom={-10}
+    minWidth={150}
+    title1={d.fullName}
+    title2={`Coautorias: ${d.degree}`}
+  />
 );
 
 class Graph extends PureComponent {
