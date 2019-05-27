@@ -48,6 +48,14 @@ const otherProps = new Map([
   ],
 ]);
 
+// Calculate oPadding based on the number of bars.
+function oPadding(bars) {
+  const min = 2;
+  const max = 30;
+
+  return ((Math.abs(max - bars) + (max - bars)) / 2) + min;
+}
+
 class StackedBarChart extends PureComponent {
   render() {
     const {
@@ -55,6 +63,11 @@ class StackedBarChart extends PureComponent {
     } = this.props;
 
     const { axis, oLabel, left } = otherProps.get(projection);
+
+    // Get number of bars.
+    const bars = data
+      .reduce((set, line) => set.add(line[by]), new Set())
+      .size;
 
     return (
       <OrdinalFrame
@@ -71,7 +84,7 @@ class StackedBarChart extends PureComponent {
         }}
         oLabel={oLabel}
         sortO={(a, b) => a - b}
-        oPadding={2}
+        oPadding={oPadding(bars)}
         baseMarkProps={{ forceUpdate: true }}
         hoverAnnotation
         tooltipContent={customTooltipContent}
