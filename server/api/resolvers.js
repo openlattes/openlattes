@@ -40,7 +40,7 @@ function productionsResolver(collection) {
   const { coll, typeField } = collections.get(collection);
 
   return async (obj, {
-    year, memberName, types, members, campus,
+    year, memberName, types, members, group,
   }) => {
     let memberNameMatch = {};
     let lookup = [];
@@ -64,8 +64,8 @@ function productionsResolver(collection) {
       }];
     }
 
-    const ids = campus
-      ? await Member.distinct('_id', { ...match('_id', toObjectIds(members)), campus })
+    const ids = group
+      ? await Member.distinct('_id', { ...match('_id', toObjectIds(members)), group })
       : toObjectIds(members);
 
     return coll.aggregate([
@@ -232,11 +232,11 @@ const resolvers = {
     supervisions: productionsResolver('SUPERVISION'),
 
     indicator: async (obj, {
-      collection, by, members, campus,
+      collection, by, members, group,
     }) =>
       productionIndicator[by]({
-        ids: campus
-          ? await Member.distinct('_id', { ...match('_id', toObjectIds(members)), campus })
+        ids: group
+          ? await Member.distinct('_id', { ...match('_id', toObjectIds(members)), group })
           : toObjectIds(members),
         ...collections.get(collection),
       }),
