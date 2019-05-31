@@ -1,6 +1,7 @@
 {
   "name": "openlattes",
   "private": true,
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "test": "jest --watch",
     "lint": "eslint --ext .js,.jsx client/ server/",
