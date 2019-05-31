@@ -264,12 +264,18 @@ const resolvers = {
       ]);
     },
 
-    nodes: (obj, { members }) =>
-      Member.aggregate([
+    nodes: async (obj, { members }) => {
+      // Get IDs of all nodes/members
+      const ids = await Collaboration.distinct('members', match('members', toObjectIds(members)));
+
+      return ids.length ? Member.aggregate([
         {
-          $match: match('_id', toObjectIds(members)),
+          $match: {
+            _id: { $in: ids },
+          },
         },
-      ]),
+      ]) : [];
+    },
 
     edges: (obj, { members }) =>
       Collaboration.aggregate([
