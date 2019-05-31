@@ -73,7 +73,6 @@ class Graph extends PureComponent {
             {
               styleFn: d => ({ fill: d.color, stroke: 'black' }),
               items: [...colorHash]
-                .reverse()
                 .map(([label, color]) => ({ label, color })),
             },
           ],
