@@ -12,14 +12,14 @@ const GET_SUPERVISIONS = gql`
     $memberName: String,
     $types: [String],
     $members: [ID],
-    $campus: [String]
+    $group: [String]
   ) {
     supervisions(
       year: $year,
       memberName: $memberName,
       types: $types
       members: $members
-      campus: $campus
+      group: $group
     ) {
       _id
       documentTitle
@@ -30,12 +30,12 @@ const GET_SUPERVISIONS = gql`
 `;
 
 const SupervisionsList = ({
-  year, memberName, types, campus, members,
+  year, memberName, types, group, members,
 }) => (
   <Query
     query={GET_SUPERVISIONS}
     variables={{
-      year, memberName, types, campus, members,
+      year, memberName, types, group, members,
     }}
   >
     {({ loading, error, data }) => {
@@ -70,7 +70,7 @@ SupervisionsList.propTypes = {
   year: PropTypes.number,
   memberName: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.string).isRequired,
-  campus: PropTypes.string,
+  group: PropTypes.string,
   members: PropTypes
     .arrayOf(PropTypes.string),
 };
@@ -78,7 +78,7 @@ SupervisionsList.propTypes = {
 SupervisionsList.defaultProps = {
   year: undefined,
   memberName: undefined,
-  campus: undefined,
+  group: undefined,
   members: undefined,
 };
 

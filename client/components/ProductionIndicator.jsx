@@ -20,7 +20,7 @@ class ProductionIndicator extends Component {
     super(props);
 
     this.state = {
-      campusSelection: 'Todos',
+      groupSelection: 'Todos',
       selectionNames: [
         'Nenhum',
         ...(props.selectedMembers.length ? ['Seleção Atual'] : []),
@@ -29,7 +29,7 @@ class ProductionIndicator extends Component {
       selectedMembers2: props.selectedMembers.length ? props.selectedMembers : [],
     };
 
-    this.handleCampusChange = this.handleCampusChange.bind(this);
+    this.handleGroupChange = this.handleGroupChange.bind(this);
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
   }
 
@@ -45,9 +45,9 @@ class ProductionIndicator extends Component {
       });
   }
 
-  handleCampusChange(e) {
+  handleGroupChange(e) {
     this.setState({
-      campusSelection: e.target.value,
+      groupSelection: e.target.value,
     });
   }
 
@@ -58,14 +58,14 @@ class ProductionIndicator extends Component {
     if (selection === 'Nenhum') {
       this.setState({
         selection,
-        campusSelection: 'Todos',
+        groupSelection: 'Todos',
         selectedMembers2: [],
       });
     } else if (selection === 'Seleção Atual') {
       // Members currently selected in the table
       this.setState({
         selection,
-        campusSelection: 'Todos',
+        groupSelection: 'Todos',
         selectedMembers2: this.props.selectedMembers,
       });
     } else {
@@ -83,7 +83,7 @@ class ProductionIndicator extends Component {
         .then(({ data }) => {
           this.setState({
             selection,
-            campusSelection: 'Todos',
+            groupSelection: 'Todos',
             selectedMembers2: data.members.map(({ _id }) => _id),
           });
         })
@@ -96,7 +96,7 @@ class ProductionIndicator extends Component {
   render() {
     const { collection, by } = this.props;
     const {
-      selectedMembers2, selectionNames, selection, campusSelection,
+      selectedMembers2, selectionNames, selection, groupSelection,
     } = this.state;
 
     return (
@@ -104,13 +104,13 @@ class ProductionIndicator extends Component {
         collection={collection}
         by={by}
         selectedMembers={selectedMembers2}
-        campusSelection={campusSelection}
+        groupSelection={groupSelection}
       >
         <ProductionVisualization
           selectionNames={selectionNames}
           selection={selection}
           onSelectionChange={this.handleSelectionChange}
-          onCampusChange={this.handleCampusChange}
+          onGroupChange={this.handleGroupChange}
         />
       </ProductionIndicatorQuery>
     );

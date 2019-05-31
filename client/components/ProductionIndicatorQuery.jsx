@@ -6,15 +6,15 @@ import PropTypes from 'prop-types';
 import Loading from './Loading';
 
 const GET_INDICATOR = gql`
-  query Indicator($collection: Collection, $by: By $members: [ID], $campus: [String]) {
-    indicator(collection: $collection, by: $by, members: $members, campus: $campus) {
+  query Indicator($collection: Collection, $by: By $members: [ID], $group: [String]) {
+    indicator(collection: $collection, by: $by, members: $members, group: $group) {
       year
       member
       count
       type
     }
     members(members: $members) {
-      campus
+      group
     }
   }
 `;
@@ -22,7 +22,7 @@ const GET_INDICATOR = gql`
 class ProductionIndicatorQuery extends Component {
   render() {
     const {
-      collection, by, selectedMembers, campusSelection,
+      collection, by, selectedMembers, groupSelection,
     } = this.props;
 
     return (
@@ -32,7 +32,7 @@ class ProductionIndicatorQuery extends Component {
           collection,
           by,
           members: selectedMembers,
-          campus: campusSelection === 'Todos' ? undefined : campusSelection,
+          group: groupSelection === 'Todos' ? undefined : groupSelection,
         }}
       >
         {({ loading, error, data }) => {
@@ -44,16 +44,16 @@ class ProductionIndicatorQuery extends Component {
           const types = indicator
             .reduce((set, { type }) => set.add(type), new Set());
 
-          const campus = [...members
-            .reduce((set, member) => set.add(member.campus), new Set())];
+          const group = [...members
+            .reduce((set, member) => set.add(member.group), new Set())];
 
           return React.cloneElement(this.props.children, {
             indicator,
             checkboxesValues: types,
-            campusNames: campus,
+            groupNames: group,
             by,
             collection,
-            campusSelection,
+            groupSelection,
             selectedMembers,
           });
         }}
@@ -67,7 +67,7 @@ ProductionIndicatorQuery.propTypes = {
   by: PropTypes.string,
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string).isRequired,
-  campusSelection: PropTypes.string.isRequired,
+  groupSelection: PropTypes.string.isRequired,
   /* eslint-disable react/forbid-prop-types */
   children: PropTypes.object.isRequired,
   /* eslint-enable react/forbid-prop-types */

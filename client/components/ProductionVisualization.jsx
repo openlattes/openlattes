@@ -91,7 +91,7 @@ class ProductionVisualization extends Component {
     const {
       classes, indicator, checkboxesValues, by, collection,
       selectionNames, selection, onSelectionChange,
-      campusNames, onCampusChange, campusSelection,
+      groupNames, onGroupChange, groupSelection,
       selectedMembers,
     } = this.props;
     const {
@@ -99,7 +99,7 @@ class ProductionVisualization extends Component {
     } = this.state;
 
     const selectionOptions = toOptions(selectionNames);
-    const campusOptions = toOptions(['Todos', ...campusNames]);
+    const groupOptions = toOptions(['Todos', ...groupNames]);
 
     const checkboxes = [...checkboxesValues].reverse();
 
@@ -158,10 +158,10 @@ class ProductionVisualization extends Component {
                     </Grid>
                     <Grid item>
                       <SelectField
-                        options={campusOptions}
-                        onChange={onCampusChange}
-                        value={campusSelection}
-                        label="Campus"
+                        options={groupOptions}
+                        onChange={onGroupChange}
+                        value={groupSelection}
+                        label="Grupos"
                       />
                     </Grid>
                   </Grid>
@@ -191,7 +191,7 @@ class ProductionVisualization extends Component {
               year={Number(selectedYear)}
               memberName={selectedMember}
               types={selectedTypes}
-              campus={by === 'year' && campusSelection !== 'Todos' ? campusSelection : undefined}
+              group={by === 'year' && groupSelection !== 'Todos' ? groupSelection : undefined}
               members={by === 'year' ? selectedMembers : undefined}
             />
           </div>
@@ -217,9 +217,9 @@ ProductionVisualization.propTypes = {
   onSelectionChange: PropTypes.func.isRequired,
   by: PropTypes.string.isRequired,
   collection: PropTypes.string,
-  onCampusChange: PropTypes.func.isRequired,
-  campusSelection: PropTypes.string.isRequired,
-  campusNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onGroupChange: PropTypes.func.isRequired,
+  groupSelection: PropTypes.string.isRequired,
+  groupNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string).isRequired,
 };
