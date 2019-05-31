@@ -151,22 +151,21 @@ class EnhancedTableToolbar extends Component {
             )}
           </div>
           <div className={classes.spacer} />
-          {numSelected > 0 ? (
-            <div className={classes.actions}>
-              <TextField
-                id="selectionName"
-                value={selectionName}
-                onChange={this.handleSelectionNameChange}
-                placeholder="Escolha um nome"
-              />
-              <Button
-                onClick={this.handleSaveButtonClick}
-                disabled={selectionName === ''}
-              >
-                Salvar Seleção
-              </Button>
-            </div>
-          ) : null}
+          <div className={classes.actions}>
+            <TextField
+              id="selectionName"
+              disabled={!numSelected}
+              value={selectionName}
+              onChange={this.handleSelectionNameChange}
+              placeholder="Escolha um nome"
+            />
+            <Button
+              onClick={this.handleSaveButtonClick}
+              disabled={selectionName === ''}
+            >
+              Salvar Seleção
+            </Button>
+          </div>
         </Toolbar>
         <CustomDialog
           open={dialogOpen}
