@@ -22,7 +22,7 @@ $ yarn run build
 $ yarn run now-start
 ```
 
-### LICENSE
+### License
 
 Openlattes: web application to visualize bibliometric indicators of the
 Lattes Platform.
