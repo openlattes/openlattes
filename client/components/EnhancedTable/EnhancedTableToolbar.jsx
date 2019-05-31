@@ -45,14 +45,14 @@ class EnhancedTableToolbar extends Component {
     super(props);
 
     this.state = {
-      groupName: '',
+      selectionName: '',
       dialogOpen: false,
       dialogTitle: '',
       dialogContent: '',
     };
 
     this.openErrorDialog = this.openErrorDialog.bind(this);
-    this.handleGroupNameChange = this.handleGroupNameChange.bind(this);
+    this.handleSelectionNameChange = this.handleSelectionNameChange.bind(this);
     this.handleSaveButtonClick = this.handleSaveButtonClick.bind(this);
     this.handleDialogClose = this.handleDialogClose.bind(this);
   }
@@ -65,21 +65,21 @@ class EnhancedTableToolbar extends Component {
     });
   }
 
-  handleGroupNameChange(e) {
+  handleSelectionNameChange(e) {
     this.setState({
-      groupName: e.target.value,
+      selectionName: e.target.value,
     });
   }
 
   handleSaveButtonClick() {
     const { selected, onSelectionSave, toLattesId } = this.props;
-    const groupName = this.state.groupName.trim();
+    const selectionName = this.state.selectionName.trim();
 
     // Validate input
-    if (groupName === '') {
+    if (selectionName === '') {
       // No empty field
-      this.openErrorDialog('Escolha um nome para o grupo.');
-    } else if (groupName === 'Seleção Atual' || groupName === 'Nenhum') {
+      this.openErrorDialog('Escolha um nome para a seleção.');
+    } else if (selectionName === 'Seleção Atual' || selectionName === 'Nenhum') {
       // No reserved words
       this.openErrorDialog('Nome inválido. Tente outro.');
     } else if (!selected.length) {
@@ -91,15 +91,15 @@ class EnhancedTableToolbar extends Component {
           // Compare new name with all stored names
           const nameExists = groups
             .map(({ name }) => name)
-            .includes(groupName);
+            .includes(selectionName);
 
           if (nameExists) {
             // No repeated names
-            throw Error(`Já existe um grupo chamado "${groupName}". Tente outro.`);
+            throw Error(`Já existe uma seleção chamada "${selectionName}". Tente outra.`);
           } else {
             // Validated: store new group
             return db.groups.add({
-              name: groupName,
+              name: selectionName,
               members: selected.map(toLattesId),
             });
           }
@@ -109,9 +109,9 @@ class EnhancedTableToolbar extends Component {
           onSelectionSave();
 
           this.setState({
-            groupName: '',
+            selectionName: '',
             dialogTitle: 'Sucesso',
-            dialogContent: 'Novo grupo criado.',
+            dialogContent: 'Seleção salva.',
             dialogOpen: true,
           });
         })
@@ -127,7 +127,7 @@ class EnhancedTableToolbar extends Component {
 
   render() {
     const {
-      groupName, dialogOpen, dialogTitle, dialogContent,
+      selectionName, dialogOpen, dialogTitle, dialogContent,
     } = this.state;
     const { selected, classes } = this.props;
     const numSelected = selected.length;
@@ -154,16 +154,16 @@ class EnhancedTableToolbar extends Component {
           {numSelected > 0 ? (
             <div className={classes.actions}>
               <TextField
-                id="groupName"
-                value={groupName}
-                onChange={this.handleGroupNameChange}
-                placeholder="Nome do grupo"
+                id="selectionName"
+                value={selectionName}
+                onChange={this.handleSelectionNameChange}
+                placeholder="Escolha um nome"
               />
               <Button
                 onClick={this.handleSaveButtonClick}
-                disabled={groupName === ''}
+                disabled={selectionName === ''}
               >
-                Salvar Grupo
+                Salvar Seleção
               </Button>
             </div>
           ) : null}
