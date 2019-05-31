@@ -90,7 +90,7 @@ class ProductionVisualization extends Component {
   render() {
     const {
       classes, indicator, checkboxesValues, by, collection,
-      groupNames, groupSelection, onGroupChange,
+      selectionNames, selection, onSelectionChange,
       campusNames, onCampusChange, campusSelection,
       selectedMembers,
     } = this.props;
@@ -98,7 +98,7 @@ class ProductionVisualization extends Component {
       selectedCheckboxes, selectedYear, selectedMember, selectedTypes,
     } = this.state;
 
-    const groupOptions = toOptions(groupNames);
+    const selectionOptions = toOptions(selectionNames);
     const campusOptions = toOptions(['Todos', ...campusNames]);
 
     const checkboxes = [...checkboxesValues].reverse();
@@ -150,10 +150,10 @@ class ProductionVisualization extends Component {
                     <Grid item>
                       <SelectField
                         key={1}
-                        options={groupOptions}
-                        onChange={onGroupChange}
-                        value={groupSelection}
-                        label="Grupos"
+                        options={selectionOptions}
+                        onChange={onSelectionChange}
+                        value={selection}
+                        label="Seleções"
                       />
                     </Grid>
                     <Grid item>
@@ -212,9 +212,9 @@ ProductionVisualization.propTypes = {
     type: PropTypes.string.isRequired,
   })).isRequired,
   checkboxesValues: PropTypes.instanceOf(Set).isRequired,
-  groupNames: PropTypes.arrayOf(PropTypes.string).isRequired,
-  groupSelection: PropTypes.string.isRequired,
-  onGroupChange: PropTypes.func.isRequired,
+  selectionNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selection: PropTypes.string.isRequired,
+  onSelectionChange: PropTypes.func.isRequired,
   by: PropTypes.string.isRequired,
   collection: PropTypes.string,
   onCampusChange: PropTypes.func.isRequired,

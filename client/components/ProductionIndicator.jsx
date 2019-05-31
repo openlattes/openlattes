@@ -21,24 +21,24 @@ class ProductionIndicator extends Component {
 
     this.state = {
       campusSelection: 'Todos',
-      groupNames: [
+      selectionNames: [
         'Nenhum',
         ...(props.selectedMembers.length ? ['Seleção Atual'] : []),
       ],
-      groupSelection: props.selectedMembers.length ? 'Seleção Atual' : 'Nenhum',
-      selectedGroupMembers: props.selectedMembers.length ? props.selectedMembers : [],
+      selection: props.selectedMembers.length ? 'Seleção Atual' : 'Nenhum',
+      selectedMembers2: props.selectedMembers.length ? props.selectedMembers : [],
     };
 
     this.handleCampusChange = this.handleCampusChange.bind(this);
-    this.handleGroupChange = this.handleGroupChange.bind(this);
+    this.handleSelectionChange = this.handleSelectionChange.bind(this);
   }
 
   componentDidMount() {
     db.groups.toArray()
       .then((groups) => {
         this.setState({
-          groupNames: [
-            ...this.state.groupNames,
+          selectionNames: [
+            ...this.state.selectionNames,
             ...groups.map(({ name }) => name),
           ],
         });
@@ -51,28 +51,28 @@ class ProductionIndicator extends Component {
     });
   }
 
-  handleGroupChange(e) {
-    const groupSelection = e.target.value;
+  handleSelectionChange(e) {
+    const selection = e.target.value;
     const { client } = this.props;
 
-    if (groupSelection === 'Nenhum') {
+    if (selection === 'Nenhum') {
       this.setState({
-        groupSelection,
+        selection,
         campusSelection: 'Todos',
-        selectedGroupMembers: [],
+        selectedMembers2: [],
       });
-    } else if (groupSelection === 'Seleção Atual') {
+    } else if (selection === 'Seleção Atual') {
       // Members currently selected in the table
       this.setState({
-        groupSelection,
+        selection,
         campusSelection: 'Todos',
-        selectedGroupMembers: this.props.selectedMembers,
+        selectedMembers2: this.props.selectedMembers,
       });
     } else {
       // Group created by the user
 
       // Get list of Lattes IDs from local DB
-      db.groups.get({ name: groupSelection })
+      db.groups.get({ name: selection })
         // Fetch API to convert to ObjectIds
         .then(group => client.query({
           query: GET_MEMBERS_IDS,
@@ -82,13 +82,13 @@ class ProductionIndicator extends Component {
         }))
         .then(({ data }) => {
           this.setState({
-            groupSelection,
+            selection,
             campusSelection: 'Todos',
-            selectedGroupMembers: data.members.map(({ _id }) => _id),
+            selectedMembers2: data.members.map(({ _id }) => _id),
           });
         })
         .catch(() => {
-          this.setState({ groupSelection });
+          this.setState({ selection });
         });
     }
   }
@@ -96,20 +96,20 @@ class ProductionIndicator extends Component {
   render() {
     const { collection, by } = this.props;
     const {
-      selectedGroupMembers, groupNames, groupSelection, campusSelection,
+      selectedMembers2, selectionNames, selection, campusSelection,
     } = this.state;
 
     return (
       <ProductionIndicatorQuery
         collection={collection}
         by={by}
-        selectedMembers={selectedGroupMembers}
+        selectedMembers={selectedMembers2}
         campusSelection={campusSelection}
       >
         <ProductionVisualization
-          groupNames={groupNames}
-          groupSelection={groupSelection}
-          onGroupChange={this.handleGroupChange}
+          selectionNames={selectionNames}
+          selection={selection}
+          onSelectionChange={this.handleSelectionChange}
           onCampusChange={this.handleCampusChange}
         />
       </ProductionIndicatorQuery>
