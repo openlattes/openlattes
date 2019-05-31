@@ -12,9 +12,9 @@ class Graph extends PureComponent {
     // Remove the automatically included field __typename
     // to avoid semiotic error
     const nodes = data.nodes.map(({
-      _id, fullName, campus, selected,
+      _id, fullName, group, selected,
     }) => ({
-      _id, fullName, campus, selected,
+      _id, fullName, group, selected,
     }));
 
     const weightExtremes = data.edges
@@ -32,7 +32,7 @@ class Graph extends PureComponent {
       .range([2, 10]);
 
     const nodeStyle = colorHash.size > 1 ?
-      d => ({ fill: colorHash.get(d.campus) }) : { fill: colors.node.fill };
+      d => ({ fill: colorHash.get(d.group) }) : { fill: colors.node.fill };
 
     const iterationScale = scaleLinear()
       .domain([1, 800])
@@ -68,7 +68,7 @@ class Graph extends PureComponent {
           />
         )}
         legend={colorHash.size > 1 ? {
-          title: 'Campus',
+          title: 'Grupos',
           legendGroups: [
             {
               styleFn: d => ({ fill: d.color, stroke: 'black' }),

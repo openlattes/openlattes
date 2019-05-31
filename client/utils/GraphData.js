@@ -4,9 +4,9 @@ class GraphData {
     this.edges = edges;
   }
 
-  extractCampus() {
+  extractGroup() {
     return [...this.nodes
-      .reduce((set, { campus }) => set.add(campus), new Set())];
+      .reduce((set, { group }) => set.add(group), new Set())];
   }
 
   extractProductionTypes() {
@@ -18,10 +18,10 @@ class GraphData {
       }, new Set())];
   }
 
-  filterByCampus(match) {
+  filterByGroup(match) {
     if (match && match !== 'Todos') {
       const filteredNodes = this.nodes
-        .filter(({ campus }) => campus === match);
+        .filter(({ group }) => group === match);
 
       const nodesIds = filteredNodes.map(({ _id }) => _id);
 

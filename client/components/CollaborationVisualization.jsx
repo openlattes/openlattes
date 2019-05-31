@@ -33,15 +33,15 @@ class CollaborationVisualization extends Component {
 
   render() {
     const {
-      selectionNames, campusNames, typeNames,
-      selection, campusSelection, typeSelection,
-      onSelectionChange, onCampusChange, onTypeChange,
+      selectionNames, groupNames, typeNames,
+      selection, groupSelection, typeSelection,
+      onSelectionChange, onGroupChange, onTypeChange,
     } = this.props;
 
     const { emptyNodes } = this.state;
 
     const selectionOptions = toOptions(selectionNames);
-    const campusOptions = toOptions(['Todos', ...campusNames]);
+    const groupOptions = toOptions(['Todos', ...groupNames]);
     const typesOptions = toOptions(['Todos', ...typeNames]);
 
     const graph = new GraphData(this.props.graph);
@@ -49,8 +49,8 @@ class CollaborationVisualization extends Component {
     const compare = colors.compare();
 
     const colorHash = new Map(graph
-      .extractCampus()
-      .map(campus => [campus, compare.pop()]));
+      .extractGroup()
+      .map(group => [group, compare.pop()]));
 
     const { nodes, edges } = emptyNodes ?
       graph : graph.removeNodesWithoutEdges();
@@ -68,10 +68,10 @@ class CollaborationVisualization extends Component {
         </Grid>
         <Grid item xs={3}>
           <SelectField
-            onChange={onCampusChange}
-            value={campusSelection}
-            options={campusOptions}
-            label="Campus"
+            onChange={onGroupChange}
+            value={groupSelection}
+            options={groupOptions}
+            label="Grupos"
           />
         </Grid>
         <Grid item xs={3}>
@@ -129,20 +129,20 @@ CollaborationVisualization.propTypes = {
   }),
   selectionNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   typeNames: PropTypes.arrayOf(PropTypes.string),
-  campusNames: PropTypes.arrayOf(PropTypes.string),
+  groupNames: PropTypes.arrayOf(PropTypes.string),
   selection: PropTypes.string.isRequired,
-  campusSelection: PropTypes.string,
+  groupSelection: PropTypes.string,
   typeSelection: PropTypes.string,
   onSelectionChange: PropTypes.func.isRequired,
-  onCampusChange: PropTypes.func.isRequired,
+  onGroupChange: PropTypes.func.isRequired,
   onTypeChange: PropTypes.func.isRequired,
 };
 
 CollaborationVisualization.defaultProps = {
   graph: undefined,
-  campusNames: undefined,
+  groupNames: undefined,
   typeNames: undefined,
-  campusSelection: undefined,
+  groupSelection: undefined,
   typeSelection: undefined,
 };
 

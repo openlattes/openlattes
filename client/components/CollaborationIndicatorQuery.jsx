@@ -11,7 +11,7 @@ const GET_GRAPH = gql`
     nodes(members: $selectedMembers) {
       _id
       fullName
-      campus
+      group
     }
     edges(members: $selectedMembers) {
       source
@@ -26,7 +26,7 @@ const GET_GRAPH = gql`
 
 class CollaborationIndicatorQuery extends Component {
   render() {
-    const { selectedMembers, campusSelection, typeSelection } = this.props;
+    const { selectedMembers, groupSelection, typeSelection } = this.props;
 
     return (
       <Query query={GET_GRAPH} variables={{ selectedMembers }}>
@@ -36,20 +36,20 @@ class CollaborationIndicatorQuery extends Component {
 
           const graph = new GraphData(data);
 
-          const campus = graph.extractCampus();
+          const group = graph.extractGroup();
 
-          const filteredCampus = graph.filterByCampus(campusSelection);
+          const filteredGroup = graph.filterByGroup(groupSelection);
 
-          const types = filteredCampus.extractProductionTypes();
+          const types = filteredGroup.extractProductionTypes();
 
-          const { nodes, edges } = filteredCampus
+          const { nodes, edges } = filteredGroup
             .filterByProductionType(typeSelection);
 
           return React.cloneElement(this.props.children, {
             graph: { nodes, edges },
-            campusNames: campus,
+            groupNames: group,
             typeNames: types,
-            campusSelection,
+            groupSelection,
             typeSelection,
           });
         }}
@@ -64,7 +64,7 @@ CollaborationIndicatorQuery.propTypes = {
   /* eslint-disable react/forbid-prop-types */
   children: PropTypes.object.isRequired,
   /* eslint-enable react/forbid-prop-types */
-  campusSelection: PropTypes.string.isRequired,
+  groupSelection: PropTypes.string.isRequired,
   typeSelection: PropTypes.string.isRequired,
 };
 

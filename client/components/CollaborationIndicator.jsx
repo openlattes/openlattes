@@ -20,7 +20,7 @@ class CollaborationIndicator extends Component {
     super(props);
 
     this.state = {
-      campusSelection: 'Todos',
+      groupSelection: 'Todos',
       selectionNames: [
         'Nenhum',
         ...(props.selectedMembers.length ? ['Seleção Atual'] : []),
@@ -31,7 +31,7 @@ class CollaborationIndicator extends Component {
     };
 
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
-    this.handleCampusChange = this.handleCampusChange.bind(this);
+    this.handleGroupChange = this.handleGroupChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
   }
 
@@ -51,9 +51,9 @@ class CollaborationIndicator extends Component {
       });
   }
 
-  handleCampusChange(e) {
+  handleGroupChange(e) {
     this.setState({
-      campusSelection: e.target.value,
+      groupSelection: e.target.value,
       typeSelection: 'Todos',
     });
   }
@@ -63,7 +63,7 @@ class CollaborationIndicator extends Component {
     const { client } = this.props;
 
     const toDefault = {
-      campusSelection: 'Todos',
+      groupSelection: 'Todos',
       typeSelection: 'Todos',
     };
 
@@ -113,20 +113,20 @@ class CollaborationIndicator extends Component {
 
   render() {
     const {
-      selectedMembers2, selectionNames, selection, campusSelection, typeSelection,
+      selectedMembers2, selectionNames, selection, groupSelection, typeSelection,
     } = this.state;
 
     return (
       <CollaborationIndicatorQuery
         selectedMembers={selectedMembers2}
-        campusSelection={campusSelection}
+        groupSelection={groupSelection}
         typeSelection={typeSelection}
       >
         <CollaborationVisualization
           selectionNames={selectionNames}
           selection={selection}
           onSelectionChange={this.handleSelectionChange}
-          onCampusChange={this.handleCampusChange}
+          onGroupChange={this.handleGroupChange}
           onTypeChange={this.handleTypeChange}
         />
       </CollaborationIndicatorQuery>
