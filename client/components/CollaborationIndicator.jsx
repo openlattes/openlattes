@@ -21,16 +21,16 @@ class CollaborationIndicator extends Component {
 
     this.state = {
       campusSelection: 'Todos',
-      groupNames: [
+      selectionNames: [
         'Nenhum',
         ...(props.selectedMembers.length ? ['Seleção Atual'] : []),
       ],
-      groupSelection: props.selectedMembers.length ? 'Seleção Atual' : 'Nenhum',
-      selectedGroupMembers: props.selectedMembers.length ? props.selectedMembers : [],
+      selection: props.selectedMembers.length ? 'Seleção Atual' : 'Nenhum',
+      selectedMembers2: props.selectedMembers.length ? props.selectedMembers : [],
       typeSelection: 'Todos',
     };
 
-    this.handleGroupChange = this.handleGroupChange.bind(this);
+    this.handleSelectionChange = this.handleSelectionChange.bind(this);
     this.handleCampusChange = this.handleCampusChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
   }
@@ -43,8 +43,8 @@ class CollaborationIndicator extends Component {
          * an unmounted component.
          */
         this.setState({
-          groupNames: [
-            ...this.state.groupNames,
+          selectionNames: [
+            ...this.state.selectionNames,
             ...groups.map(({ name }) => name),
           ],
         });
@@ -58,8 +58,8 @@ class CollaborationIndicator extends Component {
     });
   }
 
-  handleGroupChange(e) {
-    const groupSelection = e.target.value;
+  handleSelectionChange(e) {
+    const selection = e.target.value;
     const { client } = this.props;
 
     const toDefault = {
@@ -67,24 +67,24 @@ class CollaborationIndicator extends Component {
       typeSelection: 'Todos',
     };
 
-    if (groupSelection === 'Nenhum') {
+    if (selection === 'Nenhum') {
       this.setState({
-        groupSelection,
-        selectedGroupMembers: [],
+        selection,
+        selectedMembers2: [],
         ...toDefault,
       });
-    } else if (groupSelection === 'Seleção Atual') {
+    } else if (selection === 'Seleção Atual') {
       // Members currently selected in the table
       this.setState({
-        groupSelection,
-        selectedGroupMembers: this.props.selectedMembers,
+        selection,
+        selectedMembers2: this.props.selectedMembers,
         ...toDefault,
       });
     } else {
       // Group created by the user
 
       // Get list of Lattes IDs from local DB
-      db.groups.get({ name: groupSelection })
+      db.groups.get({ name: selection })
         // Fetch API to convert to ObjectIds
         .then(group => client.query({
           query: GET_MEMBERS_IDS,
@@ -94,13 +94,13 @@ class CollaborationIndicator extends Component {
         }))
         .then(({ data }) => {
           this.setState({
-            groupSelection,
-            selectedGroupMembers: data.members.map(({ _id }) => _id),
+            selection,
+            selectedMembers2: data.members.map(({ _id }) => _id),
             ...toDefault,
           });
         })
         .catch(() => {
-          this.setState({ groupSelection });
+          this.setState({ selection });
         });
     }
   }
@@ -113,19 +113,19 @@ class CollaborationIndicator extends Component {
 
   render() {
     const {
-      selectedGroupMembers, groupNames, groupSelection, campusSelection, typeSelection,
+      selectedMembers2, selectionNames, selection, campusSelection, typeSelection,
     } = this.state;
 
     return (
       <CollaborationIndicatorQuery
-        selectedMembers={selectedGroupMembers}
+        selectedMembers={selectedMembers2}
         campusSelection={campusSelection}
         typeSelection={typeSelection}
       >
         <CollaborationVisualization
-          groupNames={groupNames}
-          groupSelection={groupSelection}
-          onGroupChange={this.handleGroupChange}
+          selectionNames={selectionNames}
+          selection={selection}
+          onSelectionChange={this.handleSelectionChange}
           onCampusChange={this.handleCampusChange}
           onTypeChange={this.handleTypeChange}
         />

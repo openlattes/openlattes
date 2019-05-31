@@ -33,14 +33,14 @@ class CollaborationVisualization extends Component {
 
   render() {
     const {
-      groupNames, campusNames, typeNames,
-      groupSelection, campusSelection, typeSelection,
-      onGroupChange, onCampusChange, onTypeChange,
+      selectionNames, campusNames, typeNames,
+      selection, campusSelection, typeSelection,
+      onSelectionChange, onCampusChange, onTypeChange,
     } = this.props;
 
     const { emptyNodes } = this.state;
 
-    const groupOptions = toOptions(groupNames);
+    const selectionOptions = toOptions(selectionNames);
     const campusOptions = toOptions(['Todos', ...campusNames]);
     const typesOptions = toOptions(['Todos', ...typeNames]);
 
@@ -60,10 +60,10 @@ class CollaborationVisualization extends Component {
         <Grid item xs={3}>
           <SelectField
             key={1}
-            options={groupOptions}
-            onChange={onGroupChange}
-            value={groupSelection}
-            label="Grupos"
+            options={selectionOptions}
+            onChange={onSelectionChange}
+            value={selection}
+            label="Seleções"
           />
         </Grid>
         <Grid item xs={3}>
@@ -127,13 +127,13 @@ CollaborationVisualization.propTypes = {
     nodes: PropTypes.array,
     edges: PropTypes.array,
   }),
-  groupNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectionNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   typeNames: PropTypes.arrayOf(PropTypes.string),
   campusNames: PropTypes.arrayOf(PropTypes.string),
-  groupSelection: PropTypes.string.isRequired,
+  selection: PropTypes.string.isRequired,
   campusSelection: PropTypes.string,
   typeSelection: PropTypes.string,
-  onGroupChange: PropTypes.func.isRequired,
+  onSelectionChange: PropTypes.func.isRequired,
   onCampusChange: PropTypes.func.isRequired,
   onTypeChange: PropTypes.func.isRequired,
 };
