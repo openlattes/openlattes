@@ -7,13 +7,27 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { Link } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
 
-const MenuItems = ({ data }) => (
+const styles = () => ({
+  divider: {
+    marginTop: 10,
+  },
+  subheader: {
+    marginTop: 10,
+    marginBottom: 3,
+  },
+});
+
+const MenuItems = ({ data, classes }) => (
   <List>
     {data.reduce((list, { divider, subheader, links }) => {
-      const subheaderList = subheader
-        ? [<ListSubheader key={subheader.key}>{subheader.title}</ListSubheader>]
-        : [];
+      const subheaderList =
+        subheader ? [(
+          <ListSubheader key={subheader.key} className={classes.subheader}>
+            {subheader.title}
+          </ListSubheader>
+        )] : [];
 
       const linksList = links.map(({
         key, Icon, label, to,
@@ -31,7 +45,9 @@ const MenuItems = ({ data }) => (
         </ListItem>
       ));
 
-      const dividerList = divider ? [<Divider key={divider.key} />] : [];
+      const dividerList = divider ? [(
+        <Divider key={divider.key} className={classes.divider} />
+      )] : [];
 
       return [...list, ...subheaderList, ...linksList, ...dividerList];
     }, [])}
@@ -39,6 +55,9 @@ const MenuItems = ({ data }) => (
 );
 
 MenuItems.propTypes = {
+  /* eslint-disable react/forbid-prop-types */
+  classes: PropTypes.object.isRequired,
+  /* eslint-enable react/forbid-prop-types */
   data: PropTypes.arrayOf(PropTypes.shape({
     subheader: PropTypes.shape({
       key: PropTypes.number,
@@ -56,4 +75,4 @@ MenuItems.propTypes = {
   }).isRequired).isRequired,
 };
 
-export default MenuItems;
+export default withStyles(styles)(MenuItems);

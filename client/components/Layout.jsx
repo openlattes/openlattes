@@ -89,6 +89,9 @@ const styles = theme => ({
      */
     color: 'white',
   },
+  divider: {
+    marginBottom: 3,
+  },
 });
 
 class App extends React.Component {
@@ -155,7 +158,7 @@ class App extends React.Component {
                 <ChevronLeftIcon />
               </IconButton>
             </div>
-            <Divider />
+            <Divider className={classes.divider} />
             {menuItems}
           </Drawer>
           <main
@@ -183,6 +186,7 @@ App.propTypes = {
     drawerHeader: PropTypes.string,
     content: PropTypes.string,
     contentShift: PropTypes.string,
+    divider: PropTypes.string,
   }).isRequired,
   /* eslint-disable react/forbid-prop-types */
   menuItems: PropTypes.object.isRequired,
