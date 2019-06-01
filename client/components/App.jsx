@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import PeopleIcon from '@material-ui/icons/People';
 import ShareIcon from '@material-ui/icons/Share';
 import BarChartIcon from '@material-ui/icons/BarChart';
 
@@ -18,7 +18,7 @@ const menuItems = [
   {
     links: [
       {
-        key: 1, Icon: DashboardIcon, label: 'Home', to: '/',
+        key: 1, Icon: PeopleIcon, label: 'Membros', to: '/',
       },
     ],
     divider: { key: 2 },
