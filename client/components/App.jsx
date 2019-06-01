@@ -42,6 +42,7 @@ const menuItems = [
         key: 8, Icon: BarChartIcon, label: 'Produtividade', to: '/supervisions_year',
       },
     ],
+    divider: { key: 9 },
   },
 ];
 
