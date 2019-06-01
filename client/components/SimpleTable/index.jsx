@@ -93,8 +93,6 @@ class SimpleTable extends React.Component {
       data, order, orderBy, rowsPerPage, page,
     } = this.state;
 
-    const fields = headers.map(({ id }) => id);
-
     return (
       <Paper className={classes.root}>
         <div ref={(c) => { this.productionList = c; }} className={classes.tableWrapper}>
@@ -115,8 +113,8 @@ class SimpleTable extends React.Component {
                     tabIndex={-1}
                     key={n.id}
                   >
-                    {fields.map(field => (
-                      <TableCell key={field}>{n[field]}</TableCell>
+                    {headers.map(({ id, align }) => (
+                      <TableCell key={id} align={align}>{n[id]}</TableCell>
                     ))}
                   </TableRow>
                 ))}
