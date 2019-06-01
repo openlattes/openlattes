@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 
 import EnhancedTable from './EnhancedTable';
 import Loading from './Loading';
+import SavedSelectionsList from './SavedSelectionsList';
 
 const GET_MEMBERS = gql`
   {
@@ -23,27 +24,30 @@ class MembersList extends PureComponent {
     const { selectedMembers } = this.props;
 
     return (
-      <Query query={GET_MEMBERS}>
-        {({ loading, error, data }) => {
-          if (loading) return <Loading />;
-          if (error) return 'Erro';
+      <div>
+        <SavedSelectionsList />
+        <Query query={GET_MEMBERS}>
+          {({ loading, error, data }) => {
+            if (loading) return <Loading />;
+            if (error) return 'Erro';
 
-          return (
-            <EnhancedTable
-              data={data.members.map(({
-                _id, fullName, citationName, lattesId, cvLastUpdate,
-              }) => ({
-                id: _id,
-                fullName,
-                citationName,
-                lattesId,
-                cvLastUpdate: new Date(cvLastUpdate),
-              }))}
-              selectedMembers={selectedMembers}
-            />
-          );
-        }}
-      </Query>
+            return (
+              <EnhancedTable
+                data={data.members.map(({
+                  _id, fullName, citationName, lattesId, cvLastUpdate,
+                }) => ({
+                  id: _id,
+                  fullName,
+                  citationName,
+                  lattesId,
+                  cvLastUpdate: new Date(cvLastUpdate),
+                }))}
+                selectedMembers={selectedMembers}
+              />
+            );
+          }}
+        </Query>
+      </div>
     );
   }
 }
