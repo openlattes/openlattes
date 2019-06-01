@@ -228,16 +228,13 @@ class ProductionVisualization extends Component {
         )}
 
         table={selectedYear || selectedMember ? (
-          <div>
-            <Typography variant="h5">{`Produções de ${selectedYear || selectedMember}:`}</Typography>
-            <DataList
-              year={Number(selectedYear)}
-              memberName={selectedMember}
-              types={selectedTypes}
-              group={by === 'year' && groupSelection !== 'Todos' ? groupSelection : undefined}
-              members={by === 'year' ? selectedMembers : undefined}
-            />
-          </div>
+          <DataList
+            year={Number(selectedYear)}
+            memberName={selectedMember}
+            types={selectedTypes}
+            group={by === 'year' && groupSelection !== 'Todos' ? groupSelection : undefined}
+            members={by === 'year' ? selectedMembers : undefined}
+          />
         ) : undefined}
       />
     );

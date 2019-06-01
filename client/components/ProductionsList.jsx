@@ -61,6 +61,7 @@ const ProductionsList = ({
             },
           ]}
           autoFocus
+          title={`Produções de ${year || memberName}`}
         />
       );
     }}

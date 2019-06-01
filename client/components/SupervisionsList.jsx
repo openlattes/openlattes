@@ -61,6 +61,7 @@ const SupervisionsList = ({
             },
           ]}
           autoFocus
+          title={`Orientações de ${year || memberName}`}
         />
       );
     }}
