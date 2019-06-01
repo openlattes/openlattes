@@ -11,6 +11,10 @@ class SavedSelectionsList extends Component {
 
     this.state = {
       selectionNames: [],
+      /* Use as key to create a new intance of the component
+       * when updating (fully uncontrolled component with a key).
+       */
+      deleteId: -1,
     };
 
     this.deleteSavedSelection = this.deleteSavedSelection.bind(this);
@@ -38,15 +42,17 @@ class SavedSelectionsList extends Component {
               id: group.id,
               name: group.name,
             })),
+          deleteId: id,
         });
       });
   }
 
   render() {
-    const { selectionNames } = this.state;
+    const { selectionNames, deleteId } = this.state;
 
     return selectionNames.length ? (
       <SimpleTable
+        key={deleteId}
         headers={[
           {
             id: 'name',
