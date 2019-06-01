@@ -27,10 +27,12 @@ class ProductionIndicator extends Component {
       ],
       selection: props.selectedMembers.length ? 'Seleção Atual' : 'Nenhum',
       selectedMembers2: props.selectedMembers.length ? props.selectedMembers : [],
+      by: 'year',
     };
 
     this.handleGroupChange = this.handleGroupChange.bind(this);
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
+    this.handleByChange = this.handleByChange.bind(this);
   }
 
   componentDidMount() {
@@ -93,10 +95,16 @@ class ProductionIndicator extends Component {
     }
   }
 
+  handleByChange(e) {
+    const by = e.target.value;
+
+    this.setState({ by });
+  }
+
   render() {
-    const { collection, by } = this.props;
+    const { collection } = this.props;
     const {
-      selectedMembers2, selectionNames, selection, groupSelection,
+      selectedMembers2, selectionNames, selection, groupSelection, by,
     } = this.state;
 
     return (
@@ -111,6 +119,7 @@ class ProductionIndicator extends Component {
           selection={selection}
           onSelectionChange={this.handleSelectionChange}
           onGroupChange={this.handleGroupChange}
+          onByChange={this.handleByChange}
         />
       </ProductionIndicatorQuery>
     );
@@ -119,7 +128,6 @@ class ProductionIndicator extends Component {
 
 ProductionIndicator.propTypes = {
   collection: PropTypes.string,
-  by: PropTypes.string,
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string).isRequired,
   /* eslint-disable react/forbid-prop-types */
@@ -129,7 +137,6 @@ ProductionIndicator.propTypes = {
 
 ProductionIndicator.defaultProps = {
   collection: undefined,
-  by: 'year',
 };
 
 export default withApollo(ProductionIndicator);

@@ -4,6 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
 
 import StackedBarChart from './StackedBarChart';
 import Checkboxes from './Checkboxes';
@@ -92,7 +94,7 @@ class ProductionVisualization extends Component {
       classes, indicator, checkboxesValues, by, collection,
       selectionNames, selection, onSelectionChange,
       groupNames, onGroupChange, groupSelection,
-      selectedMembers,
+      selectedMembers, onByChange,
     } = this.props;
     const {
       selectedCheckboxes, selectedYear, selectedMember, selectedTypes,
@@ -181,6 +183,47 @@ class ProductionVisualization extends Component {
                 )}
               />
             </Grid>
+            <Grid item xs={2}>
+              <CustomCard
+                title="Contagem Por"
+                content={(
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="flex-start"
+                  >
+                    <Grid item>
+                      <FormControlLabel
+                        label="Ano"
+                        control={(
+                          <Radio
+                            checked={by === 'year'}
+                            onChange={onByChange}
+                            value="year"
+                            name="year-radio-button"
+                            aria-label="Year"
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <FormControlLabel
+                        label="Membro"
+                        control={(
+                          <Radio
+                            checked={by === 'member'}
+                            onChange={onByChange}
+                            value="member"
+                            name="member-radio-button"
+                            aria-label="Member"
+                          />
+                        )}
+                      />
+                    </Grid>
+                  </Grid>
+                )}
+              />
+            </Grid>
           </Grid>
         )}
 
@@ -222,6 +265,7 @@ ProductionVisualization.propTypes = {
   groupNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string).isRequired,
+  onByChange: PropTypes.func.isRequired,
 };
 
 ProductionVisualization.defaultProps = {

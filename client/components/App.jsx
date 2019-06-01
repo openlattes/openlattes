@@ -79,7 +79,7 @@ const App = () => (
           key: 4,
           exact: false,
           path: '/productions_member',
-          render: <ProductionIndicator selectedMembers={selectedMembers} by="member" />,
+          render: <ProductionIndicator selectedMembers={selectedMembers} />,
         },
         {
           key: 5,
@@ -91,7 +91,7 @@ const App = () => (
           key: 6,
           exact: false,
           path: '/supervisions_member',
-          render: <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} by="member" />,
+          render: <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} />,
         },
       ];
 
