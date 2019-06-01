@@ -14,8 +14,6 @@ import CollaborationIndicator from './CollaborationIndicator';
 import ProductionIndicator from './ProductionIndicator';
 import QuerySelectedMembers from './QuerySelectedMembers';
 
-const RotatedBarChartIcon = () => <BarChartIcon style={{ transform: 'rotate(90deg)' }} />;
-
 const menuItems = [
   {
     links: [
@@ -29,25 +27,19 @@ const menuItems = [
     subheader: { key: 3, title: 'Produções Bibliográficas' },
     links: [
       {
-        key: 4, Icon: BarChartIcon, label: 'Evolução', to: '/productions_year',
+        key: 4, Icon: BarChartIcon, label: 'Produtividade', to: '/productions_year',
       },
       {
-        key: 5, Icon: RotatedBarChartIcon, label: 'Membros', to: '/productions_member',
-      },
-      {
-        key: 6, Icon: ShareIcon, label: 'Coautorias', to: '/collaborations',
+        key: 5, Icon: ShareIcon, label: 'Coautorias', to: '/collaborations',
       },
     ],
-    divider: { key: 7 },
+    divider: { key: 6 },
   },
   {
-    subheader: { key: 8, title: 'Orientações' },
+    subheader: { key: 7, title: 'Orientações' },
     links: [
       {
-        key: 9, Icon: BarChartIcon, label: 'Evolução', to: '/supervisions_year',
-      },
-      {
-        key: 11, Icon: RotatedBarChartIcon, label: 'Membros', to: '/supervisions_member',
+        key: 8, Icon: BarChartIcon, label: 'Produtividade', to: '/supervisions_year',
       },
     ],
   },
@@ -78,19 +70,7 @@ const App = () => (
         {
           key: 4,
           exact: false,
-          path: '/productions_member',
-          render: <ProductionIndicator selectedMembers={selectedMembers} />,
-        },
-        {
-          key: 5,
-          exact: false,
           path: '/supervisions_year',
-          render: <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} />,
-        },
-        {
-          key: 6,
-          exact: false,
-          path: '/supervisions_member',
           render: <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} />,
         },
       ];
