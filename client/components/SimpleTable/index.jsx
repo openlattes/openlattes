@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import SimpleTableHead from './SimpleTableHead';
+import SimpleTableToolbar from './SimpleTableToolbar';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -90,13 +91,18 @@ class SimpleTable extends React.Component {
   }
 
   render() {
-    const { classes, headers } = this.props;
+    const { classes, headers, title } = this.props;
     const {
       data, order, orderBy, rowsPerPage, page,
     } = this.state;
 
     return (
       <Paper className={classes.root}>
+        {title ? (
+          <SimpleTableToolbar
+            title={title}
+          />
+        ) : null}
         <div ref={(c) => { this.productionList = c; }} className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <SimpleTableHead
@@ -151,10 +157,12 @@ SimpleTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   headers: PropTypes.arrayOf(PropTypes.object).isRequired,
   autoFocus: PropTypes.bool,
+  title: PropTypes.string,
 };
 
 SimpleTable.defaultProps = {
   autoFocus: false,
+  title: undefined,
 };
 
 export default withStyles(styles)(SimpleTable);
