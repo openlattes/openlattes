@@ -52,6 +52,7 @@ class SavedSelectionsList extends Component {
 
     return selectionNames.length ? (
       <SimpleTable
+        title="Seleções Salvas"
         key={deleteId}
         headers={[
           {
