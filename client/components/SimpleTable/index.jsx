@@ -116,9 +116,9 @@ class SimpleTable extends React.Component {
                     tabIndex={-1}
                     key={n.id}
                   >
-                    <TableCell>{n[fields[0]]}</TableCell>
-                    <TableCell>{n[fields[1]]}</TableCell>
-                    <TableCell>{n[fields[2]]}</TableCell>
+                    {fields.map(field => (
+                      <TableCell key={field}>{n[field]}</TableCell>
+                    ))}
                   </TableRow>
                 ))}
               {emptyRows > 0 && (
