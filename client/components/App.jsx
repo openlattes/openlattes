@@ -27,7 +27,7 @@ const menuItems = [
     subheader: { key: 3, title: 'Produções Bibliográficas' },
     links: [
       {
-        key: 4, Icon: BarChartIcon, label: 'Produtividade', to: '/productions_year',
+        key: 4, Icon: BarChartIcon, label: 'Produtividade', to: '/productions',
       },
       {
         key: 5, Icon: ShareIcon, label: 'Coautorias', to: '/collaborations',
@@ -39,7 +39,7 @@ const menuItems = [
     subheader: { key: 7, title: 'Orientações' },
     links: [
       {
-        key: 8, Icon: BarChartIcon, label: 'Produtividade', to: '/supervisions_year',
+        key: 8, Icon: BarChartIcon, label: 'Produtividade', to: '/supervisions',
       },
     ],
     divider: { key: 9 },
@@ -65,13 +65,13 @@ const App = () => (
         {
           key: 3,
           exact: false,
-          path: '/productions_year',
+          path: '/productions',
           render: <ProductionIndicator selectedMembers={selectedMembers} />,
         },
         {
           key: 4,
           exact: false,
-          path: '/supervisions_year',
+          path: '/supervisions',
           render: <ProductionIndicator collection="SUPERVISION" selectedMembers={selectedMembers} />,
         },
       ];
