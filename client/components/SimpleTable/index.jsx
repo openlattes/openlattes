@@ -65,7 +65,9 @@ class SimpleTable extends React.Component {
   }
 
   componentDidMount() {
-    this.productionList.scrollIntoView({ behavior: 'smooth' });
+    if (this.props.autoFocus) {
+      this.productionList.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   handleRequestSort(event, property) {
@@ -148,6 +150,11 @@ SimpleTable.propTypes = {
   }).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   headers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  autoFocus: PropTypes.bool,
+};
+
+SimpleTable.defaultProps = {
+  autoFocus: false,
 };
 
 export default withStyles(styles)(SimpleTable);

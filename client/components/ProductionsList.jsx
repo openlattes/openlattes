@@ -60,6 +60,7 @@ const ProductionsList = ({
               id: 'type', align: 'left', disablePadding: false, label: 'Tipo',
             },
           ]}
+          autoFocus
         />
       );
     }}

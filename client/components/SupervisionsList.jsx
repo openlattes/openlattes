@@ -60,6 +60,7 @@ const SupervisionsList = ({
               id: 'degreeType', align: 'left', disablePadding: false, label: 'Tipo',
             },
           ]}
+          autoFocus
         />
       );
     }}
