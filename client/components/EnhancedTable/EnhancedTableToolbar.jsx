@@ -157,7 +157,7 @@ class EnhancedTableToolbar extends Component {
               disabled={!numSelected}
               value={selectionName}
               onChange={this.handleSelectionNameChange}
-              placeholder="Escolha um nome"
+              placeholder={!numSelected ? 'Selecione um membro' : 'Escolha um nome'}
             />
             <Button
               onClick={this.handleSaveButtonClick}
