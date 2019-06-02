@@ -63,7 +63,7 @@ class SavedSelectionsList extends Component {
           },
           {
             id: 'delete',
-            label: 'Delete',
+            label: 'Excluir',
             align: 'right',
             disablePadding: false,
           },
