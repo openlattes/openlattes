@@ -9,13 +9,16 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 const rows = [
   {
-    id: 'fullName', align: 'left', disablePadding: true, label: 'Nome',
+    id: 'fullName', align: 'left', disablePadding: true, label: 'Nome', maxWidth: 220,
   },
   {
-    id: 'citationName', align: 'left', disablePadding: false, label: 'Nome em citações',
+    id: 'lattesCurriculum', align: 'left', disablePadding: false, label: 'Currículo Lattes', maxWidth: 200,
   },
   {
-    id: 'cvLastUpdate', align: 'left', disablePadding: false, label: 'Última atualização',
+    id: 'citationName', align: 'left', disablePadding: false, label: 'Nome em citações', maxWidth: 350,
+  },
+  {
+    id: 'cvLastUpdate', align: 'left', disablePadding: false, label: 'Última atualização', maxWidth: 200,
   },
 ];
 
@@ -51,6 +54,7 @@ class EnhancedTableHead extends Component {
               align={row.align}
               padding={row.disablePadding ? 'none' : 'default'}
               sortDirection={orderBy === row.id ? order : false}
+              style={{ maxWidth: row.maxWidth }}
             >
               <Tooltip
                 title="Ordenar"

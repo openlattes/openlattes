@@ -193,14 +193,17 @@ class EnhancedTable extends React.Component {
                           <TableCell padding="checkbox">
                             <Checkbox checked={isSelected} />
                           </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
+                          <TableCell style={{ maxWidth: 220 }} component="th" scope="row" padding="none">
+                            {n.fullName}
+                          </TableCell>
+                          <TableCell style={{ maxWidth: 200 }} align="left">
                             <a href={`http://lattes.cnpq.br/${n.lattesId}`} target="_blank" rel="noopener noreferrer">
-                              {n.fullName}
+                              Currículo Lattes
                               <OpenInNewIcon style={{ fontSize: 12 }} />
                             </a>
                           </TableCell>
-                          <TableCell>{n.citationName}</TableCell>
-                          <TableCell>{`${d}/${m}/${y}`}</TableCell>
+                          <TableCell style={{ maxWidth: 350 }}>{n.citationName}</TableCell>
+                          <TableCell style={{ maxWidth: 200 }} align="left">{`${d}/${m}/${y}`}</TableCell>
                         </TableRow>
                       );
                     })}
