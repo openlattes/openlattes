@@ -231,9 +231,6 @@ class ProductionVisualization extends Component {
 }
 
 ProductionVisualization.propTypes = {
-  classes: PropTypes.shape({
-    paper: PropTypes.string,
-  }).isRequired,
   indicator: PropTypes.arrayOf(PropTypes.shape({
     year: PropTypes.number,
     member: PropTypes.string,
