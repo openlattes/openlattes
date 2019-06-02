@@ -7,6 +7,7 @@ const memberSchema = new Schema({
   citationName: String,
   unity: String,
   group: String,
+  groups: [String],
   academicDegrees: [String],
   summary: String,
   lattesId: String,
