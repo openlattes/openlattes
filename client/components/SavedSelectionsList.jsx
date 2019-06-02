@@ -34,7 +34,7 @@ class SavedSelectionsList extends Component {
       .where('id')
       .equals(id)
       .delete()
-      .then(() => db.groups.toArray())
+      .then(db.groups.toArray())
       .then((groups) => {
         this.setState({
           selectionNames: groups
