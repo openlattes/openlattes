@@ -104,9 +104,9 @@ class EnhancedTableToolbar extends Component {
             });
           }
         })
-        .then(() => {
+        .then((id) => {
           // Clear selection
-          onSelectionSave();
+          onSelectionSave(id);
 
           this.setState({
             selectionName: '',

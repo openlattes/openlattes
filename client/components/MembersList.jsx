@@ -20,12 +20,33 @@ const GET_MEMBERS = gql`
 `;
 
 class MembersList extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      /* To reload the saved selections table when new
+       * selection is added.
+       */
+      addId: undefined,
+    };
+
+    this.handleSelectionSave = this.handleSelectionSave.bind(this);
+  }
+
+  handleSelectionSave(id) {
+    this.setState({ addId: id });
+  }
+
   render() {
     const { selectedMembers } = this.props;
+    const { addId } = this.state;
 
     return (
       <div>
-        <SavedSelectionsList />
+        <SavedSelectionsList
+          key={addId}
+          onSelectionSave={this.handleSaveOrDelete}
+        />
         <Query query={GET_MEMBERS}>
           {({ loading, error, data }) => {
             if (loading) return <Loading />;
@@ -43,6 +64,7 @@ class MembersList extends PureComponent {
                   cvLastUpdate: new Date(cvLastUpdate),
                 }))}
                 selectedMembers={selectedMembers}
+                onSelectionSave={this.handleSelectionSave}
               />
             );
           }}
