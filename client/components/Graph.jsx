@@ -8,7 +8,7 @@ import CustomTooltip from './CustomTooltip';
 
 class Graph extends PureComponent {
   render() {
-    const { data, colorHash } = this.props;
+    const { data } = this.props;
     // Remove the automatically included field __typename
     // to avoid semiotic error
     const nodes = data.nodes.map(({
@@ -31,9 +31,6 @@ class Graph extends PureComponent {
       .domain([0, weightExtremes.max * 2])
       .range([2, 10]);
 
-    const nodeStyle = colorHash.size > 1 ?
-      d => ({ fill: colorHash.get(d.group) }) : { fill: colors.node.fill };
-
     const iterationScale = scaleLinear()
       .domain([1, 800])
       .range([500, 40]);
@@ -51,7 +48,7 @@ class Graph extends PureComponent {
           fillOpacity: 0.25,
           strokeWidth: '1px',
         })}
-        nodeStyle={nodeStyle}
+        nodeStyle={{ fill: colors.node.fill }}
         networkType={{ type: 'force', iterations, edgeStrength: 0.1 }}
         edgeType="ribbon"
         nodeIDAccessor="_id"
@@ -67,16 +64,6 @@ class Graph extends PureComponent {
             title2={`Coautorias: ${d.degree}`}
           />
         )}
-        legend={colorHash.size > 1 ? {
-          title: 'Grupos',
-          legendGroups: [
-            {
-              styleFn: d => ({ fill: d.color, stroke: 'black' }),
-              items: [...colorHash]
-                .map(([label, color]) => ({ label, color })),
-            },
-          ],
-        } : undefined}
       />
     );
   }
@@ -87,11 +74,6 @@ Graph.propTypes = {
     nodes: PropTypes.array,
     edges: PropTypes.array.isRequired,
   }).isRequired,
-  colorHash: PropTypes.instanceOf(Map),
-};
-
-Graph.defaultProps = {
-  colorHash: new Map(),
 };
 
 export default Graph;

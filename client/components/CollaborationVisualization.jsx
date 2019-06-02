@@ -9,7 +9,6 @@ import GraphData from '../utils/GraphData';
 import SelectField from './SelectField';
 import IndicatorLayout from './IndicatorLayout';
 import CustomCard from './CustomCard';
-import colors from '../utils/colors';
 
 const toOptions = labels =>
   labels.map(name => ({ value: name, label: name }));
@@ -45,12 +44,6 @@ class CollaborationVisualization extends Component {
     const typesOptions = toOptions(['Todos', ...typeNames]);
 
     const graph = new GraphData(this.props.graph);
-
-    const compare = colors.compare();
-
-    const colorHash = new Map(graph
-      .extractGroup()
-      .map(group => [group, compare.pop()]));
 
     const { nodes, edges } = emptyNodes ?
       graph : graph.removeNodesWithoutEdges();
@@ -102,10 +95,7 @@ class CollaborationVisualization extends Component {
         title="Rede de Coautoria das Produções Bibliográficas"
         visualizationElevation={0}
         visualization={(
-          <Graph
-            data={{ edges, nodes }}
-            colorHash={colorHash}
-          />
+          <Graph data={{ edges, nodes }} />
         )}
 
         control={(
