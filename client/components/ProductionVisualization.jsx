@@ -236,23 +236,29 @@ ProductionVisualization.propTypes = {
     member: PropTypes.string,
     count: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
-  })).isRequired,
-  checkboxesValues: PropTypes.instanceOf(Set).isRequired,
+  })),
+  checkboxesValues: PropTypes.instanceOf(Set),
   selectionNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   selection: PropTypes.string.isRequired,
   onSelectionChange: PropTypes.func.isRequired,
-  by: PropTypes.string.isRequired,
+  by: PropTypes.string,
   collection: PropTypes.string,
   onGroupChange: PropTypes.func.isRequired,
-  groupSelection: PropTypes.string.isRequired,
-  groupNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  groupSelection: PropTypes.string,
+  groupNames: PropTypes.arrayOf(PropTypes.string),
   selectedMembers: PropTypes
-    .arrayOf(PropTypes.string).isRequired,
+    .arrayOf(PropTypes.string),
   onByChange: PropTypes.func.isRequired,
 };
 
 ProductionVisualization.defaultProps = {
   collection: 'BIBLIOGRAPHIC',
+  indicator: [],
+  checkboxesValues: new Set(),
+  by: 'year',
+  groupSelection: 'Todos',
+  groupNames: [],
+  selectedMembers: [],
 };
 
 export default ProductionVisualization;
