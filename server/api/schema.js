@@ -54,6 +54,7 @@ const typeDefs = gql`
     lattesId: String
     cvLastUpdate: String
     group: String
+    groups: [String]
   }
 
   type Production {
