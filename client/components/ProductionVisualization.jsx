@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
@@ -15,22 +13,6 @@ import IndicatorLayout from './IndicatorLayout';
 import CustomCard from './CustomCard';
 import colors from '../utils/colors';
 
-const styles = theme => ({
-  paper: {
-    padding: theme.spacing.unit * 3,
-  },
-  filterPaper: {
-    padding: theme.spacing.unit * 1,
-  },
-  cardHeader: {
-    backgroundColor: theme.palette.primary.light,
-    padding: 5,
-  },
-  cardContent: {
-    padding: 5,
-  },
-});
-
 const projections = new Map([
   ['year', 'vertical'],
   ['member', 'horizontal'],
@@ -43,6 +25,16 @@ const tables = new Map([
 
 const toOptions = labels =>
   labels.map(name => ({ value: name, label: name }));
+
+const collectionTitles = new Map([
+  ['BIBLIOGRAPHIC', 'Produções Bibliográficas'],
+  ['SUPERVISION', 'Orientações'],
+]);
+
+const byTitles = new Map([
+  ['year', 'Ano'],
+  ['member', 'Membro'],
+]);
 
 class ProductionVisualization extends Component {
   constructor(props) {
@@ -90,7 +82,7 @@ class ProductionVisualization extends Component {
 
   render() {
     const {
-      classes, indicator, checkboxesValues, by, collection,
+      indicator, checkboxesValues, by, collection,
       selectionNames, selection, onSelectionChange,
       groupNames, onGroupChange, groupSelection,
       selectedMembers, onByChange,
@@ -114,22 +106,20 @@ class ProductionVisualization extends Component {
 
     const DataList = tables.get(collection);
 
+    const collectionTitle = collectionTitles.get(collection);
+    const byTitle = byTitles.get(by);
+
     return (
       <IndicatorLayout
+        title={`Indicador de Produção por ${byTitle} (${collectionTitle})`}
         visualization={(
-          <Grid container justify="flex-start">
-            <Grid item>
-              <Paper elevation={1} className={classes.paper}>
-                <StackedBarChart
-                  data={filteredTypes}
-                  colorHash={colorHash}
-                  by={by}
-                  projection={projections.get(by)}
-                  onClick={this.handleChartClick}
-                />
-              </Paper>
-            </Grid>
-          </Grid>
+          <StackedBarChart
+            data={filteredTypes}
+            colorHash={colorHash}
+            by={by}
+            projection={projections.get(by)}
+            onClick={this.handleChartClick}
+          />
         )}
 
         control={(
@@ -268,4 +258,4 @@ ProductionVisualization.defaultProps = {
   collection: 'BIBLIOGRAPHIC',
 };
 
-export default withStyles(styles)(ProductionVisualization);
+export default ProductionVisualization;

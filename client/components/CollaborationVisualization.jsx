@@ -99,15 +99,13 @@ class CollaborationVisualization extends Component {
 
     return (
       <IndicatorLayout
+        title="Rede de Coautoria das Produções Bibliográficas"
+        visualizationElevation={0}
         visualization={(
-          <Grid container>
-            <Grid item>
-              <Graph
-                data={{ edges, nodes }}
-                colorHash={colorHash}
-              />
-            </Grid>
-          </Grid>
+          <Graph
+            data={{ edges, nodes }}
+            colorHash={colorHash}
+          />
         )}
 
         control={(
