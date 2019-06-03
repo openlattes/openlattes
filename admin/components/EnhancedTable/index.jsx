@@ -160,7 +160,7 @@ class EnhancedTable extends React.Component {
             <EnhancedTableToolbar
               selected={selected}
               toLattesId={this.toLattesId}
-              onSelectionSave={newGroupName => this.handleSelectionSave(client, newGroupName)}
+              onSelectionSave={() => this.handleSelectionSave(client)}
             />
             <div className={classes.tableWrapper}>
               <Table className={classes.table} aria-labelledby="tableTitle">
