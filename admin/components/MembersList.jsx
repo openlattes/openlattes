@@ -57,7 +57,6 @@ class MembersList extends PureComponent {
             <div>
               <SavedGroupsList
                 key={newGroupName}
-                onSelectionSave={this.handleSaveOrDelete}
                 groupNames={groupNames}
               />
               <EnhancedTable
