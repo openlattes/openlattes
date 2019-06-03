@@ -224,6 +224,16 @@ const mutations = {
 
     return n;
   },
+  deleteGroup: async (obj, { group }) => {
+    const { n } = await Member
+      .updateMany(match('groups', group), {
+        $pull: {
+          groups: group,
+        },
+      });
+
+    return n;
+  },
 };
 
 const resolvers = {

@@ -36,6 +36,7 @@ const typeDefs = gql`
 
   type Mutation {
     addGroup(members: [ID], group: String): Int
+    deleteGroup(group: String): Int
   }
 
   type Indicator {
