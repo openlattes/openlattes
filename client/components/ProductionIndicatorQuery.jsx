@@ -14,7 +14,7 @@ const GET_INDICATOR = gql`
       type
     }
     members(members: $members) {
-      group
+      groups
     }
   }
 `;
@@ -45,7 +45,7 @@ class ProductionIndicatorQuery extends Component {
             .reduce((set, { type }) => set.add(type), new Set());
 
           const group = [...members
-            .reduce((set, member) => set.add(member.group), new Set())];
+            .reduce((set, member) => new Set([...set, ...member.groups]), new Set())];
 
           return React.cloneElement(this.props.children, {
             indicator,
