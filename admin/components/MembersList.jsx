@@ -39,7 +39,10 @@ class MembersList extends PureComponent {
 
           return (
             <div>
-              <SavedGroupsList groupNames={groupNames} />
+              <SavedGroupsList
+                groupNames={groupNames}
+                refetch={refetch}
+              />
               <EnhancedTable
                 data={data.members.map(({
                   _id, fullName, citationName, lattesId, cvLastUpdate,
