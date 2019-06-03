@@ -11,10 +11,11 @@
     "build": "yarn run buildserver && yarn run buildclient",
     "deploy": "now --public && now alias && now rm openlattes --safe --yes",
     "now-start": "NODE_ENV=production node dist",
+    "startadmin": "CLIENT_ENV=admin NODE_ENV=production node dist",
     "devserver": "nodemon server --exec babel-node --env-name server",
     "devclient": "parcel watch client/index.html -d dist/public",
     "devadmin": "parcel watch admin/index.html -d dist/public",
-    "startadmin": "concurrently -k \"yarn run devserver\" \"yarn run devadmin\"",
+    "startadmindev": "CLIENT_ENV=admin concurrently -k \"yarn run devserver\" \"yarn run devadmin\"",
     "start": "concurrently -k \"yarn run devserver\" \"yarn run devclient\""
   },
   "dependencies": {

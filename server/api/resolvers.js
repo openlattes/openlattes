@@ -212,6 +212,20 @@ const productionIndicator = {
   },
 };
 
+const mutations = {
+  addGroup: async (obj, { members, group }) => {
+    // TODO: update only if member is not in this group yet
+    const { n } = await Member
+      .updateMany(match('_id', toObjectIds(members)), {
+        $push: {
+          groups: group,
+        },
+      });
+
+    return n;
+  },
+};
+
 const resolvers = {
   Query: {
     member: (obj, { _id }) => Member.findById(_id),
@@ -299,6 +313,11 @@ const resolvers = {
         },
       ]),
   },
+
+  /* Don't expose the resolver in the app.
+   * Only use locally.
+   */
+  Mutation: process.env.CLIENT_ENV === 'admin' ? mutations : {},
 
   Production: {
     members: ({ members }) => Member.find({ _id: { $in: members } }),

@@ -34,6 +34,10 @@ const typeDefs = gql`
     edges(members: [ID]): [Edge]
   }
 
+  type Mutation {
+    addGroup(members: [ID], group: String): Int
+  }
+
   type Indicator {
     year: Int
     member: String
