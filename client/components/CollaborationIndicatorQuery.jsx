@@ -11,7 +11,7 @@ const GET_GRAPH = gql`
     nodes(members: $selectedMembers) {
       _id
       fullName
-      group
+      groups
     }
     edges(members: $selectedMembers) {
       source
