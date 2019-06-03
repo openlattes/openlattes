@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 
 import EnhancedTable from './EnhancedTable';
 import Loading from '../../client/components/Loading';
-import SavedSelectionsList from './SavedSelectionsList';
+import SavedGroupsList from './SavedGroupsList';
 
 const GET_MEMBERS = gql`
   {
@@ -15,6 +15,7 @@ const GET_MEMBERS = gql`
       citationName
       lattesId
       cvLastUpdate
+      groups
     }
   }
 `;
@@ -42,17 +43,23 @@ class MembersList extends PureComponent {
     const { newGroupName } = this.state;
 
     return (
-      <div>
-        <SavedSelectionsList
-          key={newGroupName}
-          onSelectionSave={this.handleSaveOrDelete}
-        />
-        <Query query={GET_MEMBERS}>
-          {({ loading, error, data }) => {
-            if (loading) return <Loading />;
-            if (error) return 'Erro';
+      <Query query={GET_MEMBERS}>
+        {({ loading, error, data }) => {
+          if (loading) return <Loading />;
+          if (error) return 'Erro';
 
-            return (
+          const groupNames = [
+            ...data.members
+              .reduce((set, { groups }) => new Set([...set, ...groups]), new Set()),
+          ];
+
+          return (
+            <div>
+              <SavedGroupsList
+                key={newGroupName}
+                onSelectionSave={this.handleSaveOrDelete}
+                groupNames={groupNames}
+              />
               <EnhancedTable
                 data={data.members.map(({
                   _id, fullName, citationName, lattesId, cvLastUpdate,
@@ -66,10 +73,10 @@ class MembersList extends PureComponent {
                 selectedMembers={selectedMembers}
                 onSelectionSave={this.handleSelectionSave}
               />
-            );
-          }}
-        </Query>
-      </div>
+            </div>
+          );
+        }}
+      </Query>
     );
   }
 }
