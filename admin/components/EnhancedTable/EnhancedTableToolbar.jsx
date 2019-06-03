@@ -102,8 +102,6 @@ class EnhancedTableToolbar extends Component {
         },
       });
 
-      // Clear selection
-      // TODO: fix arg
       onSelectionSave(selectionName);
 
       this.setState({
@@ -154,9 +152,9 @@ class EnhancedTableToolbar extends Component {
               placeholder={!numSelected ? 'Selecione um membro' : 'Escolha um nome'}
             />
             <Mutation mutation={ADD_GROUP}>
-              {(addGroup, { data }) => (
+              {addGroup => (
                 <Button
-                  onClick={() => this.handleSaveButtonClick(addGroup, data)}
+                  onClick={() => this.handleSaveButtonClick(addGroup)}
                   disabled={selectionName === ''}
                 >
                   Salvar Grupo
