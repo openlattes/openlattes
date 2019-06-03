@@ -65,7 +65,10 @@ function productionsResolver(collection) {
     }
 
     const ids = group
-      ? await Member.distinct('_id', { ...match('_id', toObjectIds(members)), group })
+      ? await Member.distinct('_id', {
+        ...match('_id', toObjectIds(members)),
+        groups: group,
+      })
       : toObjectIds(members);
 
     return coll.aggregate([
@@ -236,7 +239,10 @@ const resolvers = {
     }) =>
       productionIndicator[by]({
         ids: group
-          ? await Member.distinct('_id', { ...match('_id', toObjectIds(members)), group })
+          ? await Member.distinct('_id', {
+            ...match('_id', toObjectIds(members)),
+            groups: group,
+          })
           : toObjectIds(members),
         ...collections.get(collection),
       }),
