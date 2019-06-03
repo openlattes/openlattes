@@ -26,7 +26,9 @@ class MembersList extends PureComponent {
 
     return (
       <Query query={GET_MEMBERS}>
-        {({ loading, error, data }) => {
+        {({
+          loading, error, data, refetch,
+        }) => {
           if (loading) return <Loading />;
           if (error) return 'Erro';
 
@@ -49,6 +51,7 @@ class MembersList extends PureComponent {
                   cvLastUpdate: new Date(cvLastUpdate),
                 }))}
                 selectedMembers={selectedMembers}
+                refetch={refetch}
               />
             </div>
           );

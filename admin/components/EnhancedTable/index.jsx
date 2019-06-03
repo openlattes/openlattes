@@ -137,6 +137,7 @@ class EnhancedTable extends React.Component {
   handleSelectionSave(client) {
     client.writeData({ data: { selectedMembers: [] } });
     this.setState({ selected: [] });
+    this.props.refetch();
   }
 
   // Get lattesId from ObjectId
@@ -245,6 +246,7 @@ EnhancedTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string),
+  refetch: PropTypes.func.isRequired,
 };
 
 EnhancedTable.defaultProps = {
