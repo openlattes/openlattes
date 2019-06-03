@@ -10,7 +10,7 @@ const typeDefs = gql`
       memberName: String,
       types: [String]
       members: [ID],
-      group: [String]
+      group: String
     ): [Production]
     supervision(_id: ID!): Supervision
     supervisions(
@@ -18,13 +18,13 @@ const typeDefs = gql`
       memberName: String,
       types: [String]
       members: [ID],
-      group: [String]
+      group: String
     ): [Supervision]
     indicator(
       collection: Collection = BIBLIOGRAPHIC,
       by: By = year,
       members: [ID],
-      group: [String]
+      group: String
     ): [Indicator]
     typeIndicator(
       collection: Collection = BIBLIOGRAPHIC,

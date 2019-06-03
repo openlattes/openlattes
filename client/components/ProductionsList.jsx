@@ -12,7 +12,7 @@ const GET_PRODUCTIONS = gql`
     $memberName: String,
     $types: [String],
     $members: [ID],
-    $group: [String]
+    $group: String
   ) {
     productions(
       year: $year,

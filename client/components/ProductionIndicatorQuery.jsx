@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Loading from './Loading';
 
 const GET_INDICATOR = gql`
-  query Indicator($collection: Collection, $by: By $members: [ID], $group: [String]) {
+  query Indicator($collection: Collection, $by: By $members: [ID], $group: String) {
     indicator(collection: $collection, by: $by, members: $members, group: $group) {
       year
       member

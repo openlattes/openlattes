@@ -12,7 +12,7 @@ const GET_SUPERVISIONS = gql`
     $memberName: String,
     $types: [String],
     $members: [ID],
-    $group: [String]
+    $group: String
   ) {
     supervisions(
       year: $year,
