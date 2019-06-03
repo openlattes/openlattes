@@ -7,9 +7,17 @@ import Typography from '@material-ui/core/Typography';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 
 // import db from '../../db';
 import CustomDialog from '../../../client/components/CustomDialog';
+
+const ADD_GROUP = gql`
+  mutation AddGroup($members: [ID], $group: String) {
+    addGroup(members: $members, group: $group)
+  }
+`;
 
 const toolbarStyles = theme => ({
   root: {
@@ -71,53 +79,39 @@ class EnhancedTableToolbar extends Component {
     });
   }
 
-  handleSaveButtonClick() {
-    const { selected, onSelectionSave, toLattesId } = this.props;
+  handleSaveButtonClick(addGroup) {
+    const { selected, onSelectionSave } = this.props;
     const selectionName = this.state.selectionName.trim();
 
     // Validate input
     if (selectionName === '') {
       // No empty field
       this.openErrorDialog('Escolha um nome para a seleção.');
-    } else if (selectionName === 'Seleção Atual' || selectionName === 'Nenhum') {
+    } else if (selectionName === 'Todos') {
       // No reserved words
       this.openErrorDialog('Nome inválido. Tente outro.');
     } else if (!selected.length) {
       // No member selected
       this.openErrorDialog('Nenhum membro selecionado.');
     } else {
-      // db.groups.toArray() // Query all groups
-      //   .then((groups) => {
-      //     // Compare new name with all stored names
-      //     const nameExists = groups
-      //       .map(({ name }) => name)
-      //       .includes(selectionName);
+      // Validated: store new group
+      addGroup({
+        variables: {
+          members: selected,
+          group: selectionName,
+        },
+      });
 
-      //     if (nameExists) {
-      //       // No repeated names
-      //       throw Error(`Já existe uma seleção chamada "${selectionName}". Tente outra.`);
-      //     } else {
-      //       // Validated: store new group
-      //       return db.groups.add({
-      //         name: selectionName,
-      //         members: selected.map(toLattesId),
-      //       });
-      //     }
-      //   })
-      //   .then((id) => {
-      //     // Clear selection
-      //     onSelectionSave(id);
+      // Clear selection
+      // TODO: fix arg
+      onSelectionSave(selectionName);
 
-      //     this.setState({
-      //       selectionName: '',
-      //       dialogTitle: 'Sucesso',
-      //       dialogContent: 'Seleção salva.',
-      //       dialogOpen: true,
-      //     });
-      //   })
-      //   .catch((err) => {
-      //     this.openErrorDialog(err.message);
-      //   });
+      this.setState({
+        selectionName: '',
+        dialogTitle: 'Sucesso',
+        dialogContent: 'Seleção salva.',
+        dialogOpen: true,
+      });
     }
   }
 
@@ -159,12 +153,16 @@ class EnhancedTableToolbar extends Component {
               onChange={this.handleSelectionNameChange}
               placeholder={!numSelected ? 'Selecione um membro' : 'Escolha um nome'}
             />
-            <Button
-              onClick={this.handleSaveButtonClick}
-              disabled={selectionName === ''}
-            >
-              Salvar Seleção
-            </Button>
+            <Mutation mutation={ADD_GROUP}>
+              {(addGroup, { data }) => (
+                <Button
+                  onClick={() => this.handleSaveButtonClick(addGroup, data)}
+                  disabled={selectionName === ''}
+                >
+                  Salvar Grupo
+                </Button>
+              )}
+            </Mutation>
           </div>
         </Toolbar>
         <CustomDialog
@@ -189,7 +187,6 @@ EnhancedTableToolbar.propTypes = {
   selected: PropTypes
     .arrayOf(PropTypes.string).isRequired,
   onSelectionSave: PropTypes.func.isRequired,
-  toLattesId: PropTypes.func.isRequired,
 };
 
 export default withStyles(toolbarStyles)(EnhancedTableToolbar);

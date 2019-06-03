@@ -134,9 +134,9 @@ class EnhancedTable extends React.Component {
     return this.state.selected.indexOf(id) !== -1;
   }
 
-  handleSelectionSave(client, id) {
+  handleSelectionSave(client, newGroupName) {
     client.writeData({ data: { selectedMembers: [] } });
-    this.props.onSelectionSave(id);
+    this.props.onSelectionSave(newGroupName);
     this.setState({ selected: [] });
   }
 
@@ -160,7 +160,7 @@ class EnhancedTable extends React.Component {
             <EnhancedTableToolbar
               selected={selected}
               toLattesId={this.toLattesId}
-              onSelectionSave={id => this.handleSelectionSave(client, id)}
+              onSelectionSave={newGroupName => this.handleSelectionSave(client, newGroupName)}
             />
             <div className={classes.tableWrapper}>
               <Table className={classes.table} aria-labelledby="tableTitle">

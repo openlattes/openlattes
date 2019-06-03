@@ -27,24 +27,24 @@ class MembersList extends PureComponent {
       /* To reload the saved selections table when new
        * selection is added.
        */
-      addId: undefined,
+      newGroupName: undefined,
     };
 
     this.handleSelectionSave = this.handleSelectionSave.bind(this);
   }
 
-  handleSelectionSave(id) {
-    this.setState({ addId: id });
+  handleSelectionSave(newGroupName) {
+    this.setState({ newGroupName });
   }
 
   render() {
     const { selectedMembers } = this.props;
-    const { addId } = this.state;
+    const { newGroupName } = this.state;
 
     return (
       <div>
         <SavedSelectionsList
-          key={addId}
+          key={newGroupName}
           onSelectionSave={this.handleSaveOrDelete}
         />
         <Query query={GET_MEMBERS}>
