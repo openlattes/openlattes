@@ -12,9 +12,9 @@ class Graph extends PureComponent {
     // Remove the automatically included field __typename
     // to avoid semiotic error
     const nodes = data.nodes.map(({
-      _id, fullName, group, selected,
+      _id, fullName, groups, selected,
     }) => ({
-      _id, fullName, group, selected,
+      _id, fullName, groups, selected,
     }));
 
     const weightExtremes = data.edges
