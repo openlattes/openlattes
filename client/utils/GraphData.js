@@ -6,7 +6,7 @@ class GraphData {
 
   extractGroup() {
     return [...this.nodes
-      .reduce((set, { group }) => set.add(group), new Set())];
+      .reduce((set, { groups }) => new Set([...set, ...groups]), new Set())];
   }
 
   extractProductionTypes() {
