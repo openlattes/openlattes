@@ -7,7 +7,7 @@ import SimpleTable from '../../client/components/SimpleTable';
 
 const SavedSelectionsList = props => (
   <SimpleTable
-    title="Seleções Salvas"
+    title="Grupos"
     headers={[
       {
         id: 'name',
