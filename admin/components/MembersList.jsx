@@ -21,26 +21,8 @@ const GET_MEMBERS = gql`
 `;
 
 class MembersList extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      /* To reload the saved selections table when new
-       * selection is added.
-       */
-      newGroupName: undefined,
-    };
-
-    this.handleSelectionSave = this.handleSelectionSave.bind(this);
-  }
-
-  handleSelectionSave(newGroupName) {
-    this.setState({ newGroupName });
-  }
-
   render() {
     const { selectedMembers } = this.props;
-    const { newGroupName } = this.state;
 
     return (
       <Query query={GET_MEMBERS}>
@@ -55,10 +37,7 @@ class MembersList extends PureComponent {
 
           return (
             <div>
-              <SavedGroupsList
-                key={newGroupName}
-                groupNames={groupNames}
-              />
+              <SavedGroupsList groupNames={groupNames} />
               <EnhancedTable
                 data={data.members.map(({
                   _id, fullName, citationName, lattesId, cvLastUpdate,
@@ -70,7 +49,6 @@ class MembersList extends PureComponent {
                   cvLastUpdate: new Date(cvLastUpdate),
                 }))}
                 selectedMembers={selectedMembers}
-                onSelectionSave={this.handleSelectionSave}
               />
             </div>
           );

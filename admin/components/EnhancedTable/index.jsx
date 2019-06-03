@@ -134,9 +134,8 @@ class EnhancedTable extends React.Component {
     return this.state.selected.indexOf(id) !== -1;
   }
 
-  handleSelectionSave(client, newGroupName) {
+  handleSelectionSave(client) {
     client.writeData({ data: { selectedMembers: [] } });
-    this.props.onSelectionSave(newGroupName);
     this.setState({ selected: [] });
   }
 
@@ -246,13 +245,11 @@ EnhancedTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
   selectedMembers: PropTypes
     .arrayOf(PropTypes.string),
-  onSelectionSave: PropTypes.func,
 };
 
 EnhancedTable.defaultProps = {
   selectedMembers: [],
   data: [],
-  onSelectionSave: () => undefined,
 };
 
 export default withStyles(styles)(EnhancedTable);

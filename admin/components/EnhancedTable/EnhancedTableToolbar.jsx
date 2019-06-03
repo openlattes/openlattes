@@ -102,7 +102,7 @@ class EnhancedTableToolbar extends Component {
         },
       });
 
-      onSelectionSave(selectionName);
+      onSelectionSave();
 
       this.setState({
         selectionName: '',
