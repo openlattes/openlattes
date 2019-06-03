@@ -21,7 +21,7 @@ class GraphData {
   filterByGroup(match) {
     if (match && match !== 'Todos') {
       const filteredNodes = this.nodes
-        .filter(({ group }) => group === match);
+        .filter(({ groups }) => groups.includes(match));
 
       const nodesIds = filteredNodes.map(({ _id }) => _id);
 
