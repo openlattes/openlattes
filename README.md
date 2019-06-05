@@ -22,6 +22,20 @@ $ yarn run build
 $ yarn run now-start
 ```
 
+### Admin client development
+```
+$ yarn run startadmindev
+```
+
+### Admin build
+
+Warning: there's no authentication so only use it locally for settings like updating the groups stored in the DB.
+
+```
+$ yarn run buildadmin
+$ yarn run startadmin
+```
+
 ### License
 
 Openlattes: web application to visualize bibliometric indicators of the
