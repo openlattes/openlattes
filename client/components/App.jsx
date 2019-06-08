@@ -36,7 +36,7 @@ const menuItems = [
     divider: { key: 6 },
   },
   {
-    subheader: { key: 7, title: 'Orientações' },
+    subheader: { key: 7, title: 'Orientações Concluídas' },
     links: [
       {
         key: 8, Icon: BarChartIcon, label: 'Produtividade', to: '/supervisions',
