@@ -3,6 +3,9 @@ Web application to visualize scientific production indicators and coauthorship n
 
 Stack: GraphQL, MongoDB, React, Material-UI and Semiotic.
 
+![Screenshot of the production indicator page](screenshots/productions.png)
+![Screenshot of the coauthorship network page](screenshots/coauthorships.png)
+
 ### Environment setup
 ```
 $ yarn
